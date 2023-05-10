@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
-	"methodsSTIXObjects/commonlibs"
+	"github.com/av-belyakov/methodstixobjects/commonlibs"
 )
 
 /********** 			Некоторые 'сложные' типы относящиеся к Cyber-observable Objects STIX 			**********/

@@ -8,7 +8,7 @@ import (
 
 	govalidator "github.com/asaskevich/govalidator"
 
-	"methodsSTIXObjects/commonlibs"
+	"github.com/av-belyakov/methodstixobjects/commonlibs"
 )
 
 /**********			 Некоторые примитивные типы STIX			 **********/

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"regexp"
 
-	"methodsSTIXObjects/commonlibs"
+	"github.com/av-belyakov/methodstixobjects/commonlibs"
 )
 
 /*****************************************************************************/

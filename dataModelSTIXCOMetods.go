@@ -7,9 +7,8 @@ import (
 	"regexp"
 	"strconv"
 
-	"methodsSTIXObjects/commonlibs"
-
 	"github.com/asaskevich/govalidator"
+	"github.com/av-belyakov/methodstixobjects/commonlibs"
 )
 
 /*********************************************************************************/

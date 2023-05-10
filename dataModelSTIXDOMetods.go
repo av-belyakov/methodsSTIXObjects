@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"time"
 
-	"methodsSTIXObjects/commonlibs"
+	"github.com/av-belyakov/methodstixobjects/commonlibs"
 )
 
 /*************************************************************************/

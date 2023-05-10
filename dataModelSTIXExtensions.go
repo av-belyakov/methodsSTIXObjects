@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"methodsSTIXObjects/commonlibs"
+	"github.com/av-belyakov/methodstixobjects/commonlibs"
 )
 
 // decodingExtensionsSTIX декодирует следующие типы STIX расширений:

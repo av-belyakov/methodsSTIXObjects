@@ -1,4 +1,4 @@
-module methodsSTIXObjects
+module github.com/av-belyakov/methodstixobjects
 
 go 1.20
 

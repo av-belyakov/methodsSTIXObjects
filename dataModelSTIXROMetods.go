@@ -41,7 +41,7 @@ func (oc *OptionalCommonPropertiesRelationshipObjectSTIX) ToStringBeautiful() st
 /* --- RelationshipObjectSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (rstix RelationshipObjectSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (rstix RelationshipObjectSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &rstix); err != nil {
 		return nil, err
 	}
@@ -50,7 +50,7 @@ func (rstix RelationshipObjectSTIX) DecoderJSON(raw *json.RawMessage) (interface
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (rstix RelationshipObjectSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (rstix RelationshipObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(rstix)
 
 	return &result, err
@@ -123,7 +123,7 @@ func (rstix RelationshipObjectSTIX) GeneratingDataForIndexing() map[string]strin
 /* --- SightingObjectSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (sstix SightingObjectSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (sstix SightingObjectSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &sstix); err != nil {
 		return nil, err
 	}
@@ -132,7 +132,7 @@ func (sstix SightingObjectSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, 
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (sstix SightingObjectSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (sstix SightingObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(sstix)
 
 	return &result, err

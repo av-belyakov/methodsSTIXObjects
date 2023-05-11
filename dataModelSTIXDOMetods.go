@@ -153,7 +153,7 @@ func (cp CommonPropertiesDomainObjectSTIX) ToStringBeautiful() string {
 /* --- AttackPatternDomainObjectsSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (apstix AttackPatternDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (apstix AttackPatternDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &apstix); err != nil {
 		return apstix, err
 	}
@@ -162,7 +162,7 @@ func (apstix AttackPatternDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (apstix AttackPatternDomainObjectsSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (apstix AttackPatternDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(apstix)
 
 	return &result, err
@@ -262,7 +262,7 @@ func (apstix AttackPatternDomainObjectsSTIX) GeneratingDataForIndexing() map[str
 /* --- CampaignDomainObjectsSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (cstix CampaignDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (cstix CampaignDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &cstix); err != nil {
 		return nil, err
 	}
@@ -271,7 +271,7 @@ func (cstix CampaignDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interf
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (cstix CampaignDomainObjectsSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (cstix CampaignDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(cstix)
 
 	return &result, err
@@ -357,7 +357,7 @@ func (cstix CampaignDomainObjectsSTIX) GeneratingDataForIndexing() map[string]st
 /* --- CourseOfActionDomainObjectsSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (castix CourseOfActionDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (castix CourseOfActionDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &castix); err != nil {
 		return nil, err
 	}
@@ -366,7 +366,7 @@ func (castix CourseOfActionDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) 
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (castix CourseOfActionDomainObjectsSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (castix CourseOfActionDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(castix)
 
 	return &result, err
@@ -439,7 +439,7 @@ func (castix CourseOfActionDomainObjectsSTIX) GeneratingDataForIndexing() map[st
 /* --- GroupingDomainObjectsSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (gstix GroupingDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (gstix GroupingDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &gstix); err != nil {
 		return nil, err
 	}
@@ -448,7 +448,7 @@ func (gstix GroupingDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interf
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (gstix GroupingDomainObjectsSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (gstix GroupingDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(gstix)
 
 	return &result, err
@@ -538,7 +538,7 @@ func (gstix GroupingDomainObjectsSTIX) GeneratingDataForIndexing() map[string]st
 /* --- IdentityDomainObjectsSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (istix IdentityDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (istix IdentityDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &istix); err != nil {
 		return nil, err
 	}
@@ -547,7 +547,7 @@ func (istix IdentityDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interf
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (istix IdentityDomainObjectsSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (istix IdentityDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(istix)
 
 	return &result, err
@@ -656,7 +656,7 @@ func (istix IdentityDomainObjectsSTIX) GeneratingDataForIndexing() map[string]st
 /* --- IndicatorDomainObjectsSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (istix IndicatorDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (istix IndicatorDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &istix); err != nil {
 		return nil, err
 	}
@@ -665,7 +665,7 @@ func (istix IndicatorDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (inter
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (istix IndicatorDomainObjectsSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (istix IndicatorDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(istix)
 
 	return &result, err
@@ -784,7 +784,7 @@ func (istix IndicatorDomainObjectsSTIX) GeneratingDataForIndexing() map[string]s
 /* --- InfrastructureDomainObjectsSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (istix InfrastructureDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (istix InfrastructureDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &istix); err != nil {
 		return nil, err
 	}
@@ -793,7 +793,7 @@ func (istix InfrastructureDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (istix InfrastructureDomainObjectsSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (istix InfrastructureDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(istix)
 
 	return &result, err
@@ -911,7 +911,7 @@ func (istix InfrastructureDomainObjectsSTIX) GeneratingDataForIndexing() map[str
 /* --- IntrusionSetDomainObjectsSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (istix IntrusionSetDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (istix IntrusionSetDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &istix); err != nil {
 		return nil, err
 	}
@@ -920,7 +920,7 @@ func (istix IntrusionSetDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (in
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (istix IntrusionSetDomainObjectsSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (istix IntrusionSetDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(istix)
 
 	return &result, err
@@ -1049,7 +1049,7 @@ func (istix IntrusionSetDomainObjectsSTIX) GeneratingDataForIndexing() map[strin
 /* --- LocationDomainObjectsSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (lstix LocationDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (lstix LocationDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &lstix); err != nil {
 		return nil, err
 	}
@@ -1058,7 +1058,7 @@ func (lstix LocationDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interf
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (lstix LocationDomainObjectsSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (lstix LocationDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(lstix)
 
 	return &result, err
@@ -1160,7 +1160,7 @@ func (lstix LocationDomainObjectsSTIX) GeneratingDataForIndexing() map[string]st
 /* --- MalwareDomainObjectsSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (mstix MalwareDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (mstix MalwareDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &mstix); err != nil {
 		return nil, err
 	}
@@ -1169,7 +1169,7 @@ func (mstix MalwareDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interfa
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (mstix MalwareDomainObjectsSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (mstix MalwareDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(mstix)
 
 	return &result, err
@@ -1365,7 +1365,7 @@ func (mstix MalwareDomainObjectsSTIX) GeneratingDataForIndexing() map[string]str
 /* --- MalwareAnalysisDomainObjectsSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (mastix MalwareAnalysisDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (mastix MalwareAnalysisDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &mastix); err != nil {
 		return nil, err
 	}
@@ -1374,7 +1374,7 @@ func (mastix MalwareAnalysisDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage)
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (mastix MalwareAnalysisDomainObjectsSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (mastix MalwareAnalysisDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(mastix)
 
 	return &result, err
@@ -1516,7 +1516,7 @@ func (mastix MalwareAnalysisDomainObjectsSTIX) GeneratingDataForIndexing() map[s
 /* --- NoteDomainObjectsSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (nstix NoteDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (nstix NoteDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &nstix); err != nil {
 		return nil, err
 	}
@@ -1525,7 +1525,7 @@ func (nstix NoteDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interface{
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (nstix NoteDomainObjectsSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (nstix NoteDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(nstix)
 
 	return &result, err
@@ -1627,7 +1627,7 @@ func (nstix NoteDomainObjectsSTIX) GeneratingDataForIndexing() map[string]string
 /* --- ObservedDataDomainObjectsSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (odstix ObservedDataDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (odstix ObservedDataDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &odstix); err != nil {
 		return nil, err
 	}
@@ -1636,7 +1636,7 @@ func (odstix ObservedDataDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (i
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (odstix ObservedDataDomainObjectsSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (odstix ObservedDataDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(odstix)
 
 	return &result, err
@@ -1717,7 +1717,7 @@ func (odstix ObservedDataDomainObjectsSTIX) GeneratingDataForIndexing() map[stri
 /* --- OpinionDomainObjectsSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (ostix OpinionDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (ostix OpinionDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &ostix); err != nil {
 		return nil, err
 	}
@@ -1726,7 +1726,7 @@ func (ostix OpinionDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interfa
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (ostix OpinionDomainObjectsSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (ostix OpinionDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(ostix)
 
 	return &result, err
@@ -1819,7 +1819,7 @@ func (ostix OpinionDomainObjectsSTIX) GeneratingDataForIndexing() map[string]str
 /* --- ReportDomainObjectsSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (rstix ReportDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (rstix ReportDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &rstix); err != nil {
 		return nil, err
 	}
@@ -1828,7 +1828,7 @@ func (rstix ReportDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interfac
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (rstix ReportDomainObjectsSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (rstix ReportDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(rstix)
 
 	return &result, err
@@ -1938,7 +1938,7 @@ func (rstix ReportDomainObjectsSTIX) GeneratingDataForIndexing() map[string]stri
 /* --- ThreatActorDomainObjectsSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (tastix ThreatActorDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (tastix ThreatActorDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &tastix); err != nil {
 		return nil, err
 	}
@@ -1947,7 +1947,7 @@ func (tastix ThreatActorDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (in
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (tastix ThreatActorDomainObjectsSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (tastix ThreatActorDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(tastix)
 
 	return &result, err
@@ -2128,7 +2128,7 @@ func (tastix ThreatActorDomainObjectsSTIX) GeneratingDataForIndexing() map[strin
 /* --- ToolDomainObjectsSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (tstix ToolDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (tstix ToolDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &tstix); err != nil {
 		return nil, err
 	}
@@ -2137,7 +2137,7 @@ func (tstix ToolDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interface{
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (tstix ToolDomainObjectsSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (tstix ToolDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(tstix)
 
 	return &result, err
@@ -2255,7 +2255,7 @@ func (tstix ToolDomainObjectsSTIX) GeneratingDataForIndexing() map[string]string
 /* --- VulnerabilityDomainObjectsSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (vstix VulnerabilityDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (vstix VulnerabilityDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &vstix); err != nil {
 		return nil, err
 	}
@@ -2264,7 +2264,7 @@ func (vstix VulnerabilityDomainObjectsSTIX) DecoderJSON(raw *json.RawMessage) (i
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (vstix VulnerabilityDomainObjectsSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (vstix VulnerabilityDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(vstix)
 
 	return &result, err

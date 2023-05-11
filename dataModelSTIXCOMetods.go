@@ -76,7 +76,7 @@ func (ocpcstix OptionalCommonPropertiesCyberObservableObjectSTIX) ToStringBeauti
 /* --- ArtifactCyberObservableObjectSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (astix ArtifactCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (astix ArtifactCyberObservableObjectSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &astix); err != nil {
 		return nil, err
 	}
@@ -85,7 +85,7 @@ func (astix ArtifactCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage)
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (astix ArtifactCyberObservableObjectSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (astix ArtifactCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(astix)
 
 	return &result, err
@@ -166,7 +166,7 @@ func (astix ArtifactCyberObservableObjectSTIX) GeneratingDataForIndexing() map[s
 /* --- AutonomousSystemCyberObservableObjectSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (asstix AutonomousSystemCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (asstix AutonomousSystemCyberObservableObjectSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &asstix); err != nil {
 		return nil, err
 	}
@@ -175,7 +175,7 @@ func (asstix AutonomousSystemCyberObservableObjectSTIX) DecoderJSON(raw *json.Ra
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (asstix AutonomousSystemCyberObservableObjectSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (asstix AutonomousSystemCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(asstix)
 
 	return &result, err
@@ -246,7 +246,7 @@ func (asstix AutonomousSystemCyberObservableObjectSTIX) GeneratingDataForIndexin
 /* --- DirectoryCyberObservableObjectSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (dstix DirectoryCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (dstix DirectoryCyberObservableObjectSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &dstix); err != nil {
 		return nil, err
 	}
@@ -255,7 +255,7 @@ func (dstix DirectoryCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (dstix DirectoryCyberObservableObjectSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (dstix DirectoryCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(dstix)
 
 	return &result, err
@@ -340,7 +340,7 @@ func (dstix DirectoryCyberObservableObjectSTIX) GeneratingDataForIndexing() map[
 /* --- DomainNameCyberObservableObjectSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (dnstix DomainNameCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (dnstix DomainNameCyberObservableObjectSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &dnstix); err != nil {
 		return nil, err
 	}
@@ -349,7 +349,7 @@ func (dnstix DomainNameCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessa
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (dnstix DomainNameCyberObservableObjectSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (dnstix DomainNameCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(dnstix)
 
 	return &result, err
@@ -428,7 +428,7 @@ func (dnstix DomainNameCyberObservableObjectSTIX) GeneratingDataForIndexing() ma
 /* --- EmailAddressCyberObservableObjectSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (eastix EmailAddressCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (eastix EmailAddressCyberObservableObjectSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &eastix); err != nil {
 		return nil, err
 	}
@@ -437,7 +437,7 @@ func (eastix EmailAddressCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMes
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (eastix EmailAddressCyberObservableObjectSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (eastix EmailAddressCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(eastix)
 
 	return &result, err
@@ -509,7 +509,7 @@ func (eastix EmailAddressCyberObservableObjectSTIX) GeneratingDataForIndexing() 
 /* --- EmailMessageCyberObservableObjectSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (emstix EmailMessageCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (emstix EmailMessageCyberObservableObjectSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &emstix); err != nil {
 		return nil, err
 	}
@@ -518,7 +518,7 @@ func (emstix EmailMessageCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMes
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (emstix EmailMessageCyberObservableObjectSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (emstix EmailMessageCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(emstix)
 
 	return &result, err
@@ -710,7 +710,7 @@ func (emstix EmailMessageCyberObservableObjectSTIX) GeneratingDataForIndexing() 
 /* --- FileCyberObservableObjectSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (fstix FileCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (fstix FileCyberObservableObjectSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	var commonObject CommonFileCyberObservableObjectSTIX
 	if err := json.Unmarshal(*raw, &commonObject); err != nil {
 		return nil, err
@@ -754,7 +754,7 @@ func (fstix FileCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage) (in
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (fstix FileCyberObservableObjectSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (fstix FileCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(fstix)
 
 	return &result, err
@@ -886,7 +886,7 @@ func (fstix FileCyberObservableObjectSTIX) GeneratingDataForIndexing() map[strin
 /* --- IPv4AddressCyberObservableObjectSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (ip4stix IPv4AddressCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (ip4stix IPv4AddressCyberObservableObjectSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &ip4stix); err != nil {
 		return nil, err
 	}
@@ -895,7 +895,7 @@ func (ip4stix IPv4AddressCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMes
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (ip4stix IPv4AddressCyberObservableObjectSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (ip4stix IPv4AddressCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(ip4stix)
 
 	return &result, err
@@ -1002,7 +1002,7 @@ func (ip4stix IPv4AddressCyberObservableObjectSTIX) GeneratingDataForIndexing() 
 /* --- IPv6AddressCyberObservableObjectSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (ip6stix IPv6AddressCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (ip6stix IPv6AddressCyberObservableObjectSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &ip6stix); err != nil {
 		return nil, err
 	}
@@ -1011,7 +1011,7 @@ func (ip6stix IPv6AddressCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMes
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (ip6stix IPv6AddressCyberObservableObjectSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (ip6stix IPv6AddressCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(ip6stix)
 
 	return &result, err
@@ -1114,7 +1114,7 @@ func (ip6stix IPv6AddressCyberObservableObjectSTIX) GeneratingDataForIndexing() 
 /* --- MACAddressCyberObservableObjectSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (macstix MACAddressCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (macstix MACAddressCyberObservableObjectSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &macstix); err != nil {
 		return nil, err
 	}
@@ -1123,7 +1123,7 @@ func (macstix MACAddressCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMess
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (macstix MACAddressCyberObservableObjectSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (macstix MACAddressCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(macstix)
 
 	return &result, err
@@ -1181,7 +1181,7 @@ func (macstix MACAddressCyberObservableObjectSTIX) GeneratingDataForIndexing() m
 /* --- MutexCyberObservableObjectSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (mstix MutexCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (mstix MutexCyberObservableObjectSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &mstix); err != nil {
 		return nil, err
 	}
@@ -1190,7 +1190,7 @@ func (mstix MutexCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage) (i
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (mstix MutexCyberObservableObjectSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (mstix MutexCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(mstix)
 
 	return &result, err
@@ -1257,7 +1257,7 @@ func (mstix MutexCyberObservableObjectSTIX) GeneratingDataForIndexing() map[stri
 /* --- NetworkTrafficCyberObservableObjectSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (ntstix NetworkTrafficCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (ntstix NetworkTrafficCyberObservableObjectSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	var commonObject CommonNetworkTrafficCyberObservableObjectSTIX
 	if err := json.Unmarshal(*raw, &commonObject); err != nil {
 		return nil, err
@@ -1319,7 +1319,7 @@ func (ntstix NetworkTrafficCyberObservableObjectSTIX) DecoderJSON(raw *json.RawM
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (ntstix NetworkTrafficCyberObservableObjectSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (ntstix NetworkTrafficCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(ntstix)
 
 	return &result, err
@@ -1487,7 +1487,7 @@ func (ntstix NetworkTrafficCyberObservableObjectSTIX) GeneratingDataForIndexing(
 /* --- ProcessCyberObservableObjectSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (pstix ProcessCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (pstix ProcessCyberObservableObjectSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	var commonObject CommonProcessCyberObservableObjectSTIX
 	if err := json.Unmarshal(*raw, &commonObject); err != nil {
 		return nil, err
@@ -1526,7 +1526,7 @@ func (pstix ProcessCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage) 
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (pstix ProcessCyberObservableObjectSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (pstix ProcessCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(pstix)
 
 	return &result, err
@@ -1666,7 +1666,7 @@ func (pstix ProcessCyberObservableObjectSTIX) GeneratingDataForIndexing() map[st
 /* --- SoftwareCyberObservableObjectSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (sstix SoftwareCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (sstix SoftwareCyberObservableObjectSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &sstix); err != nil {
 		return nil, err
 	}
@@ -1675,7 +1675,7 @@ func (sstix SoftwareCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage)
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (sstix SoftwareCyberObservableObjectSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (sstix SoftwareCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(sstix)
 
 	return &result, err
@@ -1766,7 +1766,7 @@ func (sstix SoftwareCyberObservableObjectSTIX) GeneratingDataForIndexing() map[s
 /* --- URLCyberObservableObjectSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (urlstix URLCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (urlstix URLCyberObservableObjectSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &urlstix); err != nil {
 		return nil, err
 	}
@@ -1775,7 +1775,7 @@ func (urlstix URLCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage) (i
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (urlstix URLCyberObservableObjectSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (urlstix URLCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(urlstix)
 
 	return &result, err
@@ -1839,7 +1839,7 @@ func (urlstix URLCyberObservableObjectSTIX) GeneratingDataForIndexing() map[stri
 /* --- UserAccountCyberObservableObjectSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (uastix UserAccountCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (uastix UserAccountCyberObservableObjectSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &uastix); err != nil {
 		return nil, err
 	}
@@ -1848,7 +1848,7 @@ func (uastix UserAccountCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMess
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (uastix UserAccountCyberObservableObjectSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (uastix UserAccountCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(uastix)
 
 	return &result, err
@@ -1935,7 +1935,7 @@ func (uastix UserAccountCyberObservableObjectSTIX) GeneratingDataForIndexing() m
 /* --- WindowsRegistryKeyCyberObservableObjectSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (wrkstix WindowsRegistryKeyCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (wrkstix WindowsRegistryKeyCyberObservableObjectSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &wrkstix); err != nil {
 		return nil, err
 	}
@@ -1944,7 +1944,7 @@ func (wrkstix WindowsRegistryKeyCyberObservableObjectSTIX) DecoderJSON(raw *json
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (wrkstix WindowsRegistryKeyCyberObservableObjectSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (wrkstix WindowsRegistryKeyCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(wrkstix)
 
 	return &result, err
@@ -2028,7 +2028,7 @@ func (wrkstix WindowsRegistryKeyCyberObservableObjectSTIX) GeneratingDataForInde
 /* --- X509CertificateCyberObservableObjectSTIX --- */
 
 // DecoderJSON выполняет декодирование JSON объекта
-func (x509sstix X509CertificateCyberObservableObjectSTIX) DecoderJSON(raw *json.RawMessage) (interface{}, error) {
+func (x509sstix X509CertificateCyberObservableObjectSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
 	if err := json.Unmarshal(*raw, &x509sstix); err != nil {
 		return nil, err
 	}
@@ -2037,7 +2037,7 @@ func (x509sstix X509CertificateCyberObservableObjectSTIX) DecoderJSON(raw *json.
 }
 
 // EncoderJSON выполняет кодирование в JSON объект
-func (x509sstix X509CertificateCyberObservableObjectSTIX) EncoderJSON(interface{}) (*[]byte, error) {
+func (x509sstix X509CertificateCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	result, err := json.Marshal(x509sstix)
 
 	return &result, err

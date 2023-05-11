@@ -424,3 +424,27 @@ type ReportOutsideSpecification struct {
 	DecisionsMadeComputerThreat string `json:"decisions_made_computer_threat" bson:"decisions_made_computer_threat"`
 	ComputerThreatType          string `json:"computer_threat_type" bson:"computer_threat_type"`
 }
+
+/********** 			Описание типа для хранения информации об IPv4, подобно STIX формату, но с учетом удобного поиска			**********/
+
+// IPv4AddressCyberObservableSimilarObjectSTIX содержит информацию об IPv4 и подобен формату STIX. Однако он более удобен для хранения в БД MongoDB,
+// а так же для осуществления более гибкого поиска
+// HostMin - минимальное значение IP адреса
+// HostMax - максимальное значение IP адреса
+// Value - указывает значения одного или нескольких IPv4-адресов, выраженные с помощью нотации CIDR. Если данный объект IPv4-адреса представляет собой один IPv4-адрес,
+// ResolvesToRefs - указывает список ссылок на один или несколько MAC-адресов управления доступом к носителям уровня 2, на которые разрешается IPv6-адрес. Объекты,
+//
+//	на которые ссылается этот список, ДОЛЖНЫ иметь тип macaddr.
+//
+// BelongsToRefs - указывает список ссылок на одну или несколько автономных систем (AS), к которым принадлежит IPv6-адрес. Объекты, на которые ссылается этот список,
+//
+//	ДОЛЖНЫ быть типа autonomous-system.
+type IPv4AddressCyberObservableSimilarObjectSTIX struct {
+	CommonPropertiesObjectSTIX
+	OptionalCommonPropertiesCyberObservableObjectSTIX
+	HostMin        uint32               `bson:"host_min"`
+	HostMax        uint32               `bson:"host_max"`
+	Value          string               `bson:"value"`
+	ResolvesToRefs []IdentifierTypeSTIX `bson:"resolves_to_refs"`
+	BelongsToRefs  []IdentifierTypeSTIX `bson:"belongs_to_refs"`
+}

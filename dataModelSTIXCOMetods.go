@@ -157,10 +157,16 @@ func (astix ArtifactCyberObservableObjectSTIX) ToStringBeautiful() string {
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
 func (astix ArtifactCyberObservableObjectSTIX) GeneratingDataForIndexing() map[string]string {
-	return map[string]string{
+	dataForIndex := map[string]string{
 		"id":   astix.ID,
 		"type": astix.Type,
 	}
+
+	if astix.URL != "" {
+		dataForIndex["value"] = astix.URL
+	}
+
+	return dataForIndex
 }
 
 /* --- AutonomousSystemCyberObservableObjectSTIX --- */

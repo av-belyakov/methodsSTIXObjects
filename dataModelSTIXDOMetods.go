@@ -256,6 +256,16 @@ func (apstix AttackPatternDomainObjectsSTIX) GeneratingDataForIndexing() map[str
 		dataForIndex["description"] = apstix.Description
 	}
 
+	if len(apstix.Aliases) > 0 {
+		var strTmp string
+
+		for _, v := range apstix.Aliases {
+			strTmp += fmt.Sprintf(" %s", v)
+		}
+
+		dataForIndex["aliases"] = strTmp
+	}
+
 	return dataForIndex
 }
 
@@ -349,6 +359,16 @@ func (cstix CampaignDomainObjectsSTIX) GeneratingDataForIndexing() map[string]st
 
 	if cstix.Description != "" {
 		dataForIndex["description"] = cstix.Description
+	}
+
+	if len(cstix.Aliases) > 0 {
+		var strTmp string
+
+		for _, v := range cstix.Aliases {
+			strTmp += fmt.Sprintf(" %s", v)
+		}
+
+		dataForIndex["aliases"] = strTmp
 	}
 
 	return dataForIndex
@@ -650,6 +670,16 @@ func (istix IdentityDomainObjectsSTIX) GeneratingDataForIndexing() map[string]st
 		dataForIndex["description"] = istix.Description
 	}
 
+	if len(istix.Roles) > 0 {
+		var strTmp string
+
+		for _, v := range istix.Roles {
+			strTmp += fmt.Sprintf(" %s", v)
+		}
+
+		dataForIndex["aliases"] = strTmp
+	}
+
 	return dataForIndex
 }
 
@@ -905,6 +935,16 @@ func (istix InfrastructureDomainObjectsSTIX) GeneratingDataForIndexing() map[str
 		dataForIndex["description"] = istix.Description
 	}
 
+	if len(istix.Aliases) > 0 {
+		var strTmp string
+
+		for _, v := range istix.Aliases {
+			strTmp += fmt.Sprintf(" %s", v)
+		}
+
+		dataForIndex["aliases"] = strTmp
+	}
+
 	return dataForIndex
 }
 
@@ -1041,6 +1081,16 @@ func (istix IntrusionSetDomainObjectsSTIX) GeneratingDataForIndexing() map[strin
 
 	if istix.Description != "" {
 		dataForIndex["description"] = istix.Description
+	}
+
+	if len(istix.Aliases) > 0 {
+		var strTmp string
+
+		for _, v := range istix.Aliases {
+			strTmp += fmt.Sprintf(" %s", v)
+		}
+
+		dataForIndex["aliases"] = strTmp
 	}
 
 	return dataForIndex
@@ -1359,6 +1409,16 @@ func (mstix MalwareDomainObjectsSTIX) GeneratingDataForIndexing() map[string]str
 		dataForIndex["description"] = mstix.Description
 	}
 
+	if len(mstix.Aliases) > 0 {
+		var strTmp string
+
+		for _, v := range mstix.Aliases {
+			strTmp += fmt.Sprintf(" %s", v)
+		}
+
+		dataForIndex["aliases"] = strTmp
+	}
+
 	return dataForIndex
 }
 
@@ -1507,10 +1567,16 @@ func (mastix MalwareAnalysisDomainObjectsSTIX) ToStringBeautiful() string {
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
 func (mastix MalwareAnalysisDomainObjectsSTIX) GeneratingDataForIndexing() map[string]string {
-	return map[string]string{
+	dataForIndex := map[string]string{
 		"id":   mastix.ID,
 		"type": mastix.Type,
 	}
+
+	if mastix.Result != "" {
+		dataForIndex["result_name"] = mastix.ResultName
+	}
+
+	return dataForIndex
 }
 
 /* --- NoteDomainObjectsSTIX --- */
@@ -1619,6 +1685,16 @@ func (nstix NoteDomainObjectsSTIX) GeneratingDataForIndexing() map[string]string
 
 	if nstix.Content != "" {
 		dataForIndex["content"] = nstix.Content
+	}
+
+	if len(nstix.Authors) > 0 {
+		var strTmp string
+
+		for _, v := range nstix.Authors {
+			strTmp += fmt.Sprintf(" %s", v)
+		}
+
+		dataForIndex["aliases"] = strTmp
 	}
 
 	return dataForIndex
@@ -1810,10 +1886,22 @@ func (ostix OpinionDomainObjectsSTIX) ToStringBeautiful() string {
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
 func (ostix OpinionDomainObjectsSTIX) GeneratingDataForIndexing() map[string]string {
-	return map[string]string{
+	dataForIndex := map[string]string{
 		"id":   ostix.ID,
 		"type": ostix.Type,
 	}
+
+	if len(ostix.Authors) > 0 {
+		var strTmp string
+
+		for _, v := range ostix.Authors {
+			strTmp += fmt.Sprintf(" %s", v)
+		}
+
+		dataForIndex["aliases"] = strTmp
+	}
+
+	return dataForIndex
 }
 
 /* --- ReportDomainObjectsSTIX --- */
@@ -2122,6 +2210,26 @@ func (tastix ThreatActorDomainObjectsSTIX) GeneratingDataForIndexing() map[strin
 		dataForIndex["description"] = tastix.Description
 	}
 
+	if len(tastix.Aliases) > 0 {
+		var strTmp string
+
+		for _, v := range tastix.Aliases {
+			strTmp += fmt.Sprintf(" %s", v)
+		}
+
+		dataForIndex["aliases"] = strTmp
+	}
+
+	if len(tastix.Goals) > 0 {
+		var strTmp string
+
+		for _, v := range tastix.Goals {
+			strTmp += fmt.Sprintf(" %s", v)
+		}
+
+		dataForIndex["aliases"] += " " + strTmp
+	}
+
 	return dataForIndex
 }
 
@@ -2247,6 +2355,16 @@ func (tstix ToolDomainObjectsSTIX) GeneratingDataForIndexing() map[string]string
 
 	if tstix.Description != "" {
 		dataForIndex["description"] = tstix.Description
+	}
+
+	if len(tstix.Aliases) > 0 {
+		var strTmp string
+
+		for _, v := range tstix.Aliases {
+			strTmp += fmt.Sprintf(" %s", v)
+		}
+
+		dataForIndex["aliases"] = strTmp
 	}
 
 	return dataForIndex

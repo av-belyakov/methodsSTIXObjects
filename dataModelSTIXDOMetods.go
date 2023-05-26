@@ -2001,6 +2001,10 @@ func (rstix ReportDomainObjectsSTIX) ToStringBeautiful() string {
 		}
 		return str
 	}(rstix.ObjectRefs))
+	str += fmt.Sprintln("\toutside_specification:")
+	str += fmt.Sprintf("\t\tadditional_name: %v\n", rstix.OutsideSpecification.AdditionalName)
+	str += fmt.Sprintf("\t\tcomputer_threat_type: %v\n", rstix.OutsideSpecification.ComputerThreatType)
+	str += fmt.Sprintf("\t\tdecisions_made_computer_threat: %v\n", rstix.OutsideSpecification.DecisionsMadeComputerThreat)
 
 	return str
 }

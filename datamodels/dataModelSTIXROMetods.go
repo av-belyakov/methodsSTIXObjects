@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/av-belyakov/methodstixobjects/commonlibs"
+	"github.com/av-belyakov/methodstixobjects/datamodels/stixhelpers"
 )
 
 /*****************************************************************************/
@@ -203,7 +204,7 @@ func (sstix SightingObjectSTIX) ToStringBeautiful() string {
 	str.WriteString(fmt.Sprintf("'last_seen': '%v'\n", sstix.LastSeen))
 	str.WriteString(fmt.Sprintf("'count': '%d'\n", sstix.Count))
 	str.WriteString(fmt.Sprintf("'sighting_of_ref': '%v'\n", sstix.SightingOfRef))
-	str.WriteString(fmt.Sprintf("'observed_data_refs': \n%v", func(l []*IdentifierTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'observed_data_refs': \n%v", func(l []*stixhelpers.IdentifierTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -212,7 +213,7 @@ func (sstix SightingObjectSTIX) ToStringBeautiful() string {
 
 		return str.String()
 	}(sstix.ObservedDataRefs)))
-	str.WriteString(fmt.Sprintf("'where_sighted_refs': \n%v", func(l []*IdentifierTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'where_sighted_refs': \n%v", func(l []*stixhelpers.IdentifierTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {

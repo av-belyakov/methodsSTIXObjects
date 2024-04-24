@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"regexp"
+	"strings"
 	"time"
 
 	"github.com/av-belyakov/methodstixobjects/commonlibs"
@@ -90,64 +91,77 @@ func (cpdostix CommonPropertiesDomainObjectSTIX) sanitizeStruct() CommonProperti
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (cp CommonPropertiesDomainObjectSTIX) ToStringBeautiful() string {
-	var str string
-	str += fmt.Sprintf("spec_version: '%s'\n", cp.SpecVersion)
-	str += fmt.Sprintf("created: '%v'\n", cp.Created)
-	str += fmt.Sprintf("modified: '%v'\n", cp.Modified)
-	str += fmt.Sprintf("created_by_ref: '%s'\n", cp.CreatedByRef)
-	str += fmt.Sprintf("revoked: '%v'\n", cp.Revoked)
-	str += fmt.Sprintf("labels: \n%v", func(l []string) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tlabel '%d': '%s'\n", k, v)
-		}
-		return str
-	}(cp.Labels))
-	str += fmt.Sprintf("external_references: \n%v", func(l []ExternalReferenceTypeElementSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\texternal_references element '%d':\n", k)
-			str += fmt.Sprintf("\t\tsource_name: '%s'\n", v.SourceName)
-			str += fmt.Sprintf("\t\tdescription: '%s'\n", v.Description)
-			str += fmt.Sprintf("\t\turl: '%s'\n", v.URL)
-			str += fmt.Sprintf("\t\thashes: '%s'\n", v.Hashes)
-			str += fmt.Sprintf("\t\texternal_id: '%s'\n", v.ExternalID)
-		}
-		return str
-	}(cp.ExternalReferences))
-	str += fmt.Sprintf("object_marking_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tref '%d': '%v'\n", k, v)
-		}
-		return str
-	}(cp.ObjectMarkingRefs))
-	str += fmt.Sprintf("granular_markings: \n%v", func(l []GranularMarkingsTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tgranular_markings number %d.", k)
-			str += fmt.Sprintf("\tlang: '%s'\n", v.Lang)
-			str += fmt.Sprintf("\tmarking_ref: '%v'\n", v.MarkingRef)
-			str += fmt.Sprintf("\tselectors: \n%v", func(l []string) string {
-				var str string
-				for k, v := range l {
-					str += fmt.Sprintf("\t\tselector '%d': '%s'\n", k, v)
-				}
-				return str
-			}(v.Selectors))
-		}
-		return str
-	}(cp.GranularMarkings))
-	str += fmt.Sprintf("defanged: '%v'\n", cp.Defanged)
-	str += fmt.Sprintf("extensions: \n%v", func(l map[string]string) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\t'%s': '%s'\n", k, v)
-		}
-		return str
-	}(cp.Extensions))
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(fmt.Sprintf("'spec_version': '%s'\n", cp.SpecVersion))
+	str.WriteString(fmt.Sprintf("'created': '%v'\n", cp.Created))
+	str.WriteString(fmt.Sprintf("'modified': '%v'\n", cp.Modified))
+	str.WriteString(fmt.Sprintf("'created_by_ref': '%s'\n", cp.CreatedByRef))
+	str.WriteString(fmt.Sprintf("'revoked': '%v'\n", cp.Revoked))
+	str.WriteString(fmt.Sprintf("'labels': \n%v", func(l []string) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'label '%d'': '%s'\n", k, v))
+		}
+
+		return str.String()
+	}(cp.Labels)))
+	str.WriteString(fmt.Sprintf("'external_references': \n%v", func(l []ExternalReferenceTypeElementSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'external_references element '%d'':\n", k))
+			str.WriteString(fmt.Sprintf("\t\t'source_name': '%s'\n", v.SourceName))
+			str.WriteString(fmt.Sprintf("\t\t'description': '%s'\n", v.Description))
+			str.WriteString(fmt.Sprintf("\t\t'url': '%s'\n", v.URL))
+			str.WriteString(fmt.Sprintf("\t\t'hashes': '%s'\n", v.Hashes))
+			str.WriteString(fmt.Sprintf("\t\t'external_id': '%s'\n", v.ExternalID))
+		}
+
+		return str.String()
+	}(cp.ExternalReferences)))
+	str.WriteString(fmt.Sprintf("'object_marking_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'ref '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(cp.ObjectMarkingRefs)))
+	str.WriteString(fmt.Sprintf("'granular_markings': \n%v", func(l []GranularMarkingsTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'granular_markings number %d.'", k))
+			str.WriteString(fmt.Sprintf("\t'lang': '%s'\n", v.Lang))
+			str.WriteString(fmt.Sprintf("\t'marking_ref': '%v'\n", v.MarkingRef))
+			str.WriteString(fmt.Sprintf("\t'selectors': \n%v", func(l []string) string {
+				str := strings.Builder{}
+
+				for k, v := range l {
+					str.WriteString(fmt.Sprintf("\t\t'selector '%d'': '%s'\n", k, v))
+				}
+
+				return str.String()
+			}(v.Selectors)))
+		}
+
+		return str.String()
+	}(cp.GranularMarkings)))
+	str.WriteString(fmt.Sprintf("'defanged': '%v'\n", cp.Defanged))
+	str.WriteString(fmt.Sprintf("'extensions': \n%v", func(l map[string]string) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'%s': '%s'\n", k, v))
+		}
+
+		return str.String()
+	}(cp.Extensions)))
+
+	return str.String()
 }
 
 /* --- AttackPatternDomainObjectsSTIX --- */
@@ -195,9 +209,11 @@ func (apstix AttackPatternDomainObjectsSTIX) SanitizeStruct() AttackPatternDomai
 
 	if len(apstix.Aliases) > 0 {
 		aliasesTmp := make([]string, 0, len(apstix.Aliases))
+
 		for _, v := range apstix.Aliases {
 			aliasesTmp = append(aliasesTmp, commonlibs.StringSanitize(v))
 		}
+
 		apstix.Aliases = aliasesTmp
 	}
 
@@ -218,27 +234,33 @@ func (apstix AttackPatternDomainObjectsSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (apstix AttackPatternDomainObjectsSTIX) ToStringBeautiful() string {
-	str := apstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += apstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("name: '%s'\n", apstix.Name)
-	str += fmt.Sprintf("description: '%s'\n", apstix.Description)
-	str += fmt.Sprintf("aliases: \n%v", func(l []string) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\taliase '%d': '%s'\n", k, v)
-		}
-		return str
-	}(apstix.Aliases))
-	str += fmt.Sprintf("kill_chain_phases: \n%v", func(l KillChainPhasesTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tkey:'%v' kill_chain_name: '%s'\n", k, v.KillChainName)
-			str += fmt.Sprintf("\tkey:'%v' phase_name: '%s'\n", k, v.PhaseName)
-		}
-		return str
-	}(apstix.KillChainPhases))
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(apstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(apstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'name': '%s'\n", apstix.Name))
+	str.WriteString(fmt.Sprintf("'description': '%s'\n", apstix.Description))
+	str.WriteString(fmt.Sprintf("'aliases': \n%v", func(l []string) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'aliase '%d'': '%s'\n", k, v))
+		}
+
+		return str.String()
+	}(apstix.Aliases)))
+	str.WriteString(fmt.Sprintf("'kill_chain_phases': \n%v", func(l KillChainPhasesTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'key': '%v' 'kill_chain_name': '%s'\n", k, v.KillChainName))
+			str.WriteString(fmt.Sprintf("\t'key': '%v' 'phase_name': '%s'\n", k, v.PhaseName))
+		}
+
+		return str.String()
+	}(apstix.KillChainPhases)))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -328,22 +350,26 @@ func (cstix CampaignDomainObjectsSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (cstix CampaignDomainObjectsSTIX) ToStringBeautiful() string {
-	str := cstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += cstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("name: '%s'\n", cstix.Name)
-	str += fmt.Sprintf("description: '%s'\n", cstix.Description)
-	str += fmt.Sprintf("aliases: \n%v", func(l []string) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\taliase '%d': '%s'\n", k, v)
-		}
-		return str
-	}(cstix.Aliases))
-	str += fmt.Sprintf("first_seen: '%v'\n", cstix.FirstSeen)
-	str += fmt.Sprintf("last_seen: '%v'\n", cstix.LastSeen)
-	str += fmt.Sprintf("objective: '%s'\n", cstix.Objective)
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(cstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(cstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'name': '%s'\n", cstix.Name))
+	str.WriteString(fmt.Sprintf("'description': '%s'\n", cstix.Description))
+	str.WriteString(fmt.Sprintf("'aliases': \n%v", func(l []string) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'aliase '%d'': '%s'\n", k, v))
+		}
+
+		return str.String()
+	}(cstix.Aliases)))
+	str.WriteString(fmt.Sprintf("'first_seen': '%v'\n", cstix.FirstSeen))
+	str.WriteString(fmt.Sprintf("'last_seen': '%v'\n", cstix.LastSeen))
+	str.WriteString(fmt.Sprintf("'objective': '%s'\n", cstix.Objective))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -429,13 +455,15 @@ func (castix CourseOfActionDomainObjectsSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (castix CourseOfActionDomainObjectsSTIX) ToStringBeautiful() string {
-	str := castix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += castix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("name: '%s'\n", castix.Name)
-	str += fmt.Sprintf("description: '%s'\n", castix.Description)
-	str += fmt.Sprintf("action: '%v'\n", castix.Action)
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(castix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(castix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'name': '%s'\n", castix.Name))
+	str.WriteString(fmt.Sprintf("'description': '%s'\n", castix.Description))
+	str.WriteString(fmt.Sprintf("'action': '%v'\n", castix.Action))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -521,20 +549,24 @@ func (gstix GroupingDomainObjectsSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (gstix GroupingDomainObjectsSTIX) ToStringBeautiful() string {
-	str := gstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += gstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("name: '%s'\n", gstix.Name)
-	str += fmt.Sprintf("description: '%s'\n", gstix.Description)
-	str += fmt.Sprintf("context: '%s'\n", gstix.Context)
-	str += fmt.Sprintf("object_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tobject_ref '%d': '%v'\n", k, v)
-		}
-		return str
-	}(gstix.ObjectRefs))
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(gstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(gstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'name': '%s'\n", gstix.Name))
+	str.WriteString(fmt.Sprintf("'description': '%s'\n", gstix.Description))
+	str.WriteString(fmt.Sprintf("'context': '%s'\n", gstix.Context))
+	str.WriteString(fmt.Sprintf("'object_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'object_ref '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(gstix.ObjectRefs)))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -631,28 +663,34 @@ func (istix IdentityDomainObjectsSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (istix IdentityDomainObjectsSTIX) ToStringBeautiful() string {
-	str := istix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += istix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("name: '%s'\n", istix.Name)
-	str += fmt.Sprintf("description: '%s'\n", istix.Description)
-	str += fmt.Sprintf("roles: \n%v", func(l []string) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\trole '%d': '%v'\n", k, v)
-		}
-		return str
-	}(istix.Roles))
-	str += fmt.Sprintf("identity_class: '%s'\n", istix.IdentityClass)
-	str += fmt.Sprintf("sectors: \n%v", func(l []OpenVocabTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tsector '%d': '%v'\n", k, v)
-		}
-		return str
-	}(istix.Sectors))
-	str += fmt.Sprintf("contact_information: '%s'\n", istix.ContactInformation)
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(istix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(istix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'name': '%s'\n", istix.Name))
+	str.WriteString(fmt.Sprintf("'description': '%s'\n", istix.Description))
+	str.WriteString(fmt.Sprintf("'roles': \n%v", func(l []string) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'role '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(istix.Roles)))
+	str.WriteString(fmt.Sprintf("'identity_class': '%s'\n", istix.IdentityClass))
+	str.WriteString(fmt.Sprintf("'sectors': \n%v", func(l []OpenVocabTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'sector '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(istix.Sectors)))
+	str.WriteString(fmt.Sprintf("'contact_information': '%s'\n", istix.ContactInformation))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -766,31 +804,37 @@ func (istix IndicatorDomainObjectsSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (istix IndicatorDomainObjectsSTIX) ToStringBeautiful() string {
-	str := istix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += istix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("name: '%s'\n", istix.Name)
-	str += fmt.Sprintf("description: '%s'\n", istix.Description)
-	str += fmt.Sprintf("indicator_types: \n%v", func(l []OpenVocabTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tindicator_type '%d': '%v'\n", k, v)
-		}
-		return str
-	}(istix.IndicatorTypes))
-	str += fmt.Sprintf("pattern: '%s'\n", istix.Pattern)
-	str += fmt.Sprintf("pattern_type: '%s'\n", istix.PatternType)
-	str += fmt.Sprintf("pattern_version: '%s'\n", istix.PatternVersion)
-	str += fmt.Sprintf("valid_from: '%v'\n", istix.ValidFrom)
-	str += fmt.Sprintf("valid_until: '%v'\n", istix.ValidUntil)
-	str += fmt.Sprintf("sectors: \n%v", func(l []KillChainPhasesTypeElementSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tsector '%d': '%v'\n", k, v)
-		}
-		return str
-	}(istix.KillChainPhases))
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(istix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(istix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'name': '%s'\n", istix.Name))
+	str.WriteString(fmt.Sprintf("'description': '%s'\n", istix.Description))
+	str.WriteString(fmt.Sprintf("'indicator_types': \n%v", func(l []OpenVocabTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'indicator_type '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(istix.IndicatorTypes)))
+	str.WriteString(fmt.Sprintf("'pattern': '%s'\n", istix.Pattern))
+	str.WriteString(fmt.Sprintf("'pattern_type': '%s'\n", istix.PatternType))
+	str.WriteString(fmt.Sprintf("'pattern_version': '%s'\n", istix.PatternVersion))
+	str.WriteString(fmt.Sprintf("'valid_from': '%v'\n", istix.ValidFrom))
+	str.WriteString(fmt.Sprintf("'valid_until': '%v'\n", istix.ValidUntil))
+	str.WriteString(fmt.Sprintf("'sectors': \n%v", func(l []KillChainPhasesTypeElementSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'sector '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(istix.KillChainPhases)))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -889,35 +933,43 @@ func (istix InfrastructureDomainObjectsSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (istix InfrastructureDomainObjectsSTIX) ToStringBeautiful() string {
-	str := istix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += istix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("name: '%s'\n", istix.Name)
-	str += fmt.Sprintf("description: '%s'\n", istix.Description)
-	str += fmt.Sprintf("infrastructure_types: \n%v", func(l []OpenVocabTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tinfrastructure_type '%d': '%v'\n", k, v)
-		}
-		return str
-	}(istix.InfrastructureTypes))
-	str += fmt.Sprintf("aliases: \n%v", func(l []string) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\taliase '%d': '%s'\n", k, v)
-		}
-		return str
-	}(istix.Aliases))
-	str += fmt.Sprintf("sectors: \n%v", func(l []KillChainPhasesTypeElementSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tsector '%d': '%v'\n", k, v)
-		}
-		return str
-	}(istix.KillChainPhases))
-	str += fmt.Sprintf("first_seen: '%v'\n", istix.FirstSeen)
-	str += fmt.Sprintf("last_seen: '%v'\n", istix.LastSeen)
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(istix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(istix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'name': '%s'\n", istix.Name))
+	str.WriteString(fmt.Sprintf("'description': '%s'\n", istix.Description))
+	str.WriteString(fmt.Sprintf("'infrastructure_types': \n%v", func(l []OpenVocabTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'infrastructure_type '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(istix.InfrastructureTypes)))
+	str.WriteString(fmt.Sprintf("'aliases': \n%v", func(l []string) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'aliase '%d'': '%s'\n", k, v))
+		}
+
+		return str.String()
+	}(istix.Aliases)))
+	str.WriteString(fmt.Sprintf("'sectors': \n%v", func(l []KillChainPhasesTypeElementSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'sector '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(istix.KillChainPhases)))
+	str.WriteString(fmt.Sprintf("'first_seen': '%v'\n", istix.FirstSeen))
+	str.WriteString(fmt.Sprintf("'last_seen': '%v'\n", istix.LastSeen))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -1035,37 +1087,45 @@ func (istix IntrusionSetDomainObjectsSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (istix IntrusionSetDomainObjectsSTIX) ToStringBeautiful() string {
-	str := istix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += istix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("name: '%s'\n", istix.Name)
-	str += fmt.Sprintf("description: '%s'\n", istix.Description)
-	str += fmt.Sprintf("aliases: \n%v", func(l []string) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\taliase '%d': '%s'\n", k, v)
-		}
-		return str
-	}(istix.Aliases))
-	str += fmt.Sprintf("first_seen: '%v'\n", istix.FirstSeen)
-	str += fmt.Sprintf("last_seen: '%v'\n", istix.LastSeen)
-	str += fmt.Sprintf("goals: \n%v", func(l []string) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tgoal '%d': '%s'\n", k, v)
-		}
-		return str
-	}(istix.Goals))
-	str += fmt.Sprintf("resource_level: '%s'\n", istix.FirstSeen)
-	str += fmt.Sprintf("primary_motivation: '%s'\n", istix.LastSeen)
-	str += fmt.Sprintf("secondary_motivations: \n%v", func(l []OpenVocabTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tsecondary_motivation '%d': '%v'\n", k, v)
-		}
-		return str
-	}(istix.SecondaryMotivations))
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(istix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(istix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'name': '%s'\n", istix.Name))
+	str.WriteString(fmt.Sprintf("'description': '%s'\n", istix.Description))
+	str.WriteString(fmt.Sprintf("'aliases': \n%v", func(l []string) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'aliase '%d'': '%s'\n", k, v))
+		}
+
+		return str.String()
+	}(istix.Aliases)))
+	str.WriteString(fmt.Sprintf("'first_seen': '%v'\n", istix.FirstSeen))
+	str.WriteString(fmt.Sprintf("'last_seen': '%v'\n", istix.LastSeen))
+	str.WriteString(fmt.Sprintf("'goals': \n%v", func(l []string) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'goal '%d'': '%s'\n", k, v))
+		}
+
+		return str.String()
+	}(istix.Goals)))
+	str.WriteString(fmt.Sprintf("'resource_level': '%s'\n", istix.FirstSeen))
+	str.WriteString(fmt.Sprintf("'primary_motivation': '%s'\n", istix.LastSeen))
+	str.WriteString(fmt.Sprintf("'secondary_motivations': \n%v", func(l []OpenVocabTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'secondary_motivation '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(istix.SecondaryMotivations)))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -1168,21 +1228,23 @@ func (lstix LocationDomainObjectsSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (lstix LocationDomainObjectsSTIX) ToStringBeautiful() string {
-	str := lstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += lstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("name: '%s'\n", lstix.Name)
-	str += fmt.Sprintf("description: '%s'\n", lstix.Description)
-	str += fmt.Sprintf("latitude: '%v'\n", lstix.Latitude)
-	str += fmt.Sprintf("longitude: '%v'\n", lstix.Longitude)
-	str += fmt.Sprintf("precision: '%v'\n", lstix.Precision)
-	str += fmt.Sprintf("region: '%s'\n", lstix.Region)
-	str += fmt.Sprintf("country: '%s'\n", lstix.Country)
-	str += fmt.Sprintf("administrative_area: '%s'\n", lstix.AdministrativeArea)
-	str += fmt.Sprintf("city: '%s'\n", lstix.City)
-	str += fmt.Sprintf("street_address: '%s'\n", lstix.StreetAddress)
-	str += fmt.Sprintf("postal_code: '%s'\n", lstix.PostalCode)
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(lstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(lstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'name': '%s'\n", lstix.Name))
+	str.WriteString(fmt.Sprintf("'description': '%s'\n", lstix.Description))
+	str.WriteString(fmt.Sprintf("'latitude': '%v'\n", lstix.Latitude))
+	str.WriteString(fmt.Sprintf("'longitude': '%v'\n", lstix.Longitude))
+	str.WriteString(fmt.Sprintf("'precision': '%v'\n", lstix.Precision))
+	str.WriteString(fmt.Sprintf("'region': '%s'\n", lstix.Region))
+	str.WriteString(fmt.Sprintf("'country': '%s'\n", lstix.Country))
+	str.WriteString(fmt.Sprintf("'administrative_area': '%s'\n", lstix.AdministrativeArea))
+	str.WriteString(fmt.Sprintf("'city': '%s'\n", lstix.City))
+	str.WriteString(fmt.Sprintf("'street_address': '%s'\n", lstix.StreetAddress))
+	str.WriteString(fmt.Sprintf("'postal_code': '%s'\n", lstix.PostalCode))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -1326,72 +1388,90 @@ func (mstix MalwareDomainObjectsSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (mstix MalwareDomainObjectsSTIX) ToStringBeautiful() string {
-	str := mstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += mstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("name: '%s'\n", mstix.Name)
-	str += fmt.Sprintf("description: '%s'\n", mstix.Description)
-	str += fmt.Sprintf("malware_types: \n%v", func(l []OpenVocabTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tmalware_type '%d': '%v'\n", k, v)
-		}
-		return str
-	}(mstix.MalwareTypes))
-	str += fmt.Sprintf("is_family: '%v'\n", mstix.IsFamily)
-	str += fmt.Sprintf("aliases: \n%v", func(l []string) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\taliase '%d': '%s'\n", k, v)
-		}
-		return str
-	}(mstix.Aliases))
-	str += fmt.Sprintf("kill_chain_phases: \n%v", func(l KillChainPhasesTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tkey:'%v' kill_chain_name: '%s'\n", k, v.KillChainName)
-			str += fmt.Sprintf("\tkey:'%v' phase_name: '%s'\n", k, v.PhaseName)
-		}
-		return str
-	}(mstix.KillChainPhases))
-	str += fmt.Sprintf("first_seen: '%v'\n", mstix.FirstSeen)
-	str += fmt.Sprintf("last_seen: '%v'\n", mstix.LastSeen)
-	str += fmt.Sprintf("operating_system_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\toperating_system_ref '%d': '%v'\n", k, v)
-		}
-		return str
-	}(mstix.OperatingSystemRefs))
-	str += fmt.Sprintf("architecture_execution_envs: \n%v", func(l []OpenVocabTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tarchitecture_execution_env '%d': '%v'\n", k, v)
-		}
-		return str
-	}(mstix.ArchitectureExecutionEnvs))
-	str += fmt.Sprintf("implementation_languages: \n%v", func(l []OpenVocabTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\timplementation_language '%d': '%v'\n", k, v)
-		}
-		return str
-	}(mstix.ImplementationLanguages))
-	str += fmt.Sprintf("capabilities: \n%v", func(l []OpenVocabTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tcapabilitie '%d': '%v'\n", k, v)
-		}
-		return str
-	}(mstix.Capabilities))
-	str += fmt.Sprintf("sample_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tsample_ref '%d': '%v'\n", k, v)
-		}
-		return str
-	}(mstix.SampleRefs))
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(mstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(mstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'name': '%s'\n", mstix.Name))
+	str.WriteString(fmt.Sprintf("'description': '%s'\n", mstix.Description))
+	str.WriteString(fmt.Sprintf("'malware_types': \n%v", func(l []OpenVocabTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'malware_type '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(mstix.MalwareTypes)))
+	str.WriteString(fmt.Sprintf("'is_family': '%v'\n", mstix.IsFamily))
+	str.WriteString(fmt.Sprintf("'aliases': \n%v", func(l []string) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'aliase '%d'': '%s'\n", k, v))
+		}
+
+		return str.String()
+	}(mstix.Aliases)))
+	str.WriteString(fmt.Sprintf("'kill_chain_phases': \n%v", func(l KillChainPhasesTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'key': '%v' 'kill_chain_name': '%s'\n", k, v.KillChainName))
+			str.WriteString(fmt.Sprintf("\t'key': '%v' 'phase_name': '%s'\n", k, v.PhaseName))
+		}
+
+		return str.String()
+	}(mstix.KillChainPhases)))
+	str.WriteString(fmt.Sprintf("'first_seen': '%v'\n", mstix.FirstSeen))
+	str.WriteString(fmt.Sprintf("'last_seen': '%v'\n", mstix.LastSeen))
+	str.WriteString(fmt.Sprintf("'operating_system_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'operating_system_ref '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(mstix.OperatingSystemRefs)))
+	str.WriteString(fmt.Sprintf("'architecture_execution_envs': \n%v", func(l []OpenVocabTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'architecture_execution_env '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(mstix.ArchitectureExecutionEnvs)))
+	str.WriteString(fmt.Sprintf("'implementation_languages': \n%v", func(l []OpenVocabTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'implementation_language '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(mstix.ImplementationLanguages)))
+	str.WriteString(fmt.Sprintf("'capabilities': \n%v", func(l []OpenVocabTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'capabilitie '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(mstix.Capabilities)))
+	str.WriteString(fmt.Sprintf("'sample_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'sample_ref '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(mstix.SampleRefs)))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -1524,45 +1604,53 @@ func (mastix MalwareAnalysisDomainObjectsSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (mastix MalwareAnalysisDomainObjectsSTIX) ToStringBeautiful() string {
-	str := mastix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += mastix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("product: '%s'\n", mastix.Product)
-	str += fmt.Sprintf("version: '%s'\n", mastix.Version)
-	str += fmt.Sprintf("host_vm_ref: '%s'\n", mastix.HostVMRef)
-	str += fmt.Sprintf("operating_system_ref: '%s'\n", mastix.OperatingSystemRef)
-	str += fmt.Sprintf("installed_software_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tinstalled_software_ref '%d': '%v'\n", k, v)
-		}
-		return str
-	}(mastix.InstalledSoftwareRefs))
-	str += fmt.Sprintf("configuration_version: '%s'\n", mastix.ConfigurationVersion)
-	str += fmt.Sprintf("modules: \n%v", func(l []string) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tmodule '%d': '%s'\n", k, v)
-		}
-		return str
-	}(mastix.Modules))
-	str += fmt.Sprintf("analysis_engine_version: '%s'\n", mastix.AnalysisEngineVersion)
-	str += fmt.Sprintf("analysis_definition_version: '%s'\n", mastix.AnalysisDefinitionVersion)
-	str += fmt.Sprintf("submitted: '%v'\n", mastix.Submitted)
-	str += fmt.Sprintf("analysis_started: '%v'\n", mastix.AnalysisStarted)
-	str += fmt.Sprintf("analysis_ended: '%v'\n", mastix.AnalysisEnded)
-	str += fmt.Sprintf("result_name: '%s'\n", mastix.ResultName)
-	str += fmt.Sprintf("result: '%s'\n", mastix.Result)
-	str += fmt.Sprintf("analysis_sco_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tanalysis_sco_ref '%d': '%v'\n", k, v)
-		}
-		return str
-	}(mastix.AnalysisScoRefs))
-	str += fmt.Sprintf("sample_ref: '%v'\n", mastix.SampleRef)
-	str += fmt.Sprintf("av_result: '%v'\n", mastix.AvResult)
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(mastix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(mastix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'product': '%s'\n", mastix.Product))
+	str.WriteString(fmt.Sprintf("'version': '%s'\n", mastix.Version))
+	str.WriteString(fmt.Sprintf("'host_vm_ref': '%s'\n", mastix.HostVMRef))
+	str.WriteString(fmt.Sprintf("'operating_system_ref': '%s'\n", mastix.OperatingSystemRef))
+	str.WriteString(fmt.Sprintf("'installed_software_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'installed_software_ref '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(mastix.InstalledSoftwareRefs)))
+	str.WriteString(fmt.Sprintf("'configuration_version': '%s'\n", mastix.ConfigurationVersion))
+	str.WriteString(fmt.Sprintf("'modules': \n%v", func(l []string) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'module '%d'': '%s'\n", k, v))
+		}
+
+		return str.String()
+	}(mastix.Modules)))
+	str.WriteString(fmt.Sprintf("'analysis_engine_version': '%s'\n", mastix.AnalysisEngineVersion))
+	str.WriteString(fmt.Sprintf("'analysis_definition_version': '%s'\n", mastix.AnalysisDefinitionVersion))
+	str.WriteString(fmt.Sprintf("'submitted': '%v'\n", mastix.Submitted))
+	str.WriteString(fmt.Sprintf("'analysis_started': '%v'\n", mastix.AnalysisStarted))
+	str.WriteString(fmt.Sprintf("'analysis_ended': '%v'\n", mastix.AnalysisEnded))
+	str.WriteString(fmt.Sprintf("'result_name': '%s'\n", mastix.ResultName))
+	str.WriteString(fmt.Sprintf("'result': '%s'\n", mastix.Result))
+	str.WriteString(fmt.Sprintf("'analysis_sco_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'analysis_sco_ref '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(mastix.AnalysisScoRefs)))
+	str.WriteString(fmt.Sprintf("'sample_ref': '%v'\n", mastix.SampleRef))
+	str.WriteString(fmt.Sprintf("'av_result': '%v'\n", mastix.AvResult))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -1650,26 +1738,32 @@ func (nstix NoteDomainObjectsSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (nstix NoteDomainObjectsSTIX) ToStringBeautiful() string {
-	str := nstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += nstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("abstract: '%s'\n", nstix.Abstract)
-	str += fmt.Sprintf("content: '%s'\n", nstix.Content)
-	str += fmt.Sprintf("authors: \n%v", func(l []string) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tauthor '%d': '%s'\n", k, v)
-		}
-		return str
-	}(nstix.Authors))
-	str += fmt.Sprintf("object_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tobject_ref '%d': '%v'\n", k, v)
-		}
-		return str
-	}(nstix.ObjectRefs))
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(nstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(nstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'abstract': '%s'\n", nstix.Abstract))
+	str.WriteString(fmt.Sprintf("'content': '%s'\n", nstix.Content))
+	str.WriteString(fmt.Sprintf("'authors': \n%v", func(l []string) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'author '%d'': '%s'\n", k, v))
+		}
+
+		return str.String()
+	}(nstix.Authors)))
+	str.WriteString(fmt.Sprintf("'object_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'object_ref '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(nstix.ObjectRefs)))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -1766,20 +1860,24 @@ func (odstix ObservedDataDomainObjectsSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (odstix ObservedDataDomainObjectsSTIX) ToStringBeautiful() string {
-	str := odstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += odstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("first_observed: '%v'\n", odstix.FirstObserved)
-	str += fmt.Sprintf("last_observed: '%v'\n", odstix.LastObserved)
-	str += fmt.Sprintf("number_observed: '%d'\n", odstix.NumberObserved)
-	str += fmt.Sprintf("object_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tobject_ref '%d': '%v'\n", k, v)
-		}
-		return str
-	}(odstix.ObjectRefs))
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(odstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(odstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'first_observed': '%v'\n", odstix.FirstObserved))
+	str.WriteString(fmt.Sprintf("'last_observed': '%v'\n", odstix.LastObserved))
+	str.WriteString(fmt.Sprintf("'number_observed': '%d'\n", odstix.NumberObserved))
+	str.WriteString(fmt.Sprintf("'object_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'object_ref '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(odstix.ObjectRefs)))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -1862,26 +1960,32 @@ func (ostix OpinionDomainObjectsSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (ostix OpinionDomainObjectsSTIX) ToStringBeautiful() string {
-	str := ostix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += ostix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("explanation: '%v'\n", ostix.Explanation)
-	str += fmt.Sprintf("authors: \n%v", func(l []string) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tauthor '%d': '%s'\n", k, v)
-		}
-		return str
-	}(ostix.Authors))
-	str += fmt.Sprintf("opinion: '%v'\n", ostix.Opinion)
-	str += fmt.Sprintf("object_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tobject_ref '%d': '%v'\n", k, v)
-		}
-		return str
-	}(ostix.ObjectRefs))
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(ostix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(ostix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'explanation': '%v'\n", ostix.Explanation))
+	str.WriteString(fmt.Sprintf("'authors': \n%v", func(l []string) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'author '%d'': '%s'\n", k, v))
+		}
+
+		return str.String()
+	}(ostix.Authors)))
+	str.WriteString(fmt.Sprintf("'opinion': '%v'\n", ostix.Opinion))
+	str.WriteString(fmt.Sprintf("'object_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'object_ref '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(ostix.ObjectRefs)))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -1982,31 +2086,37 @@ func (rstix ReportDomainObjectsSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (rstix ReportDomainObjectsSTIX) ToStringBeautiful() string {
-	str := rstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += rstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("name: '%s'\n", rstix.Name)
-	str += fmt.Sprintf("description: '%s'\n", rstix.Description)
-	str += fmt.Sprintf("report_types: \n%v", func(l []OpenVocabTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\treport_type '%d': '%v'\n", k, v)
-		}
-		return str
-	}(rstix.ReportTypes))
-	str += fmt.Sprintf("published: '%v'\n", rstix.Published)
-	str += fmt.Sprintf("object_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tobject_ref '%d': '%v'\n", k, v)
-		}
-		return str
-	}(rstix.ObjectRefs))
-	str += fmt.Sprintln("outside_specification:")
-	str += fmt.Sprintf("\tadditional_name: %v\n", rstix.OutsideSpecification.AdditionalName)
-	str += fmt.Sprintf("\tcomputer_threat_type: %v\n", rstix.OutsideSpecification.ComputerThreatType)
-	str += fmt.Sprintf("\tdecisions_made_computer_threat: %v\n", rstix.OutsideSpecification.DecisionsMadeComputerThreat)
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(rstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(rstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'name': '%s'\n", rstix.Name))
+	str.WriteString(fmt.Sprintf("'description': '%s'\n", rstix.Description))
+	str.WriteString(fmt.Sprintf("'report_types': \n%v", func(l []OpenVocabTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'report_type '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(rstix.ReportTypes)))
+	str.WriteString(fmt.Sprintf("'published': '%v'\n", rstix.Published))
+	str.WriteString(fmt.Sprintf("'object_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'object_ref '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(rstix.ObjectRefs)))
+	str.WriteString(fmt.Sprintln("'outside_specification':"))
+	str.WriteString(fmt.Sprintf("\t'additional_name': %v\n", rstix.OutsideSpecification.AdditionalName))
+	str.WriteString(fmt.Sprintf("\t'computer_threat_type': %v\n", rstix.OutsideSpecification.ComputerThreatType))
+	str.WriteString(fmt.Sprintf("\t'decisions_made_computer_threat': %v\n", rstix.OutsideSpecification.DecisionsMadeComputerThreat))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -2144,59 +2254,73 @@ func (tastix ThreatActorDomainObjectsSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (tastix ThreatActorDomainObjectsSTIX) ToStringBeautiful() string {
-	str := tastix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += tastix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("name: '%s'\n", tastix.Name)
-	str += fmt.Sprintf("description: '%s'\n", tastix.Description)
-	str += fmt.Sprintf("threat_actor_types: \n%v", func(l []OpenVocabTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tthreat_actor_type '%d': '%v'\n", k, v)
-		}
-		return str
-	}(tastix.ThreatActorTypes))
-	str += fmt.Sprintf("aliases: \n%v", func(l []string) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\taliase '%d': '%s'\n", k, v)
-		}
-		return str
-	}(tastix.Aliases))
-	str += fmt.Sprintf("first_seen: '%v'\n", tastix.FirstSeen)
-	str += fmt.Sprintf("last_seen: '%v'\n", tastix.LastSeen)
-	str += fmt.Sprintf("roles: \n%v", func(l []OpenVocabTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\trole '%d': '%v'\n", k, v)
-		}
-		return str
-	}(tastix.Roles))
-	str += fmt.Sprintf("goals: \n%v", func(l []string) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tgoal '%d': '%s'\n", k, v)
-		}
-		return str
-	}(tastix.Goals))
-	str += fmt.Sprintf("sophistication: '%v'\n", tastix.FirstSeen)
-	str += fmt.Sprintf("resource_level: '%v'\n", tastix.LastSeen)
-	str += fmt.Sprintf("primary_motivation: '%v'\n", tastix.LastSeen)
-	str += fmt.Sprintf("secondary_motivations: \n%v", func(l []OpenVocabTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tsecondary_motivation '%d': '%v'\n", k, v)
-		}
-		return str
-	}(tastix.SecondaryMotivations))
-	str += fmt.Sprintf("personal_motivations: \n%v", func(l []OpenVocabTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tpersonal_motivation '%d': '%v'\n", k, v)
-		}
-		return str
-	}(tastix.PersonalMotivations))
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(tastix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(tastix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'name': '%s'\n", tastix.Name))
+	str.WriteString(fmt.Sprintf("'description': '%s'\n", tastix.Description))
+	str.WriteString(fmt.Sprintf("'threat_actor_types': \n%v", func(l []OpenVocabTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\tt'hreat_actor_type '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(tastix.ThreatActorTypes)))
+	str.WriteString(fmt.Sprintf("'aliases': \n%v", func(l []string) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'aliase '%d'': '%s'\n", k, v))
+		}
+
+		return str.String()
+	}(tastix.Aliases)))
+	str.WriteString(fmt.Sprintf("'first_seen': '%v'\n", tastix.FirstSeen))
+	str.WriteString(fmt.Sprintf("'last_seen': '%v'\n", tastix.LastSeen))
+	str.WriteString(fmt.Sprintf("'roles': \n%v", func(l []OpenVocabTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'role '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(tastix.Roles)))
+	str.WriteString(fmt.Sprintf("'goals': \n%v", func(l []string) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'goal '%d'': '%s'\n", k, v))
+		}
+
+		return str.String()
+	}(tastix.Goals)))
+	str.WriteString(fmt.Sprintf("'sophistication': '%v'\n", tastix.FirstSeen))
+	str.WriteString(fmt.Sprintf("'resource_level': '%v'\n", tastix.LastSeen))
+	str.WriteString(fmt.Sprintf("'primary_motivation': '%v'\n", tastix.LastSeen))
+	str.WriteString(fmt.Sprintf("'secondary_motivations': \n%v", func(l []OpenVocabTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'secondary_motivation '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(tastix.SecondaryMotivations)))
+	str.WriteString(fmt.Sprintf("'personal_motivations': \n%v", func(l []OpenVocabTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'personal_motivation '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(tastix.PersonalMotivations)))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -2315,35 +2439,42 @@ func (tstix ToolDomainObjectsSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (tstix ToolDomainObjectsSTIX) ToStringBeautiful() string {
-	str := tstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += tstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful()
+	str := strings.Builder{}
 
-	str += fmt.Sprintf("name: '%s'\n", tstix.Name)
-	str += fmt.Sprintf("description: '%s'\n", tstix.Description)
-	str += fmt.Sprintf("tool_types: \n%v", func(l []OpenVocabTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\ttool_type '%d': '%v'\n", k, v)
-		}
-		return str
-	}(tstix.ToolTypes))
-	str += fmt.Sprintf("aliases: \n%v", func(l []string) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\taliase '%d': '%s'\n", k, v)
-		}
-		return str
-	}(tstix.Aliases))
-	str += fmt.Sprintf("kill_chain_phases: \n%v", func(l []KillChainPhasesTypeElementSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tkill_chain_phase '%d': '%v'\n", k, v)
-		}
-		return str
-	}(tstix.KillChainPhases))
-	str += fmt.Sprintf("tool_version: '%s'\n", tstix.ToolVersion)
+	str.WriteString(tstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(tstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'name': '%s'\n", tstix.Name))
+	str.WriteString(fmt.Sprintf("'description': '%s'\n", tstix.Description))
+	str.WriteString(fmt.Sprintf("'tool_types': \n%v", func(l []OpenVocabTypeSTIX) string {
+		str := strings.Builder{}
 
-	return str
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'tool_type '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(tstix.ToolTypes)))
+	str.WriteString(fmt.Sprintf("'aliases': \n%v", func(l []string) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'aliase '%d'': '%s'\n", k, v))
+		}
+
+		return str.String()
+	}(tstix.Aliases)))
+	str.WriteString(fmt.Sprintf("'kill_chain_phases': \n%v", func(l []KillChainPhasesTypeElementSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'kill_chain_phase '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(tstix.KillChainPhases)))
+	str.WriteString(fmt.Sprintf("'tool_version': '%s'\n", tstix.ToolVersion))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -2431,12 +2562,14 @@ func (vstix VulnerabilityDomainObjectsSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (vstix VulnerabilityDomainObjectsSTIX) ToStringBeautiful() string {
-	str := vstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += vstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("name: '%s'\n", vstix.Name)
-	str += fmt.Sprintf("description: '%s'\n", vstix.Description)
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(vstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(vstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'name': '%s'\n", vstix.Name))
+	str.WriteString(fmt.Sprintf("'description': '%s'\n", vstix.Description))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации

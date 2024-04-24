@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"regexp"
+	"strings"
 
 	"github.com/av-belyakov/methodstixobjects/commonlibs"
 )
@@ -30,12 +31,13 @@ func (oc *OptionalCommonPropertiesRelationshipObjectSTIX) validateStructCommonFi
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (oc *OptionalCommonPropertiesRelationshipObjectSTIX) ToStringBeautiful() string {
-	var str string
-	str += fmt.Sprintf("spec_version: '%s'\n", oc.SpecVersion)
-	str += fmt.Sprintf("created: '%v'\n", oc.Created)
-	str += fmt.Sprintf("modified: '%v'\n", oc.Modified)
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(fmt.Sprintf("'spec_version': '%s'\n", oc.SpecVersion))
+	str.WriteString(fmt.Sprintf("'created': '%v'\n", oc.Created))
+	str.WriteString(fmt.Sprintf("'modified': '%v'\n", oc.Modified))
+
+	return str.String()
 }
 
 /* --- RelationshipObjectSTIX --- */
@@ -100,16 +102,18 @@ func (rstix RelationshipObjectSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (rstix RelationshipObjectSTIX) ToStringBeautiful() string {
-	str := rstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += rstix.OptionalCommonPropertiesRelationshipObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("relationship_type: '%s'\n", rstix.RelationshipType)
-	str += fmt.Sprintf("description: '%s'\n", rstix.Description)
-	str += fmt.Sprintf("source_ref: '%v'\n", rstix.SourceRef)
-	str += fmt.Sprintf("target_ref: '%v'\n", rstix.TargetRef)
-	str += fmt.Sprintf("start_time: '%v'\n", rstix.StartTime)
-	str += fmt.Sprintf("stop_time: '%v'\n", rstix.StopTime)
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(rstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(rstix.OptionalCommonPropertiesRelationshipObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'relationship_type': '%s'\n", rstix.RelationshipType))
+	str.WriteString(fmt.Sprintf("'description': '%s'\n", rstix.Description))
+	str.WriteString(fmt.Sprintf("'source_ref': '%v'\n", rstix.SourceRef))
+	str.WriteString(fmt.Sprintf("'target_ref': '%v'\n", rstix.TargetRef))
+	str.WriteString(fmt.Sprintf("'start_time': '%v'\n", rstix.StartTime))
+	str.WriteString(fmt.Sprintf("'stop_time': '%v'\n", rstix.StopTime))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -190,30 +194,36 @@ func (sstix SightingObjectSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (sstix SightingObjectSTIX) ToStringBeautiful() string {
-	str := sstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += sstix.OptionalCommonPropertiesRelationshipObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("description: '%s'\n", sstix.Description)
-	str += fmt.Sprintf("first_seen: '%v'\n", sstix.FirstSeen)
-	str += fmt.Sprintf("last_seen: '%v'\n", sstix.LastSeen)
-	str += fmt.Sprintf("count: '%d'\n", sstix.Count)
-	str += fmt.Sprintf("sighting_of_ref: '%v'\n", sstix.SightingOfRef)
-	str += fmt.Sprintf("observed_data_refs: \n%v", func(l []*IdentifierTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tobserved_data_ref '%d': '%v'\n", k, *v)
-		}
-		return str
-	}(sstix.ObservedDataRefs))
-	str += fmt.Sprintf("where_sighted_refs: \n%v", func(l []*IdentifierTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\twhere_sighted_ref '%d': '%v'\n", k, *v)
-		}
-		return str
-	}(sstix.WhereSightedRefs))
-	str += fmt.Sprintf("summary: '%v'\n", sstix.Summary)
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(sstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(sstix.OptionalCommonPropertiesRelationshipObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'description': '%s'\n", sstix.Description))
+	str.WriteString(fmt.Sprintf("'first_seen': '%v'\n", sstix.FirstSeen))
+	str.WriteString(fmt.Sprintf("'last_seen': '%v'\n", sstix.LastSeen))
+	str.WriteString(fmt.Sprintf("'count': '%d'\n", sstix.Count))
+	str.WriteString(fmt.Sprintf("'sighting_of_ref': '%v'\n", sstix.SightingOfRef))
+	str.WriteString(fmt.Sprintf("'observed_data_refs': \n%v", func(l []*IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'observed_data_ref '%d'': '%v'\n", k, *v))
+		}
+
+		return str.String()
+	}(sstix.ObservedDataRefs)))
+	str.WriteString(fmt.Sprintf("'where_sighted_refs': \n%v", func(l []*IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'where_sighted_ref '%d'': '%v'\n", k, *v))
+		}
+
+		return str.String()
+	}(sstix.WhereSightedRefs)))
+	str.WriteString(fmt.Sprintf("'summary': '%v'\n", sstix.Summary))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации

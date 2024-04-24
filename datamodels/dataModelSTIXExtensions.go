@@ -3,6 +3,7 @@ package datamodels
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/av-belyakov/methodstixobjects/commonlibs"
 )
@@ -345,181 +346,182 @@ func sanitizeExtensionsSTIX(extType interface{}) interface{} {
 // - "windows-service-ext"
 // - "unix-account-ext"
 func toStringBeautiful(extType interface{}) string {
-	str := "\t\t"
+	str := strings.Builder{}
+	str.WriteString("\t\t")
 
 	switch et := extType.(type) {
 	case ArchiveFileExtensionSTIX:
-		str += fmt.Sprintln("contains_refs:")
+		str.WriteString(fmt.Sprintln("'contains_refs':"))
 		for k, v := range et.ContainsRefs {
-			str += fmt.Sprintf("\t\t\tcontains_ref '%d': '%v'", k, v)
+			str.WriteString(fmt.Sprintf("\t\t\t'contains_ref '%d'': '%v'", k, v))
 		}
-		str += fmt.Sprintf("\t\tcomment: '%v'\n", et.Comment)
+		str.WriteString(fmt.Sprintf("\t\t'comment': '%v'\n", et.Comment))
 
 	case NTFSFileExtensionSTIX:
-		str += fmt.Sprintf("sid: '%s'\n", et.SID)
-		str += fmt.Sprintln("\t\talternate_data_streams:")
+		str.WriteString(fmt.Sprintf("'sid': '%s'\n", et.SID))
+		str.WriteString(fmt.Sprintln("\t\t'alternate_data_streams':"))
 		for k, v := range et.AlternateDataStreams {
-			str += fmt.Sprintf("\t\t\talternate_data_stream '%d':\n", k)
-			str += fmt.Sprintf("\t\t\t\tname: '%s'\n", v.Name)
-			str += fmt.Sprintln("\t\t\t\thashes:")
+			str.WriteString(fmt.Sprintf("\t\t\t'alternate_data_stream '%d'':\n", k))
+			str.WriteString(fmt.Sprintf("\t\t\t\t'name': '%s'\n", v.Name))
+			str.WriteString(fmt.Sprintln("\t\t\t\t'hashes':"))
 			for a, b := range v.Hashes {
-				str += fmt.Sprintf("\t\t\t\t\t'%s': '%v'\n", a, b)
+				str.WriteString(fmt.Sprintf("\t\t\t\t\t'%s': '%v'\n", a, b))
 			}
-			str += fmt.Sprintf("\t\t\t\tsize: '%d'\n", v.Size)
+			str.WriteString(fmt.Sprintf("\t\t\t\t'size': '%d'\n", v.Size))
 		}
 
 	case PDFFileExtensionSTIX:
-		str += fmt.Sprintf("version: '%s'\n", et.Version)
-		str += fmt.Sprintf("\t\tis_optimized: '%v'\n", et.IsOptimized)
-		str += fmt.Sprintln("\t\tdocument_info_dict:")
+		str.WriteString(fmt.Sprintf("'version': '%s'\n", et.Version))
+		str.WriteString(fmt.Sprintf("\t\t'is_optimized': '%v'\n", et.IsOptimized))
+		str.WriteString(fmt.Sprintln("\t\t'document_info_dict':"))
 		for k, v := range et.DocumentInfoDict {
-			str += fmt.Sprintf("\t\t\t'%s': '%v'\n", k, v)
+			str.WriteString(fmt.Sprintf("\t\t\t'%s': '%v'\n", k, v))
 		}
-		str += fmt.Sprintf("\t\tpdfid0: '%s'\n", et.Pdfid0)
-		str += fmt.Sprintf("\t\tpdfid1: '%s'\n", et.Pdfid1)
+		str.WriteString(fmt.Sprintf("\t\t'pdfid0': '%s'\n", et.Pdfid0))
+		str.WriteString(fmt.Sprintf("\t\t'pdfid1': '%s'\n", et.Pdfid1))
 
 	case RasterImageFileExtensionSTIX:
-		str += fmt.Sprintf("image_height: '%d'\n", et.ImageHeight)
-		str += fmt.Sprintf("\t\timage_width: '%d'\n", et.ImageWidth)
-		str += fmt.Sprintf("\t\tbits_per_pixel: '%d'\n", et.BitsPerPixel)
-		str += fmt.Sprintln("\t\texif_tags:")
-		str += fmt.Sprintf("\t\t\t'make': '%s'\n", et.ExifTags.Make)
-		str += fmt.Sprintf("\t\t\t'model': '%s'\n", et.ExifTags.Model)
-		str += fmt.Sprintf("\t\t\t'xResolution': '%d'\n", et.ExifTags.XResolution)
-		str += fmt.Sprintf("\t\t\t'yResolution': '%d'\n", et.ExifTags.YResolution)
+		str.WriteString(fmt.Sprintf("'image_height': '%d'\n", et.ImageHeight))
+		str.WriteString(fmt.Sprintf("\t\t'image_width': '%d'\n", et.ImageWidth))
+		str.WriteString(fmt.Sprintf("\t\t'bits_per_pixel': '%d'\n", et.BitsPerPixel))
+		str.WriteString(fmt.Sprintln("\t\t'exif_tags':"))
+		str.WriteString(fmt.Sprintf("\t\t\t'make': '%s'\n", et.ExifTags.Make))
+		str.WriteString(fmt.Sprintf("\t\t\t'model': '%s'\n", et.ExifTags.Model))
+		str.WriteString(fmt.Sprintf("\t\t\t'xResolution': '%d'\n", et.ExifTags.XResolution))
+		str.WriteString(fmt.Sprintf("\t\t\t'yResolution': '%d'\n", et.ExifTags.YResolution))
 
 	case WindowsPEBinaryFileExtensionSTIX:
-		str += fmt.Sprintf("pe_type: '%v'\n", et.PeType)
-		str += fmt.Sprintf("\t\timphash: '%s'\n", et.Imphash)
-		str += fmt.Sprintf("\t\tmachine_hex: '%s'\n", et.MachineHex)
-		str += fmt.Sprintf("\t\tnumber_of_sections: '%d'\n", et.NumberOfSections)
-		str += fmt.Sprintf("\t\ttime_date_stamp: '%v'\n", et.TimeDateStamp)
-		str += fmt.Sprintf("\t\tpointer_to_symbol_table_hex: '%s'\n", et.PointerToSymbolTableHex)
-		str += fmt.Sprintf("\t\tnumber_of_symbols: '%d'\n", et.NumberOfSymbols)
-		str += fmt.Sprintf("\t\tsize_of_optional_header: '%d'\n", et.SizeOfOptionalHeader)
-		str += fmt.Sprintf("\t\tcharacteristics_hex: '%s'\n", et.CharacteristicsHex)
-		str += fmt.Sprintln("\t\tfile_header_hashes:")
+		str.WriteString(fmt.Sprintf("'pe_type': '%v'\n", et.PeType))
+		str.WriteString(fmt.Sprintf("\t\t'imphash': '%s'\n", et.Imphash))
+		str.WriteString(fmt.Sprintf("\t\t'machine_hex': '%s'\n", et.MachineHex))
+		str.WriteString(fmt.Sprintf("\t\t'number_of_sections': '%d'\n", et.NumberOfSections))
+		str.WriteString(fmt.Sprintf("\t\t'time_date_stamp': '%v'\n", et.TimeDateStamp))
+		str.WriteString(fmt.Sprintf("\t\t'pointer_to_symbol_table_hex': '%s'\n", et.PointerToSymbolTableHex))
+		str.WriteString(fmt.Sprintf("\t\t'number_of_symbols': '%d'\n", et.NumberOfSymbols))
+		str.WriteString(fmt.Sprintf("\t\t'size_of_optional_header': '%d'\n", et.SizeOfOptionalHeader))
+		str.WriteString(fmt.Sprintf("\t\t'characteristics_hex': '%s'\n", et.CharacteristicsHex))
+		str.WriteString(fmt.Sprintln("\t\t'file_header_hashes':"))
 		for k, v := range et.FileHeaderHashes {
-			str += fmt.Sprintf("\t\t\t'%s': '%v'\n", k, v)
+			str.WriteString(fmt.Sprintf("\t\t\t'%s': '%v'\n", k, v))
 		}
-		str += fmt.Sprintln("\t\toptional_header:")
-		str += fmt.Sprintf("\t\t\tmagic_hex: '%s'\n", et.OptionalHeader.MagicHex)
-		str += fmt.Sprintf("\t\t\tmajor_linker_version: '%d'\n", et.OptionalHeader.MajorLinkerVersion)
-		str += fmt.Sprintf("\t\t\tminor_linker_version: '%d'\n", et.OptionalHeader.MinorLinkerVersion)
-		str += fmt.Sprintf("\t\t\tsize_of_code: '%d'\n", et.OptionalHeader.SizeOfCode)
-		str += fmt.Sprintf("\t\t\tsize_of_initialized_data: '%d'\n", et.OptionalHeader.SizeOfInitializedData)
-		str += fmt.Sprintf("\t\t\tsize_of_uninitialized_data: '%d'\n", et.OptionalHeader.SizeOfUninitializedData)
-		str += fmt.Sprintf("\t\t\taddress_of_entry_point: '%d'\n", et.OptionalHeader.AddressOfEntryPoint)
-		str += fmt.Sprintf("\t\t\tbase_of_code: '%d'\n", et.OptionalHeader.BaseOfCode)
-		str += fmt.Sprintf("\t\t\timage_base: '%d'\n", et.OptionalHeader.ImageBase)
-		str += fmt.Sprintf("\t\t\tsection_alignment: '%d'\n", et.OptionalHeader.SectionAlignment)
-		str += fmt.Sprintf("\t\t\tfile_alignment: '%d'\n", et.OptionalHeader.FileAlignment)
-		str += fmt.Sprintf("\t\t\tmajor_os_version: '%d'\n", et.OptionalHeader.MajorOSVersion)
-		str += fmt.Sprintf("\t\t\tminor_os_version: '%d'\n", et.OptionalHeader.MinorOSVersion)
-		str += fmt.Sprintf("\t\t\tmajor_image_version: '%d'\n", et.OptionalHeader.MajorImageVersion)
-		str += fmt.Sprintf("\t\t\tminor_image_version: '%d'\n", et.OptionalHeader.MinorImageVersion)
-		str += fmt.Sprintf("\t\t\tmajor_subsystem_version: '%d'\n", et.OptionalHeader.MajorSubsystemVersion)
-		str += fmt.Sprintf("\t\t\tminor_subsystem_version: '%d'\n", et.OptionalHeader.MinorSubsystemVersion)
-		str += fmt.Sprintf("\t\t\twin32_version_value_hex: '%s'\n", et.OptionalHeader.Win32VersionValueHex)
-		str += fmt.Sprintf("\t\t\tsize_of_image: '%d'\n", et.OptionalHeader.SizeOfImage)
-		str += fmt.Sprintf("\t\t\tsize_of_headers: '%d'\n", et.OptionalHeader.SizeOfHeaders)
-		str += fmt.Sprintf("\t\t\tchecksum_hex: '%s'\n", et.OptionalHeader.ChecksumHex)
-		str += fmt.Sprintf("\t\t\tsubsystem_hex: '%s'\n", et.OptionalHeader.SubsystemHex)
-		str += fmt.Sprintf("\t\t\tdll_characteristics_hex: '%s'\n", et.OptionalHeader.DllCharacteristicsHex)
-		str += fmt.Sprintf("\t\t\tsize_of_stack_reserve: '%d'\n", et.OptionalHeader.SizeOfStackReserve)
-		str += fmt.Sprintf("\t\t\tsize_of_stack_commit: '%d'\n", et.OptionalHeader.SizeOfStackCommit)
-		str += fmt.Sprintf("\t\t\tsize_of_heap_reserve: '%d'\n", et.OptionalHeader.SizeOfHeapReserve)
-		str += fmt.Sprintf("\t\t\tsize_of_heap_commit: '%d'\n", et.OptionalHeader.SizeOfHeapCommit)
-		str += fmt.Sprintf("\t\t\tloader_flags_hex: '%s'\n", et.OptionalHeader.LoaderFlagsHex)
-		str += fmt.Sprintf("\t\t\tnumber_of_rva_and_aizes: '%d'\n", et.OptionalHeader.NumberOfRvaAndSizes)
-		str += fmt.Sprintln("\t\t\thashes:")
+		str.WriteString(fmt.Sprintln("\t\t'optional_header':"))
+		str.WriteString(fmt.Sprintf("\t\t\t'magic_hex': '%s'\n", et.OptionalHeader.MagicHex))
+		str.WriteString(fmt.Sprintf("\t\t\t'major_linker_version': '%d'\n", et.OptionalHeader.MajorLinkerVersion))
+		str.WriteString(fmt.Sprintf("\t\t\t'minor_linker_version': '%d'\n", et.OptionalHeader.MinorLinkerVersion))
+		str.WriteString(fmt.Sprintf("\t\t\t'size_of_code': '%d'\n", et.OptionalHeader.SizeOfCode))
+		str.WriteString(fmt.Sprintf("\t\t\t'size_of_initialized_data': '%d'\n", et.OptionalHeader.SizeOfInitializedData))
+		str.WriteString(fmt.Sprintf("\t\t\t'size_of_uninitialized_data': '%d'\n", et.OptionalHeader.SizeOfUninitializedData))
+		str.WriteString(fmt.Sprintf("\t\t\t'address_of_entry_point': '%d'\n", et.OptionalHeader.AddressOfEntryPoint))
+		str.WriteString(fmt.Sprintf("\t\t\t'base_of_code': '%d'\n", et.OptionalHeader.BaseOfCode))
+		str.WriteString(fmt.Sprintf("\t\t\t'image_base': '%d'\n", et.OptionalHeader.ImageBase))
+		str.WriteString(fmt.Sprintf("\t\t\t'section_alignment': '%d'\n", et.OptionalHeader.SectionAlignment))
+		str.WriteString(fmt.Sprintf("\t\t\t'file_alignment': '%d'\n", et.OptionalHeader.FileAlignment))
+		str.WriteString(fmt.Sprintf("\t\t\t'major_os_version': '%d'\n", et.OptionalHeader.MajorOSVersion))
+		str.WriteString(fmt.Sprintf("\t\t\t'minor_os_version': '%d'\n", et.OptionalHeader.MinorOSVersion))
+		str.WriteString(fmt.Sprintf("\t\t\t'major_image_version': '%d'\n", et.OptionalHeader.MajorImageVersion))
+		str.WriteString(fmt.Sprintf("\t\t\t'minor_image_version': '%d'\n", et.OptionalHeader.MinorImageVersion))
+		str.WriteString(fmt.Sprintf("\t\t\t'major_subsystem_version': '%d'\n", et.OptionalHeader.MajorSubsystemVersion))
+		str.WriteString(fmt.Sprintf("\t\t\t'minor_subsystem_version': '%d'\n", et.OptionalHeader.MinorSubsystemVersion))
+		str.WriteString(fmt.Sprintf("\t\t\t'win32_version_value_hex': '%s'\n", et.OptionalHeader.Win32VersionValueHex))
+		str.WriteString(fmt.Sprintf("\t\t\t'size_of_image': '%d'\n", et.OptionalHeader.SizeOfImage))
+		str.WriteString(fmt.Sprintf("\t\t\t'size_of_headers': '%d'\n", et.OptionalHeader.SizeOfHeaders))
+		str.WriteString(fmt.Sprintf("\t\t\t'checksum_hex': '%s'\n", et.OptionalHeader.ChecksumHex))
+		str.WriteString(fmt.Sprintf("\t\t\t'subsystem_hex': '%s'\n", et.OptionalHeader.SubsystemHex))
+		str.WriteString(fmt.Sprintf("\t\t\t'dll_characteristics_hex': '%s'\n", et.OptionalHeader.DllCharacteristicsHex))
+		str.WriteString(fmt.Sprintf("\t\t\t'size_of_stack_reserve': '%d'\n", et.OptionalHeader.SizeOfStackReserve))
+		str.WriteString(fmt.Sprintf("\t\t\t'size_of_stack_commit': '%d'\n", et.OptionalHeader.SizeOfStackCommit))
+		str.WriteString(fmt.Sprintf("\t\t\t'size_of_heap_reserve': '%d'\n", et.OptionalHeader.SizeOfHeapReserve))
+		str.WriteString(fmt.Sprintf("\t\t\t'size_of_heap_commit': '%d'\n", et.OptionalHeader.SizeOfHeapCommit))
+		str.WriteString(fmt.Sprintf("\t\t\t'loader_flags_hex': '%s'\n", et.OptionalHeader.LoaderFlagsHex))
+		str.WriteString(fmt.Sprintf("\t\t\t'number_of_rva_and_aizes': '%d'\n", et.OptionalHeader.NumberOfRvaAndSizes))
+		str.WriteString(fmt.Sprintln("\t\t\t'hashes':"))
 		for k, v := range et.OptionalHeader.Hashes {
-			str += fmt.Sprintf("\t\t\t\thashe '%d': '%v'\n", k, v)
+			str.WriteString(fmt.Sprintf("\t\t\t\t'hashe '%d'': '%v'\n", k, v))
 		}
-		str += fmt.Sprintln("\t\tsections:")
+		str.WriteString(fmt.Sprintln("\t\t'sections':"))
 		for k, v := range et.Sections {
-			str += fmt.Sprintf("\t\t\tsection '%d':\n", k)
-			str += fmt.Sprintf("\t\t\t\tname: '%s'\n", v.Name)
-			str += fmt.Sprintf("\t\t\t\tsize: '%v'\n", v.Size)
-			str += fmt.Sprintf("\t\t\t\tentropy: '%v'\n", v.Entropy)
-			str += fmt.Sprintln("\t\t\t\thashes:", v.Hashes)
+			str.WriteString(fmt.Sprintf("\t\t\t'section '%d'':\n", k))
+			str.WriteString(fmt.Sprintf("\t\t\t\t'name': '%s'\n", v.Name))
+			str.WriteString(fmt.Sprintf("\t\t\t\t'size': '%v'\n", v.Size))
+			str.WriteString(fmt.Sprintf("\t\t\t\t'entropy': '%v'\n", v.Entropy))
+			str.WriteString(fmt.Sprintln("\t\t\t\t'hashes':", v.Hashes))
 			for k, v := range v.Hashes {
-				str += fmt.Sprintf("\t\t\t\t\t'%s': '%s'\n", k, v)
+				str.WriteString(fmt.Sprintf("\t\t\t\t\t'%s': '%s'\n", k, v))
 			}
 		}
 
 	case HTTPRequestExtensionSTIX:
-		str += fmt.Sprintf("request_method: '%s'\n", et.RequestMethod)
-		str += fmt.Sprintf("\t\trequest_value: '%s'\n", et.RequestValue)
-		str += fmt.Sprintf("\t\trequest_version: '%s'\n", et.RequestVersion)
-		str += fmt.Sprintln("\t\trequest_header:")
+		str.WriteString(fmt.Sprintf("'request_method': '%s'\n", et.RequestMethod))
+		str.WriteString(fmt.Sprintf("\t\t'request_value': '%s'\n", et.RequestValue))
+		str.WriteString(fmt.Sprintf("\t\t'request_version': '%s'\n", et.RequestVersion))
+		str.WriteString(fmt.Sprintln("\t\t'request_header':"))
 		for k, v := range et.RequestHeader {
-			str += fmt.Sprintf("\t\t\t'%s': '%v'\n", k, v)
+			str.WriteString(fmt.Sprintf("\t\t\t'%s': '%v'\n", k, v))
 		}
-		str += fmt.Sprintf("\t\tmessage_body_length: '%d'\n", et.MessageBodyLength)
-		str += fmt.Sprintf("\t\tmessage_body_data_ref: '%v'\n", et.MessageBodyDataRef)
+		str.WriteString(fmt.Sprintf("\t\t'message_body_length': '%d'\n", et.MessageBodyLength))
+		str.WriteString(fmt.Sprintf("\t\t'message_body_data_ref': '%v'\n", et.MessageBodyDataRef))
 
 	case ICMPExtensionSTIX:
-		str += fmt.Sprintf("icmp_type_hex: '%s'\n", et.ICMPTypeHex)
-		str += fmt.Sprintf("\t\ticmp_code_hex: '%s'\n", et.ICMPCodeHex)
+		str.WriteString(fmt.Sprintf("'icmp_type_hex': '%s'\n", et.ICMPTypeHex))
+		str.WriteString(fmt.Sprintf("\t\t'icmp_code_hex': '%s'\n", et.ICMPCodeHex))
 
 	case NetworkSocketExtensionSTIX:
-		str += fmt.Sprintf("address_family: '%v'\n", et.AddressFamily)
-		str += fmt.Sprintf("\t\tis_blocking: '%v'\n", et.IsBlocking)
-		str += fmt.Sprintf("\t\tis_listening: '%v'\n", et.IsListening)
-		str += fmt.Sprintln("\t\toptions:")
+		str.WriteString(fmt.Sprintf("'address_family': '%v'\n", et.AddressFamily))
+		str.WriteString(fmt.Sprintf("\t\t'is_blocking': '%v'\n", et.IsBlocking))
+		str.WriteString(fmt.Sprintf("\t\t'is_listening': '%v'\n", et.IsListening))
+		str.WriteString(fmt.Sprintln("\t\t'options':"))
 		for k, v := range et.Options {
-			str += fmt.Sprintf("\t\t\t'%s': '%v'\n", k, v)
+			str.WriteString(fmt.Sprintf("\t\t\t'%s': '%v'\n", k, v))
 		}
-		str += fmt.Sprintf("\t\tsocket_type: '%v'\n", et.SocketType)
-		str += fmt.Sprintf("\t\tsocket_descriptor: '%d'\n", et.SocketDescriptor)
-		str += fmt.Sprintf("\t\tsocket_handle: '%d'\n", et.SocketHandle)
+		str.WriteString(fmt.Sprintf("\t\t'socket_type': '%v'\n", et.SocketType))
+		str.WriteString(fmt.Sprintf("\t\t'socket_descriptor': '%d'\n", et.SocketDescriptor))
+		str.WriteString(fmt.Sprintf("\t\t'socket_handle': '%d'\n", et.SocketHandle))
 
 	case TCPExtensionSTIX:
-		str += fmt.Sprintf("src_flags_hex: '%v'\n", et.SrcFlagsHex)
-		str += fmt.Sprintf("\t\tdst_flags_hex: '%v'\n", et.DstFlagsHex)
+		str.WriteString(fmt.Sprintf("'src_flags_hex': '%v'\n", et.SrcFlagsHex))
+		str.WriteString(fmt.Sprintf("\t\t'dst_flags_hex': '%v'\n", et.DstFlagsHex))
 
 	case WindowsProcessExtensionSTIX:
-		str += fmt.Sprintf("aslr_enabled: '%v'\n", et.ASLREnabled)
-		str += fmt.Sprintf("\t\tdep_enabled: '%v'\n", et.DEPEnabled)
-		str += fmt.Sprintf("\t\tpriority: '%s'\n", et.Priority)
-		str += fmt.Sprintf("\t\towner_sid: '%s'\n", et.OwnerSID)
-		str += fmt.Sprintf("\t\twindow_title: '%s'\n", et.WindowTitle)
-		str += fmt.Sprintln("\t\tstartup_info:")
+		str.WriteString(fmt.Sprintf("'aslr_enabled': '%v'\n", et.ASLREnabled))
+		str.WriteString(fmt.Sprintf("\t\t'dep_enabled': '%v'\n", et.DEPEnabled))
+		str.WriteString(fmt.Sprintf("\t\t'priority': '%s'\n", et.Priority))
+		str.WriteString(fmt.Sprintf("\t\t'owner_sid': '%s'\n", et.OwnerSID))
+		str.WriteString(fmt.Sprintf("\t\t'window_title': '%s'\n", et.WindowTitle))
+		str.WriteString(fmt.Sprintln("\t\t'startup_info':"))
 		for k, v := range et.StartupInfo {
-			str += fmt.Sprintf("\t\t\t'%s': '%v'\n", k, v)
+			str.WriteString(fmt.Sprintf("\t\t\t'%s': '%v'\n", k, v))
 		}
-		str += fmt.Sprintf("\t\tintegrity_level: '%v'\n", et.IntegrityLevel)
+		str.WriteString(fmt.Sprintf("\t\t'integrity_level': '%v'\n", et.IntegrityLevel))
 
 	case WindowsServiceExtensionSTIX:
-		str += fmt.Sprintf("service_name: '%s'\n", et.ServiceName)
-		str += fmt.Sprintln("\t\tdescriptions:")
+		str.WriteString(fmt.Sprintf("'service_name': '%s'\n", et.ServiceName))
+		str.WriteString(fmt.Sprintln("\t\t'descriptions':"))
 		for k, v := range et.Descriptions {
-			str += fmt.Sprintf("\t\t\tdescription '%d': '%s'\n", k, v)
+			str.WriteString(fmt.Sprintf("\t\t\t'description '%d'': '%s'\n", k, v))
 		}
-		str += fmt.Sprintf("\t\tdisplay_name: '%s'\n", et.DisplayName)
-		str += fmt.Sprintf("\t\tgroup_name: '%s'\n", et.GroupName)
-		str += fmt.Sprintf("\t\tstart_type: '%v'\n", et.StartType)
-		str += fmt.Sprintln("\t\tservice_dll_refs:")
+		str.WriteString(fmt.Sprintf("\t\t'display_name': '%s'\n", et.DisplayName))
+		str.WriteString(fmt.Sprintf("\t\t'group_name': '%s'\n", et.GroupName))
+		str.WriteString(fmt.Sprintf("\t\t'start_type': '%v'\n", et.StartType))
+		str.WriteString(fmt.Sprintln("\t\t'service_dll_refs':"))
 		for k, v := range et.ServiceDllRefs {
-			str += fmt.Sprintf("\t\t\tservice_dll_ref '%d': '%v'", k, v)
+			str.WriteString(fmt.Sprintf("\t\t\t'service_dll_ref '%d'': '%v'", k, v))
 		}
-		str += fmt.Sprintf("\t\tservice_type: '%v'\n", et.ServiceType)
-		str += fmt.Sprintf("\t\tservice_status: '%v'\n", et.ServiceStatus)
+		str.WriteString(fmt.Sprintf("\t\t'service_type': '%v'\n", et.ServiceType))
+		str.WriteString(fmt.Sprintf("\t\t'service_status': '%v'\n", et.ServiceStatus))
 
 	case UNIXAccountExtensionSTIX:
-		str += fmt.Sprintf("gid: '%d'\n", et.GID)
-		str += fmt.Sprintln("\t\tgroups:")
+		str.WriteString(fmt.Sprintf("'gid': '%d'\n", et.GID))
+		str.WriteString(fmt.Sprintln("\t\t'groups':"))
 		for k, v := range et.Groups {
-			str += fmt.Sprintf("\t\t\tgroup '%d': '%s'\n", k, v)
+			str.WriteString(fmt.Sprintf("\t\t\t'group '%d'': '%s'\n", k, v))
 		}
-		str += fmt.Sprintf("\t\thome_dir: '%s'\n", et.HomeDir)
-		str += fmt.Sprintf("\t\tshell: '%s'\n", et.Shell)
+		str.WriteString(fmt.Sprintf("\t\t'home_dir': '%s'\n", et.HomeDir))
+		str.WriteString(fmt.Sprintf("\t\t'shell': '%s'\n", et.Shell))
 
 	default:
-		str += fmt.Sprintf("%v\n", et)
+		str.WriteString(fmt.Sprintf("'%v'\n", et))
 
 	}
 
-	return str
+	return str.String()
 }

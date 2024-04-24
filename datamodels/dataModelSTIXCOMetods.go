@@ -6,6 +6,7 @@ import (
 	"net"
 	"regexp"
 	"strconv"
+	"strings"
 
 	"github.com/asaskevich/govalidator"
 	"github.com/av-belyakov/methodstixobjects/commonlibs"
@@ -43,34 +44,41 @@ func (ocpcstix *OptionalCommonPropertiesCyberObservableObjectSTIX) validateStruc
 }
 
 func (ocpcstix OptionalCommonPropertiesCyberObservableObjectSTIX) ToStringBeautiful() string {
-	var str string
-	str += fmt.Sprintf("spec_version: '%s'\n", ocpcstix.SpecVersion)
-	str += fmt.Sprintf("object_marking_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tobject_marking_ref '%d': '%v'\n", k, v)
-		}
-		return str
-	}(ocpcstix.ObjectMarkingRefs))
-	str += fmt.Sprintf("granular_markings: \n%v", func(l []GranularMarkingsTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tgranular_markings number %d.", k)
-			str += fmt.Sprintf("\tlang: '%s'\n", v.Lang)
-			str += fmt.Sprintf("\tmarking_ref: '%v'\n", v.MarkingRef)
-			str += fmt.Sprintf("\tselectors: \n%v", func(l []string) string {
-				var str string
-				for k, v := range l {
-					str += fmt.Sprintf("\t\tselector '%d': '%s'\n", k, v)
-				}
-				return str
-			}(v.Selectors))
-		}
-		return str
-	}(ocpcstix.GranularMarkings))
-	str += fmt.Sprintf("defanged: '%v'\n", ocpcstix.Defanged)
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(fmt.Sprintf("'spec_version': '%s'\n", ocpcstix.SpecVersion))
+	str.WriteString(fmt.Sprintf("'object_marking_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'object_marking_ref '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(ocpcstix.ObjectMarkingRefs)))
+	str.WriteString(fmt.Sprintf("'granular_markings': \n%v", func(l []GranularMarkingsTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'granular_markings number %d.'", k))
+			str.WriteString(fmt.Sprintf("\t'lang': '%s'\n", v.Lang))
+			str.WriteString(fmt.Sprintf("\t'marking_ref': '%v'\n", v.MarkingRef))
+			str.WriteString(fmt.Sprintf("\t'selectors': \n%v", func(l []string) string {
+				str := strings.Builder{}
+
+				for k, v := range l {
+					str.WriteString(fmt.Sprintf("\t\t'selector '%d'': '%s'\n", k, v))
+				}
+
+				return str.String()
+			}(v.Selectors)))
+		}
+
+		return str.String()
+	}(ocpcstix.GranularMarkings)))
+	str.WriteString(fmt.Sprintf("'defanged': '%v'\n", ocpcstix.Defanged))
+
+	return str.String()
 }
 
 /* --- ArtifactCyberObservableObjectSTIX --- */
@@ -143,16 +151,18 @@ func (astix ArtifactCyberObservableObjectSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (astix ArtifactCyberObservableObjectSTIX) ToStringBeautiful() string {
-	str := astix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += astix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("mime_type: '%s'\n", astix.MimeType)
-	str += fmt.Sprintf("payload_bin: '%s'\n", astix.PayloadBin)
-	str += fmt.Sprintf("url: '%s'\n", astix.URL)
-	str += fmt.Sprintf("hashes: '%v'\n", astix.Hashes)
-	str += fmt.Sprintf("encryption_algorithm: '%v'\n", astix.EncryptionAlgorithm)
-	str += fmt.Sprintf("decryption_key: '%s'\n", astix.DecryptionKey)
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(astix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(astix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'mime_type': '%s'\n", astix.MimeType))
+	str.WriteString(fmt.Sprintf("'payload_bin': '%s'\n", astix.PayloadBin))
+	str.WriteString(fmt.Sprintf("'url': '%s'\n", astix.URL))
+	str.WriteString(fmt.Sprintf("'hashes': '%v'\n", astix.Hashes))
+	str.WriteString(fmt.Sprintf("'encryption_algorithm': '%v'\n", astix.EncryptionAlgorithm))
+	str.WriteString(fmt.Sprintf("'decryption_key': '%s'\n", astix.DecryptionKey))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -226,13 +236,15 @@ func (asstix AutonomousSystemCyberObservableObjectSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (asstix AutonomousSystemCyberObservableObjectSTIX) ToStringBeautiful() string {
-	str := asstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += asstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("number: '%d'\n", asstix.Number)
-	str += fmt.Sprintf("name: '%s'\n", asstix.Name)
-	str += fmt.Sprintf("rir: '%s'\n", asstix.RIR)
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(asstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(asstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'number': '%d'\n", asstix.Number))
+	str.WriteString(fmt.Sprintf("'name': '%s'\n", asstix.Name))
+	str.WriteString(fmt.Sprintf("'rir': '%s'\n", asstix.RIR))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -317,22 +329,26 @@ func (dstix DirectoryCyberObservableObjectSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (dstix DirectoryCyberObservableObjectSTIX) ToStringBeautiful() string {
-	str := dstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += dstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("path: '%s'\n", dstix.Path)
-	str += fmt.Sprintf("path_enc: '%s'\n", dstix.PathEnc)
-	str += fmt.Sprintf("ctime: '%v'\n", dstix.Ctime)
-	str += fmt.Sprintf("mtime: '%v'\n", dstix.Mtime)
-	str += fmt.Sprintf("atime: '%s'\n", dstix.Atime)
-	str += fmt.Sprintf("contains_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tcontains_ref '%d': '%v'\n", k, v)
-		}
-		return str
-	}(dstix.ContainsRefs))
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(dstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(dstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'path': '%s'\n", dstix.Path))
+	str.WriteString(fmt.Sprintf("'path_enc': '%s'\n", dstix.PathEnc))
+	str.WriteString(fmt.Sprintf("'ctime': '%v'\n", dstix.Ctime))
+	str.WriteString(fmt.Sprintf("'mtime': '%v'\n", dstix.Mtime))
+	str.WriteString(fmt.Sprintf("'atime': '%s'\n", dstix.Atime))
+	str.WriteString(fmt.Sprintf("'contains_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'contains_ref '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(dstix.ContainsRefs)))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -403,18 +419,22 @@ func (dnstix DomainNameCyberObservableObjectSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (dnstix DomainNameCyberObservableObjectSTIX) ToStringBeautiful() string {
-	str := dnstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += dnstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("value: '%s'\n", dnstix.Value)
-	str += fmt.Sprintf("resolves_to_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tresolves_to_ref '%d': '%v'\n", k, v)
-		}
-		return str
-	}(dnstix.ResolvesToRefs))
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(dnstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(dnstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'value': '%s'\n", dnstix.Value))
+	str.WriteString(fmt.Sprintf("'resolves_to_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'resolves_to_ref '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(dnstix.ResolvesToRefs)))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -489,13 +509,15 @@ func (eastix EmailAddressCyberObservableObjectSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (eastix EmailAddressCyberObservableObjectSTIX) ToStringBeautiful() string {
-	str := eastix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += eastix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("value: '%s'\n", eastix.Value)
-	str += fmt.Sprintf("display_name: '%s'\n", eastix.DisplayName)
-	str += fmt.Sprintf("belongs_to_ref: '%v'\n", eastix.BelongsToRef)
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(eastix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(eastix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'value': '%s'\n", eastix.Value))
+	str.WriteString(fmt.Sprintf("'display_name': '%s'\n", eastix.DisplayName))
+	str.WriteString(fmt.Sprintf("'belongs_to_ref': '%v'\n", eastix.BelongsToRef))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -644,65 +666,79 @@ func (emstix EmailMessageCyberObservableObjectSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (emstix EmailMessageCyberObservableObjectSTIX) ToStringBeautiful() string {
-	str := emstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += emstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("is_multipart: '%v'\n", emstix.IsMultipart)
-	str += fmt.Sprintf("date: '%v'\n", emstix.Date)
-	str += fmt.Sprintf("content_type: '%s'\n", emstix.ContentType)
-	str += fmt.Sprintf("from_ref: '%v'\n", emstix.FromRef)
-	str += fmt.Sprintf("sender_ref: '%v'\n", emstix.SenderRef)
-	str += fmt.Sprintf("to_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tto_ref '%d': '%v'\n", k, v)
-		}
-		return str
-	}(emstix.ToRefs))
-	str += fmt.Sprintf("cc_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tcc_ref '%d': '%v'\n", k, v)
-		}
-		return str
-	}(emstix.CcRefs))
-	str += fmt.Sprintf("bcc_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tbcc_ref '%d': '%v'\n", k, v)
-		}
-		return str
-	}(emstix.BccRefs))
-	str += fmt.Sprintf("message_id: '%v'\n", emstix.MessageID)
-	str += fmt.Sprintf("subject: '%v'\n", emstix.Subject)
-	str += fmt.Sprintf("received_lines: \n%v", func(l []string) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\treceived_line '%d': '%s'\n", k, v)
-		}
-		return str
-	}(emstix.ReceivedLines))
-	str += fmt.Sprintf("additional_header_fields: \n%v", func(l map[string]DictionaryTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\t'%s': '%v'\n", k, v)
-		}
-		return str
-	}(emstix.AdditionalHeaderFields))
-	str += fmt.Sprintf("body: '%v'\n", emstix.Body)
-	str += fmt.Sprintf("body_multipart: \n%v", func(l []EmailMIMEPartTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tbody_multipart '%d':\n", k)
-			str += fmt.Sprintf("\t\tbody: '%s'\n", v.Body)
-			str += fmt.Sprintf("\t\tbody_raw_ref: '%s'\n", v.BodyRawRef)
-			str += fmt.Sprintf("\t\tcontent_type: '%s'\n", v.ContentType)
-			str += fmt.Sprintf("\t\tcontent_disposition: '%s'\n", v.ContentDisposition)
-		}
-		return str
-	}(emstix.BodyMultipart))
-	str += fmt.Sprintf("raw_email_ref: '%v'\n", emstix.RawEmailRef)
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(emstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(emstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'is_multipart': '%v'\n", emstix.IsMultipart))
+	str.WriteString(fmt.Sprintf("'date': '%v'\n", emstix.Date))
+	str.WriteString(fmt.Sprintf("'content_type': '%s'\n", emstix.ContentType))
+	str.WriteString(fmt.Sprintf("'from_ref': '%v'\n", emstix.FromRef))
+	str.WriteString(fmt.Sprintf("'sender_ref': '%v'\n", emstix.SenderRef))
+	str.WriteString(fmt.Sprintf("'to_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'to_ref '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(emstix.ToRefs)))
+	str.WriteString(fmt.Sprintf("'cc_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'cc_ref '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(emstix.CcRefs)))
+	str.WriteString(fmt.Sprintf("'bcc_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'bcc_ref '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(emstix.BccRefs)))
+	str.WriteString(fmt.Sprintf("'message_id': '%v'\n", emstix.MessageID))
+	str.WriteString(fmt.Sprintf("'subject': '%v'\n", emstix.Subject))
+	str.WriteString(fmt.Sprintf("'received_lines': \n%v", func(l []string) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'received_line '%d'': '%s'\n", k, v))
+		}
+
+		return str.String()
+	}(emstix.ReceivedLines)))
+	str.WriteString(fmt.Sprintf("'additional_header_fields': \n%v", func(l map[string]DictionaryTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'%s': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(emstix.AdditionalHeaderFields)))
+	str.WriteString(fmt.Sprintf("'body': '%v'\n", emstix.Body))
+	str.WriteString(fmt.Sprintf("'body_multipart': \n%v", func(l []EmailMIMEPartTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'body_multipart '%d'':\n", k))
+			str.WriteString(fmt.Sprintf("\t\t'body': '%s'\n", v.Body))
+			str.WriteString(fmt.Sprintf("\t\t'body_raw_ref': '%s'\n", v.BodyRawRef))
+			str.WriteString(fmt.Sprintf("\t\t'content_type': '%s'\n", v.ContentType))
+			str.WriteString(fmt.Sprintf("\t\t'content_disposition': '%s'\n", v.ContentDisposition))
+		}
+
+		return str.String()
+	}(emstix.BodyMultipart)))
+	str.WriteString(fmt.Sprintf("'raw_email_ref': '%v'\n", emstix.RawEmailRef))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -847,32 +883,37 @@ func (fstix FileCyberObservableObjectSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (fstix FileCyberObservableObjectSTIX) ToStringBeautiful() string {
-	str := fstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += fstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("hashes: '%v'\n", fstix.Hashes)
-	str += fmt.Sprintf("size: '%d'\n", fstix.Size)
-	str += fmt.Sprintf("name: '%s'\n", fstix.Name)
-	str += fmt.Sprintf("name_enc: '%s'\n", fstix.NameEnc)
-	str += fmt.Sprintf("magic_number_hex: '%s'\n", fstix.MagicNumberHex)
-	str += fmt.Sprintf("mime_type: '%s'\n", fstix.MimeType)
-	str += fmt.Sprintf("ctime: '%v'\n", fstix.Ctime)
-	str += fmt.Sprintf("mtime: '%v'\n", fstix.Mtime)
-	str += fmt.Sprintf("atime: '%v'\n", fstix.Atime)
-	str += fmt.Sprintf("parent_directory_ref: '%v'\n", fstix.ParentDirectoryRef)
-	str += fmt.Sprintf("contains_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
+	str := strings.Builder{}
+
+	str.WriteString(fstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(fstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'hashes': '%v'\n", fstix.Hashes))
+	str.WriteString(fmt.Sprintf("'size': '%d'\n", fstix.Size))
+	str.WriteString(fmt.Sprintf("'name': '%s'\n", fstix.Name))
+	str.WriteString(fmt.Sprintf("'name_enc': '%s'\n", fstix.NameEnc))
+	str.WriteString(fmt.Sprintf("'magic_number_hex': '%s'\n", fstix.MagicNumberHex))
+	str.WriteString(fmt.Sprintf("'mime_type': '%s'\n", fstix.MimeType))
+	str.WriteString(fmt.Sprintf("'ctime': '%v'\n", fstix.Ctime))
+	str.WriteString(fmt.Sprintf("'mtime': '%v'\n", fstix.Mtime))
+	str.WriteString(fmt.Sprintf("'atime': '%v'\n", fstix.Atime))
+	str.WriteString(fmt.Sprintf("'parent_directory_ref': '%v'\n", fstix.ParentDirectoryRef))
+	str.WriteString(fmt.Sprintf("'contains_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
 		for k, v := range l {
-			str += fmt.Sprintf("\tcontains_ref '%d': '%v'\n", k, v)
+			str.WriteString(fmt.Sprintf("\t'contains_ref '%d'': '%v'\n", k, v))
 		}
-		return str
-	}(fstix.ContainsRefs))
-	str += fmt.Sprintf("content_ref: '%v'\n", fstix.ContentRef)
-	str += fmt.Sprintln("extensions:")
+
+		return str.String()
+	}(fstix.ContainsRefs)))
+	str.WriteString(fmt.Sprintf("'content_ref': '%v'\n", fstix.ContentRef))
+	str.WriteString(fmt.Sprintln("'extensions':"))
+
 	for k, v := range fstix.Extensions {
-		str += fmt.Sprintf("\t%s:\n%v\n", k, toStringBeautiful(v))
+		str.WriteString(fmt.Sprintf("\t'%s':\n%v\n", k, toStringBeautiful(v)))
 	}
 
-	return str
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -970,25 +1011,31 @@ func (ip4stix IPv4AddressCyberObservableObjectSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (ip4stix IPv4AddressCyberObservableObjectSTIX) ToStringBeautiful() string {
-	str := ip4stix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += ip4stix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("value: '%s'\n", ip4stix.Value)
-	str += fmt.Sprintf("resolves_to_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tresolves_to_ref '%d': '%v'\n", k, v)
-		}
-		return str
-	}(ip4stix.ResolvesToRefs))
-	str += fmt.Sprintf("belongs_to_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tbelongs_to_ref '%d': '%v'\n", k, v)
-		}
-		return str
-	}(ip4stix.BelongsToRefs))
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(ip4stix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(ip4stix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'value': '%s'\n", ip4stix.Value))
+	str.WriteString(fmt.Sprintf("'resolves_to_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'resolves_to_ref '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(ip4stix.ResolvesToRefs)))
+	str.WriteString(fmt.Sprintf("'belongs_to_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'belongs_to_ref '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(ip4stix.BelongsToRefs)))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -1083,24 +1130,31 @@ func (ip6stix IPv6AddressCyberObservableObjectSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (ip6stix IPv6AddressCyberObservableObjectSTIX) ToStringBeautiful() string {
-	str := ip6stix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += ip6stix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("value: '%s'\n", ip6stix.Value)
-	str += fmt.Sprintf("resolves_to_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
+	str := strings.Builder{}
+
+	str.WriteString(ip6stix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(ip6stix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'value': '%s'\n", ip6stix.Value))
+	str.WriteString(fmt.Sprintf("'resolves_to_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
 		for k, v := range l {
-			str += fmt.Sprintf("\tresolves_to_ref '%d': '%v'\n", k, v)
+			str.WriteString(fmt.Sprintf("\t'resolves_to_ref '%d'': '%v'\n", k, v))
 		}
-		return str
-	}(ip6stix.ResolvesToRefs))
-	str += fmt.Sprintf("belongs_to_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
+
+		return str.String()
+	}(ip6stix.ResolvesToRefs)))
+	str.WriteString(fmt.Sprintf("'belongs_to_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
 		for k, v := range l {
-			str += fmt.Sprintf("\tbelongs_to_ref '%d': '%v'\n", k, v)
+			str.WriteString(fmt.Sprintf("\t'belongs_to_ref '%d'': '%v'\n", k, v))
 		}
-		return str
-	}(ip6stix.BelongsToRefs))
-	return str
+
+		return str.String()
+	}(ip6stix.BelongsToRefs)))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -1169,11 +1223,13 @@ func (macstix MACAddressCyberObservableObjectSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (macstix MACAddressCyberObservableObjectSTIX) ToStringBeautiful() string {
-	str := macstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += macstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("value: '%s'\n", macstix.Value)
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(macstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(macstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'value': '%s'\n", macstix.Value))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -1239,11 +1295,13 @@ func (mstix MutexCyberObservableObjectSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (mstix MutexCyberObservableObjectSTIX) ToStringBeautiful() string {
-	str := mstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += mstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("name: '%s'\n", mstix.Name)
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(mstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(mstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'name': '%s'\n", mstix.Name))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -1437,49 +1495,58 @@ func (ntstix NetworkTrafficCyberObservableObjectSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (ntstix NetworkTrafficCyberObservableObjectSTIX) ToStringBeautiful() string {
-	str := ntstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += ntstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("start: '%v'\n", ntstix.Start)
-	str += fmt.Sprintf("end: '%v'\n", ntstix.End)
-	str += fmt.Sprintf("is_active: '%v'\n", ntstix.IsActive)
-	str += fmt.Sprintf("src_ref: '%v'\n", ntstix.SrcRef)
-	str += fmt.Sprintf("dst_ref: '%v'\n", ntstix.DstRef)
-	str += fmt.Sprintf("src_port: '%d'\n", ntstix.SrcPort)
-	str += fmt.Sprintf("dst_port: '%d'\n", ntstix.DstPort)
-	str += fmt.Sprintf("protocols: \n%v", func(l []string) string {
-		var str string
+	str := strings.Builder{}
+
+	str.WriteString(ntstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(ntstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'start': '%v'\n", ntstix.Start))
+	str.WriteString(fmt.Sprintf("'end': '%v'\n", ntstix.End))
+	str.WriteString(fmt.Sprintf("'is_active': '%v'\n", ntstix.IsActive))
+	str.WriteString(fmt.Sprintf("'src_ref': '%v'\n", ntstix.SrcRef))
+	str.WriteString(fmt.Sprintf("'dst_ref': '%v'\n", ntstix.DstRef))
+	str.WriteString(fmt.Sprintf("'src_port': '%d'\n", ntstix.SrcPort))
+	str.WriteString(fmt.Sprintf("'dst_port': '%d'\n", ntstix.DstPort))
+	str.WriteString(fmt.Sprintf("'protocols': \n%v", func(l []string) string {
+		str := strings.Builder{}
+
 		for k, v := range l {
-			str += fmt.Sprintf("\tprotocol '%d': '%s'\n", k, v)
+			str.WriteString(fmt.Sprintf("\t'protocol '%d'': '%s'\n", k, v))
 		}
-		return str
-	}(ntstix.Protocols))
-	str += fmt.Sprintf("src_byte_count: '%d'\n", ntstix.SrcByteCount)
-	str += fmt.Sprintf("dst_byte_count: '%d'\n", ntstix.DstByteCount)
-	str += fmt.Sprintf("src_packets: '%d'\n", ntstix.SrcPackets)
-	str += fmt.Sprintf("dst_packets: '%d'\n", ntstix.DstPackets)
-	str += fmt.Sprintf("ipfix: \n%v", func(l map[string]string) string {
-		var str string
+
+		return str.String()
+	}(ntstix.Protocols)))
+	str.WriteString(fmt.Sprintf("'src_byte_count': '%d'\n", ntstix.SrcByteCount))
+	str.WriteString(fmt.Sprintf("'dst_byte_count': '%d'\n", ntstix.DstByteCount))
+	str.WriteString(fmt.Sprintf("'src_packets': '%d'\n", ntstix.SrcPackets))
+	str.WriteString(fmt.Sprintf("'dst_packets': '%d'\n", ntstix.DstPackets))
+	str.WriteString(fmt.Sprintf("'ipfix': \n%v", func(l map[string]string) string {
+		str := strings.Builder{}
+
 		for k, v := range l {
-			str += fmt.Sprintf("\t'%s': '%v'\n", k, v)
+			str.WriteString(fmt.Sprintf("\t'%s': '%v'\n", k, v))
 		}
-		return str
-	}(ntstix.IPFix))
-	str += fmt.Sprintf("src_payload_ref: '%v'\n", ntstix.SrcPayloadRef)
-	str += fmt.Sprintf("dst_payload_ref: '%v'\n", ntstix.DstPayloadRef)
-	str += fmt.Sprintf("encapsulates_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
+
+		return str.String()
+	}(ntstix.IPFix)))
+	str.WriteString(fmt.Sprintf("'src_payload_ref': '%v'\n", ntstix.SrcPayloadRef))
+	str.WriteString(fmt.Sprintf("'dst_payload_ref': '%v'\n", ntstix.DstPayloadRef))
+	str.WriteString(fmt.Sprintf("'encapsulates_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
 		for k, v := range l {
-			str += fmt.Sprintf("\tencapsulates_ref '%d': '%v'\n", k, v)
+			str.WriteString(fmt.Sprintf("\t'encapsulates_ref '%d'': '%v'\n", k, v))
 		}
-		return str
-	}(ntstix.EncapsulatesRefs))
-	str += fmt.Sprintf("encapsulated_by_ref: '%v'\n", ntstix.EncapsulatedByRef)
-	str += fmt.Sprintln("extensions:")
+
+		return str.String()
+	}(ntstix.EncapsulatesRefs)))
+	str.WriteString(fmt.Sprintf("'encapsulated_by_ref': '%v'\n", ntstix.EncapsulatedByRef))
+	str.WriteString(fmt.Sprintln("'extensions':"))
+
 	for k, v := range ntstix.Extensions {
-		str += fmt.Sprintf("\t%s:\n%v\n", k, toStringBeautiful(v))
+		str.WriteString(fmt.Sprintf("\t'%s':\n%v\n", k, toStringBeautiful(v)))
 	}
 
-	return str
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -1625,40 +1692,49 @@ func (pstix ProcessCyberObservableObjectSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (pstix ProcessCyberObservableObjectSTIX) ToStringBeautiful() string {
-	str := pstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += pstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("is_hidden: '%v'\n", pstix.IsHidden)
-	str += fmt.Sprintf("pid: '%d'\n", pstix.PID)
-	str += fmt.Sprintf("created_time: '%v'\n", pstix.CreatedTime)
-	str += fmt.Sprintf("cwd: '%s'\n", pstix.Cwd)
-	str += fmt.Sprintf("command_line: '%s'\n", pstix.CommandLine)
-	str += fmt.Sprintln("environment_variables:")
+	str := strings.Builder{}
+
+	str.WriteString(pstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(pstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'is_hidden': '%v'\n", pstix.IsHidden))
+	str.WriteString(fmt.Sprintf("'pid': '%d'\n", pstix.PID))
+	str.WriteString(fmt.Sprintf("'created_time': '%v'\n", pstix.CreatedTime))
+	str.WriteString(fmt.Sprintf("'cwd': '%s'\n", pstix.Cwd))
+	str.WriteString(fmt.Sprintf("'command_line': '%s'\n", pstix.CommandLine))
+	str.WriteString(fmt.Sprintln("'environment_variables':"))
+
 	for k, v := range pstix.EnvironmentVariables {
-		str += fmt.Sprintf("\t%s:%v\n", k, toStringBeautiful(v))
-	}
-	str += fmt.Sprintf("opened_connection_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\topened_connection_ref '%d': '%v'\n", k, v)
-		}
-		return str
-	}(pstix.OpenedConnectionRefs))
-	str += fmt.Sprintf("creator_user_ref: '%v'\n", pstix.CreatorUserRef)
-	str += fmt.Sprintf("image_ref: '%v'\n", pstix.ImageRef)
-	str += fmt.Sprintf("parent_ref: '%v'\n", pstix.ParentRef)
-	str += fmt.Sprintf("child_refs: \n%v", func(l []IdentifierTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tchild_ref '%d': '%v'\n", k, v)
-		}
-		return str
-	}(pstix.ChildRefs))
-	str += fmt.Sprintln("extensions:")
-	for k, v := range pstix.Extensions {
-		str += fmt.Sprintf("\t%s:\n%v\n", k, toStringBeautiful(v))
+		str.WriteString(fmt.Sprintf("\t'%s': '%v'\n", k, toStringBeautiful(v)))
 	}
 
-	return str
+	str.WriteString(fmt.Sprintf("'opened_connection_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'opened_connection_ref '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(pstix.OpenedConnectionRefs)))
+	str.WriteString(fmt.Sprintf("'creator_user_ref': '%v'\n", pstix.CreatorUserRef))
+	str.WriteString(fmt.Sprintf("'image_ref': '%v'\n", pstix.ImageRef))
+	str.WriteString(fmt.Sprintf("'parent_ref': '%v'\n", pstix.ParentRef))
+	str.WriteString(fmt.Sprintf("'child_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'child_ref '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(pstix.ChildRefs)))
+	str.WriteString(fmt.Sprintln("'extensions':"))
+
+	for k, v := range pstix.Extensions {
+		str.WriteString(fmt.Sprintf("\t'%s':\n%v\n", k, toStringBeautiful(v)))
+	}
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -1737,22 +1813,26 @@ func (sstix SoftwareCyberObservableObjectSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (sstix SoftwareCyberObservableObjectSTIX) ToStringBeautiful() string {
-	str := sstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += sstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("name: '%s'\n", sstix.Name)
-	str += fmt.Sprintf("cpe: '%s'\n", sstix.CPE)
-	str += fmt.Sprintf("swid: '%s'\n", sstix.SwID)
-	str += fmt.Sprintf("languages: \n%v", func(l []string) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tlanguage '%d': '%s'\n", k, v)
-		}
-		return str
-	}(sstix.Languages))
-	str += fmt.Sprintf("vendor: '%s'\n", sstix.Vendor)
-	str += fmt.Sprintf("version: '%s'\n", sstix.Version)
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(sstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(sstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'name': '%s'\n", sstix.Name))
+	str.WriteString(fmt.Sprintf("'cpe': '%s'\n", sstix.CPE))
+	str.WriteString(fmt.Sprintf("'swid': '%s'\n", sstix.SwID))
+	str.WriteString(fmt.Sprintf("'languages': \n%v", func(l []string) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'language '%d'': '%s'\n", k, v))
+		}
+
+		return str.String()
+	}(sstix.Languages)))
+	str.WriteString(fmt.Sprintf("'vendor': '%s'\n", sstix.Vendor))
+	str.WriteString(fmt.Sprintf("'version': '%s'\n", sstix.Version))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -1821,11 +1901,13 @@ func (urlstix URLCyberObservableObjectSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (urlstix URLCyberObservableObjectSTIX) ToStringBeautiful() string {
-	str := urlstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += urlstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("value: '%s'\n", urlstix.Value)
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(urlstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(urlstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'value': '%s'\n", urlstix.Value))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -1906,28 +1988,31 @@ func (uastix UserAccountCyberObservableObjectSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (uastix UserAccountCyberObservableObjectSTIX) ToStringBeautiful() string {
-	str := uastix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += uastix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("user_id: '%s'\n", uastix.UserID)
-	str += fmt.Sprintf("credential: '%s'\n", uastix.Credential)
-	str += fmt.Sprintf("account_login: '%s'\n", uastix.AccountLogin)
-	str += fmt.Sprintf("account_type: '%v'\n", uastix.AccountType)
-	str += fmt.Sprintf("display_name: '%s'\n", uastix.DisplayName)
-	str += fmt.Sprintf("is_service_account: '%v'\n", uastix.IsServiceAccount)
-	str += fmt.Sprintf("is_privileged: '%v'\n", uastix.IsPrivileged)
-	str += fmt.Sprintf("can_escalate_privs: '%v'\n", uastix.CanEscalatePrivs)
-	str += fmt.Sprintf("is_disabled: '%v'\n", uastix.IsDisabled)
-	str += fmt.Sprintf("account_created: '%v'\n", uastix.AccountCreated)
-	str += fmt.Sprintf("account_expires: '%v'\n", uastix.AccountExpires)
-	str += fmt.Sprintf("credential_last_changed: '%v'\n", uastix.CredentialLastChanged)
-	str += fmt.Sprintf("account_first_login: '%v'\n", uastix.AccountFirstLogin)
-	str += fmt.Sprintf("account_last_login: '%v'\n", uastix.AccountLastLogin)
-	str += fmt.Sprintln("extensions:")
+	str := strings.Builder{}
+
+	str.WriteString(uastix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(uastix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'user_id': '%s'\n", uastix.UserID))
+	str.WriteString(fmt.Sprintf("'credential': '%s'\n", uastix.Credential))
+	str.WriteString(fmt.Sprintf("'account_login': '%s'\n", uastix.AccountLogin))
+	str.WriteString(fmt.Sprintf("'account_type': '%v'\n", uastix.AccountType))
+	str.WriteString(fmt.Sprintf("'display_name': '%s'\n", uastix.DisplayName))
+	str.WriteString(fmt.Sprintf("'is_service_account': '%v'\n", uastix.IsServiceAccount))
+	str.WriteString(fmt.Sprintf("'is_privileged': '%v'\n", uastix.IsPrivileged))
+	str.WriteString(fmt.Sprintf("'can_escalate_privs': '%v'\n", uastix.CanEscalatePrivs))
+	str.WriteString(fmt.Sprintf("'is_disabled': '%v'\n", uastix.IsDisabled))
+	str.WriteString(fmt.Sprintf("'account_created': '%v'\n", uastix.AccountCreated))
+	str.WriteString(fmt.Sprintf("'account_expires': '%v'\n", uastix.AccountExpires))
+	str.WriteString(fmt.Sprintf("'credential_last_changed': '%v'\n", uastix.CredentialLastChanged))
+	str.WriteString(fmt.Sprintf("'account_first_login': '%v'\n", uastix.AccountFirstLogin))
+	str.WriteString(fmt.Sprintf("'account_last_login': '%v'\n", uastix.AccountLastLogin))
+	str.WriteString(fmt.Sprintln("'extensions':"))
+
 	for k, v := range uastix.Extensions {
-		str += fmt.Sprintf("\t%s:\n%v\n", k, toStringBeautiful(v))
+		str.WriteString(fmt.Sprintf("\t'%s':\n%v\n", k, toStringBeautiful(v)))
 	}
 
-	return str
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -2003,24 +2088,28 @@ func (wrkstix WindowsRegistryKeyCyberObservableObjectSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (wrkstix WindowsRegistryKeyCyberObservableObjectSTIX) ToStringBeautiful() string {
-	str := wrkstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += wrkstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("key: '%s'\n", wrkstix.Key)
-	str += fmt.Sprintf("values: \n%v", func(l []WindowsRegistryValueTypeSTIX) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\tvalue '%d':\n", k)
-			str += fmt.Sprintf("\t\tname: '%s'\n", v.Name)
-			str += fmt.Sprintf("\t\tdata: '%s'\n", v.Data)
-			str += fmt.Sprintf("\t\tdata_type: '%s'\n", v.DataType)
-		}
-		return str
-	}(wrkstix.Values))
-	str += fmt.Sprintf("modified_time: '%v'\n", wrkstix.ModifiedTime)
-	str += fmt.Sprintf("creator_user_ref: '%v'\n", wrkstix.CreatorUserRef)
-	str += fmt.Sprintf("number_of_subkeys: '%d'\n", wrkstix.NumberOfSubkeys)
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(wrkstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(wrkstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'key': '%s'\n", wrkstix.Key))
+	str.WriteString(fmt.Sprintf("'values': \n%v", func(l []WindowsRegistryValueTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'value '%d'':\n", k))
+			str.WriteString(fmt.Sprintf("\t\t'name': '%s'\n", v.Name))
+			str.WriteString(fmt.Sprintf("\t\t'data': '%s'\n", v.Data))
+			str.WriteString(fmt.Sprintf("\t\t'data_type': '%s'\n", v.DataType))
+		}
+
+		return str.String()
+	}(wrkstix.Values)))
+	str.WriteString(fmt.Sprintf("'modified_time': '%v'\n", wrkstix.ModifiedTime))
+	str.WriteString(fmt.Sprintf("'creator_user_ref': '%v'\n", wrkstix.CreatorUserRef))
+	str.WriteString(fmt.Sprintf("'number_of_subkeys': '%d'\n", wrkstix.NumberOfSubkeys))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
@@ -2093,45 +2182,49 @@ func (x509sstix X509CertificateCyberObservableObjectSTIX) GetType() string {
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
 func (x509sstix X509CertificateCyberObservableObjectSTIX) ToStringBeautiful() string {
-	str := x509sstix.CommonPropertiesObjectSTIX.ToStringBeautiful()
-	str += x509sstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful()
-	str += fmt.Sprintf("is_self_signed: '%v'\n", x509sstix.IsSelfSigned)
-	str += fmt.Sprintf("hashes: \n%v", func(l map[string]string) string {
-		var str string
-		for k, v := range l {
-			str += fmt.Sprintf("\t'%s': '%v'\n", k, v)
-		}
-		return str
-	}(x509sstix.Hashes))
-	str += fmt.Sprintf("version: '%s'\n", x509sstix.Version)
-	str += fmt.Sprintf("serial_number: '%s'\n", x509sstix.SerialNumber)
-	str += fmt.Sprintf("signature_algorithm: '%s'\n", x509sstix.SignatureAlgorithm)
-	str += fmt.Sprintf("issuer: '%s'\n", x509sstix.Issuer)
-	str += fmt.Sprintf("validity_not_before: '%v'\n", x509sstix.ValidityNotBefore)
-	str += fmt.Sprintf("validity_not_after: '%v'\n", x509sstix.ValidityNotAfter)
-	str += fmt.Sprintf("subject: '%s'\n", x509sstix.Subject)
-	str += fmt.Sprintf("subject_public_key_algorithm: '%s'\n", x509sstix.SubjectPublicKeyAlgorithm)
-	str += fmt.Sprintf("subject_public_key_modulus: '%s'\n", x509sstix.SubjectPublicKeyModulus)
-	str += fmt.Sprintf("subject_public_key_exponent: '%v'\n", x509sstix.SubjectPublicKeyExponent)
-	str += fmt.Sprintln("x509_v3_extensions:")
-	str += fmt.Sprintf("\tbasic_constraints: '%s'\n", x509sstix.X509V3Extensions.BasicConstraints)
-	str += fmt.Sprintf("\tname_constraints: '%s'\n", x509sstix.X509V3Extensions.NameConstraints)
-	str += fmt.Sprintf("\tpolicy_contraints: '%s'\n", x509sstix.X509V3Extensions.PolicyContraints)
-	str += fmt.Sprintf("\tkey_usage: '%s'\n", x509sstix.X509V3Extensions.KeyUsage)
-	str += fmt.Sprintf("\textended_key_usage: '%s'\n", x509sstix.X509V3Extensions.ExtendedKeyUsage)
-	str += fmt.Sprintf("\tsubject_key_identifier: '%s'\n", x509sstix.X509V3Extensions.SubjectKeyIdentifier)
-	str += fmt.Sprintf("\tauthority_key_identifier: '%s'\n", x509sstix.X509V3Extensions.AuthorityKeyIdentifier)
-	str += fmt.Sprintf("\tsubject_alternative_name: '%s'\n", x509sstix.X509V3Extensions.SubjectAlternativeName)
-	str += fmt.Sprintf("\tissuer_alternative_name: '%s'\n", x509sstix.X509V3Extensions.IssuerAlternativeName)
-	str += fmt.Sprintf("\tsubject_directory_attributes: '%s'\n", x509sstix.X509V3Extensions.SubjectDirectoryAttributes)
-	str += fmt.Sprintf("\tcrl_distribution_points: '%s'\n", x509sstix.X509V3Extensions.CrlDistributionPoints)
-	str += fmt.Sprintf("\tinhibit_any_policy: '%s'\n", x509sstix.X509V3Extensions.InhibitAnyPolicy)
-	str += fmt.Sprintf("\tprivate_key_usage_period_not_before: '%v'\n", x509sstix.X509V3Extensions.PrivateKeyUsagePeriodNotBefore)
-	str += fmt.Sprintf("\tprivate_key_usage_period_not_after: '%v'\n", x509sstix.X509V3Extensions.PrivateKeyUsagePeriodNotAfter)
-	str += fmt.Sprintf("\tcertificate_policies: '%s'\n", x509sstix.X509V3Extensions.CertificatePolicies)
-	str += fmt.Sprintf("\tpolicy_mappings: '%s'\n", x509sstix.X509V3Extensions.PolicyMappings)
+	str := strings.Builder{}
 
-	return str
+	str.WriteString(x509sstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(x509sstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'is_self_signed': '%v'\n", x509sstix.IsSelfSigned))
+	str.WriteString(fmt.Sprintf("'hashes': \n%v", func(l map[string]string) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'%s': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(x509sstix.Hashes)))
+	str.WriteString(fmt.Sprintf("'version': '%s'\n", x509sstix.Version))
+	str.WriteString(fmt.Sprintf("'serial_number': '%s'\n", x509sstix.SerialNumber))
+	str.WriteString(fmt.Sprintf("'signature_algorithm': '%s'\n", x509sstix.SignatureAlgorithm))
+	str.WriteString(fmt.Sprintf("'issuer': '%s'\n", x509sstix.Issuer))
+	str.WriteString(fmt.Sprintf("'validity_not_before': '%v'\n", x509sstix.ValidityNotBefore))
+	str.WriteString(fmt.Sprintf("'validity_not_after': '%v'\n", x509sstix.ValidityNotAfter))
+	str.WriteString(fmt.Sprintf("'subject': '%s'\n", x509sstix.Subject))
+	str.WriteString(fmt.Sprintf("'subject_public_key_algorithm': '%s'\n", x509sstix.SubjectPublicKeyAlgorithm))
+	str.WriteString(fmt.Sprintf("'subject_public_key_modulus': '%s'\n", x509sstix.SubjectPublicKeyModulus))
+	str.WriteString(fmt.Sprintf("'subject_public_key_exponent': '%v'\n", x509sstix.SubjectPublicKeyExponent))
+	str.WriteString(fmt.Sprintln("'x509_v3_extensions':"))
+	str.WriteString(fmt.Sprintf("\t'basic_constraints': '%s'\n", x509sstix.X509V3Extensions.BasicConstraints))
+	str.WriteString(fmt.Sprintf("\t'name_constraints': '%s'\n", x509sstix.X509V3Extensions.NameConstraints))
+	str.WriteString(fmt.Sprintf("\t'policy_contraints': '%s'\n", x509sstix.X509V3Extensions.PolicyContraints))
+	str.WriteString(fmt.Sprintf("\t'key_usage': '%s'\n", x509sstix.X509V3Extensions.KeyUsage))
+	str.WriteString(fmt.Sprintf("\t'extended_key_usage': '%s'\n", x509sstix.X509V3Extensions.ExtendedKeyUsage))
+	str.WriteString(fmt.Sprintf("\t'subject_key_identifier': '%s'\n", x509sstix.X509V3Extensions.SubjectKeyIdentifier))
+	str.WriteString(fmt.Sprintf("\t'authority_key_identifier': '%s'\n", x509sstix.X509V3Extensions.AuthorityKeyIdentifier))
+	str.WriteString(fmt.Sprintf("\t'subject_alternative_name': '%s'\n", x509sstix.X509V3Extensions.SubjectAlternativeName))
+	str.WriteString(fmt.Sprintf("\t'issuer_alternative_name': '%s'\n", x509sstix.X509V3Extensions.IssuerAlternativeName))
+	str.WriteString(fmt.Sprintf("\t'subject_directory_attributes': '%s'\n", x509sstix.X509V3Extensions.SubjectDirectoryAttributes))
+	str.WriteString(fmt.Sprintf("\t'crl_distribution_points': '%s'\n", x509sstix.X509V3Extensions.CrlDistributionPoints))
+	str.WriteString(fmt.Sprintf("\t'inhibit_any_policy': '%s'\n", x509sstix.X509V3Extensions.InhibitAnyPolicy))
+	str.WriteString(fmt.Sprintf("\t'private_key_usage_period_not_before': '%v'\n", x509sstix.X509V3Extensions.PrivateKeyUsagePeriodNotBefore))
+	str.WriteString(fmt.Sprintf("\t'private_key_usage_period_not_after': '%v'\n", x509sstix.X509V3Extensions.PrivateKeyUsagePeriodNotAfter))
+	str.WriteString(fmt.Sprintf("\t'certificate_policies': '%s'\n", x509sstix.X509V3Extensions.CertificatePolicies))
+	str.WriteString(fmt.Sprintf("\t'policy_mappings': '%s'\n", x509sstix.X509V3Extensions.PolicyMappings))
+
+	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации

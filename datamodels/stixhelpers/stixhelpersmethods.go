@@ -11,37 +11,6 @@ import (
 
 /**********			 Некоторые примитивные типы STIX			 **********/
 
-// CheckExternalReferencesTypeSTIX выполняет проверку значений типа ExternalReferencesTypeSTIX
-func (ertstix *ExternalReferencesTypeSTIX) CheckExternalReferencesTypeSTIX() bool {
-	if len(*ertstix) == 0 {
-		return true
-	}
-
-	for _, v := range *ertstix {
-		if !v.CheckExternalReferenceTypeElementSTIX() {
-			return false
-		}
-	}
-
-	return true
-}
-
-// SanitizeStructExternalReferencesTypeSTIX для ряда полей, выполняет замену некоторых специальных символов на их HTML код
-func (ertstix ExternalReferencesTypeSTIX) SanitizeStructExternalReferencesTypeSTIX() ExternalReferencesTypeSTIX {
-	size := len(ertstix)
-	if size == 0 {
-		return ertstix
-	}
-
-	ert := make([]ExternalReferenceTypeElementSTIX, 0, size)
-	for _, v := range ertstix {
-		tmp := v.SanitizeStructExternalReferenceTypeElementSTIX()
-		ert = append(ert, tmp)
-	}
-
-	return ert
-}
-
 // CheckExternalReferenceTypeElementSTIX выполняет проверку значений типа ExternalReferenceTypeElementSTIX
 func (ertestix *ExternalReferenceTypeElementSTIX) CheckExternalReferenceTypeElementSTIX() bool {
 	if ertestix.URL != "" && !govalidator.IsURL(ertestix.URL) {
@@ -91,10 +60,16 @@ func (itstix *IdentifierTypeSTIX) CheckIdentifierTypeSTIX() bool {
 	return regexp.MustCompile(`^[0-9a-zA-Z-_]+(--)[0-9a-f-]+$`).MatchString(fmt.Sprint(*itstix))
 }
 
-// AddValue добавляет значение в тип IdentifierTypeSTIX
-func (itstix *IdentifierTypeSTIX) AddValue(str string) {
-	var i IdentifierTypeSTIX = IdentifierTypeSTIX(str)
-	itstix = &i
+// SetValue добавляет значение в тип IdentifierTypeSTIX
+func (itstix *IdentifierTypeSTIX) SetValue(v string) {
+	var str IdentifierTypeSTIX = IdentifierTypeSTIX(v)
+	itstix = &str
+}
+
+// SetAny добавляет значение в тип IdentifierTypeSTIX
+func (itstix *IdentifierTypeSTIX) SetAny(i interface{}) {
+	var e IdentifierTypeSTIX = IdentifierTypeSTIX(fmt.Sprint(i))
+	itstix = &e
 }
 
 // SanitizeStructKillChainPhasesTypeSTIX выполняет замену некоторых специальных символов на их HTML код

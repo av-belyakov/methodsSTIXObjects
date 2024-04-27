@@ -8,7 +8,7 @@ import "time"
 type EnumTypeSTIX string
 
 // ExternalReferencesTypeSTIX тип "external-reference", по терминалогии STIX, является списком с информацией о внешних ссылках не относящихся к STIX информации
-type ExternalReferencesTypeSTIX []ExternalReferenceTypeElementSTIX
+//type ExternalReferencesTypeSTIX []ExternalReferenceTypeElementSTIX
 
 // ExternalReferenceTypeElementSTIX тип содержащий подробную информацию о внешних ссылках, таких как URL, ID и т.д.
 // SourceName - имя источника (ОБЯЗАТЕЛЬНОЕ ЗНАЧЕНИЕ)
@@ -75,21 +75,21 @@ type DictionaryTypeSTIX struct {
 // ObjectMarkingRefs - определяет список ID ссылающиеся на объект "marking-definition", по терминалогии STIX, в котором содержатся значения применяющиеся к этому объекту
 // GranularMarkings - определяет список "гранулярных меток" (granular_markings) относящихся к этому объекту
 type LanguageContentTypeSTIX struct {
-	Type               string                     `json:"type" bson:"type" required:"true"`
-	ID                 string                     `json:"id" bson:"id" required:"true"`
-	SpecVersion        string                     `json:"spec_version" bson:"spec_version" required:"true"`
-	Created            time.Time                  `json:"created" bson:"created" required:"true"`
-	Modified           time.Time                  `json:"modified" bson:"modified" required:"true"`
-	ObjectRef          IdentifierTypeSTIX         `json:"object_ref" bson:"object_ref" required:"true"`
-	ObjectModified     time.Time                  `json:"object_modified" bson:"object_modified"`
-	Contents           map[string]string          `json:"contents" bson:"contents" required:"true"`
-	CreatedByRef       IdentifierTypeSTIX         `json:"created_by_ref" bson:"created_by_ref"`
-	Revoked            bool                       `json:"revoked" bson:"revoked"`
-	Labels             []string                   `json:"labels" bson:"labels"`
-	Сonfidence         int                        `json:"confidence" bson:"confidence"`
-	ExternalReferences ExternalReferencesTypeSTIX `json:"external_references" bson:"external_references"`
-	ObjectMarkingRefs  []IdentifierTypeSTIX       `json:"object_marking_refs" bson:"object_marking_refs"`
-	GranularMarkings   GranularMarkingsTypeSTIX   `json:"granular_markings" bson:"granular_markings"`
+	Type               string                             `json:"type" bson:"type" required:"true"`
+	ID                 string                             `json:"id" bson:"id" required:"true"`
+	SpecVersion        string                             `json:"spec_version" bson:"spec_version" required:"true"`
+	Created            time.Time                          `json:"created" bson:"created" required:"true"`
+	Modified           time.Time                          `json:"modified" bson:"modified" required:"true"`
+	ObjectRef          IdentifierTypeSTIX                 `json:"object_ref" bson:"object_ref" required:"true"`
+	ObjectModified     time.Time                          `json:"object_modified" bson:"object_modified"`
+	Contents           map[string]string                  `json:"contents" bson:"contents" required:"true"`
+	CreatedByRef       IdentifierTypeSTIX                 `json:"created_by_ref" bson:"created_by_ref"`
+	Revoked            bool                               `json:"revoked" bson:"revoked"`
+	Labels             []string                           `json:"labels" bson:"labels"`
+	Сonfidence         int                                `json:"confidence" bson:"confidence"`
+	ExternalReferences []ExternalReferenceTypeElementSTIX `json:"external_references" bson:"external_references"`
+	ObjectMarkingRefs  []IdentifierTypeSTIX               `json:"object_marking_refs" bson:"object_marking_refs"`
+	GranularMarkings   GranularMarkingsTypeSTIX           `json:"granular_markings" bson:"granular_markings"`
 }
 
 /***	 			Data Markings STIX 				***/
@@ -132,14 +132,14 @@ type GranularMarkingsTypeSTIX struct {
 // GranularMarkings - определяет список "гранулярных меток" (granular_markings) относящихся к этому объекту
 type MarkingDefinitionObjectSTIX struct {
 	CommonDataMarkingsTypeSTIX
-	Type               string                     `json:"type" bson:"type" required:"true"`
-	Name               string                     `json:"name" bson:"name"`
-	DefinitionType     string                     `json:"definition_type" bson:"definition_type"`
-	Definition         map[string]string          `json:"definition" bson:"definition"`
-	CreatedByRef       IdentifierTypeSTIX         `json:"created_by_ref" bson:"created_by_ref"`
-	ExternalReferences ExternalReferencesTypeSTIX `json:"external_references" bson:"external_references"`
-	ObjectMarkingRefs  []IdentifierTypeSTIX       `json:"object_marking_refs" bson:"object_marking_refs"`
-	GranularMarkings   GranularMarkingsTypeSTIX   `json:"granular_markings" bson:"granular_markings"`
+	Type               string                             `json:"type" bson:"type" required:"true"`
+	Name               string                             `json:"name" bson:"name"`
+	DefinitionType     string                             `json:"definition_type" bson:"definition_type"`
+	Definition         map[string]string                  `json:"definition" bson:"definition"`
+	CreatedByRef       IdentifierTypeSTIX                 `json:"created_by_ref" bson:"created_by_ref"`
+	ExternalReferences []ExternalReferenceTypeElementSTIX `json:"external_references" bson:"external_references"`
+	ObjectMarkingRefs  []IdentifierTypeSTIX               `json:"object_marking_refs" bson:"object_marking_refs"`
+	GranularMarkings   GranularMarkingsTypeSTIX           `json:"granular_markings" bson:"granular_markings"`
 }
 
 /********** 			Bundle Object STIX 			**********/

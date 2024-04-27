@@ -5,855 +5,14 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
-	"time"
 
 	"github.com/av-belyakov/methodstixobjects/commonlibs"
+	"github.com/av-belyakov/methodstixobjects/datamodels/stixhelpers"
 )
 
 /*************************************************************************/
 /********** 			Domain Objects STIX (МЕТОДЫ)			**********/
 /*************************************************************************/
-
-func (cpdostix *CommonPropertiesDomainObjectSTIX) validateStructCommonFields() bool {
-	//валидация содержимого поля SpecVersion
-	if !(regexp.MustCompile(`^[0-9a-z.]+$`).MatchString(cpdostix.SpecVersion)) {
-		return false
-	}
-
-	//валидация содержимого поля CreatedByRef
-	if len(fmt.Sprint(cpdostix.CreatedByRef)) > 0 {
-		if !(regexp.MustCompile(`^[0-9a-zA-Z-_]+(--)[0-9a-f|-]+$`).MatchString(fmt.Sprint(cpdostix.CreatedByRef))) {
-			return false
-		}
-	}
-
-	//для поля Lang
-	if len(cpdostix.Lang) > 0 {
-		if !(regexp.MustCompile(`^[a-zA-Z]+$`)).MatchString(cpdostix.Lang) {
-			return false
-		}
-	}
-	//вызываем метод проверки полей типа ExternalReferences
-	if ok := cpdostix.ExternalReferences.CheckExternalReferencesTypeSTIX(); !ok {
-		return false
-	}
-
-	//проверяем поле ObjectMarkingRefs
-	if len(cpdostix.ObjectMarkingRefs) > 0 {
-		for _, value := range cpdostix.ObjectMarkingRefs {
-			if !value.CheckIdentifierTypeSTIX() {
-				return false
-			}
-		}
-	}
-
-	if len(cpdostix.GranularMarkings) > 0 {
-		for _, value := range cpdostix.GranularMarkings {
-			//вызываем метод проверки полей типа GranularMarkingsTypeSTIX
-			if !value.CheckGranularMarkingsTypeSTIX() {
-				return false
-			}
-		}
-	}
-
-	return true
-}
-
-func (cpdostix CommonPropertiesDomainObjectSTIX) sanitizeStruct() CommonPropertiesDomainObjectSTIX {
-	//обработка содержимого списка поля Labels
-	if len(cpdostix.Labels) > 0 {
-		nl := make([]string, 0, len(cpdostix.Labels))
-
-		for _, l := range cpdostix.Labels {
-			nl = append(nl, commonlibs.StringSanitize(l))
-		}
-
-		cpdostix.Labels = nl
-	}
-
-	//обработка содержимого списка поля ExternalReferences
-	cpdostix.ExternalReferences = cpdostix.ExternalReferences.SanitizeStructExternalReferencesTypeSTIX()
-
-	//обработка содержимого списка поля Extension
-	if len(cpdostix.Extensions) > 0 {
-		newExtension := make(map[string]string, len(cpdostix.Extensions))
-		for extKey, extValue := range cpdostix.Extensions {
-			newExtension[extKey] = commonlibs.StringSanitize(extValue)
-		}
-		cpdostix.Extensions = newExtension
-	}
-
-	//время модификации объекта
-	cpdostix.Modified = time.Now()
-
-	return cpdostix
-}
-
-// ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (cp CommonPropertiesDomainObjectSTIX) ToStringBeautiful() string {
-	str := strings.Builder{}
-
-	str.WriteString(fmt.Sprintf("'spec_version': '%s'\n", cp.SpecVersion))
-	str.WriteString(fmt.Sprintf("'created': '%v'\n", cp.Created))
-	str.WriteString(fmt.Sprintf("'modified': '%v'\n", cp.Modified))
-	str.WriteString(fmt.Sprintf("'created_by_ref': '%s'\n", cp.CreatedByRef))
-	str.WriteString(fmt.Sprintf("'revoked': '%v'\n", cp.Revoked))
-	str.WriteString(fmt.Sprintf("'labels': \n%v", func(l []string) string {
-		str := strings.Builder{}
-
-		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'label '%d'': '%s'\n", k, v))
-		}
-
-		return str.String()
-	}(cp.Labels)))
-	str.WriteString(fmt.Sprintf("'external_references': \n%v", func(l []ExternalReferenceTypeElementSTIX) string {
-		str := strings.Builder{}
-
-		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'external_references element '%d'':\n", k))
-			str.WriteString(fmt.Sprintf("\t\t'source_name': '%s'\n", v.SourceName))
-			str.WriteString(fmt.Sprintf("\t\t'description': '%s'\n", v.Description))
-			str.WriteString(fmt.Sprintf("\t\t'url': '%s'\n", v.URL))
-			str.WriteString(fmt.Sprintf("\t\t'hashes': '%s'\n", v.Hashes))
-			str.WriteString(fmt.Sprintf("\t\t'external_id': '%s'\n", v.ExternalID))
-		}
-
-		return str.String()
-	}(cp.ExternalReferences)))
-	str.WriteString(fmt.Sprintf("'object_marking_refs': \n%v", func(l []IdentifierTypeSTIX) string {
-		str := strings.Builder{}
-
-		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'ref '%d'': '%v'\n", k, v))
-		}
-
-		return str.String()
-	}(cp.ObjectMarkingRefs)))
-	str.WriteString(fmt.Sprintf("'granular_markings': \n%v", func(l []GranularMarkingsTypeSTIX) string {
-		str := strings.Builder{}
-
-		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'granular_markings number %d.'", k))
-			str.WriteString(fmt.Sprintf("\t'lang': '%s'\n", v.Lang))
-			str.WriteString(fmt.Sprintf("\t'marking_ref': '%v'\n", v.MarkingRef))
-			str.WriteString(fmt.Sprintf("\t'selectors': \n%v", func(l []string) string {
-				str := strings.Builder{}
-
-				for k, v := range l {
-					str.WriteString(fmt.Sprintf("\t\t'selector '%d'': '%s'\n", k, v))
-				}
-
-				return str.String()
-			}(v.Selectors)))
-		}
-
-		return str.String()
-	}(cp.GranularMarkings)))
-	str.WriteString(fmt.Sprintf("'defanged': '%v'\n", cp.Defanged))
-	str.WriteString(fmt.Sprintf("'extensions': \n%v", func(l map[string]string) string {
-		str := strings.Builder{}
-
-		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'%s': '%s'\n", k, v))
-		}
-
-		return str.String()
-	}(cp.Extensions)))
-
-	return str.String()
-}
-
-/* --- AttackPatternDomainObjectsSTIX --- */
-
-// DecoderJSON выполняет декодирование JSON объекта
-func (apstix AttackPatternDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
-	if err := json.Unmarshal(*raw, &apstix); err != nil {
-		return apstix, err
-	}
-
-	return apstix, nil
-}
-
-// EncoderJSON выполняет кодирование в JSON объект
-func (apstix AttackPatternDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
-	result, err := json.Marshal(apstix)
-
-	return &result, err
-}
-
-// ValidateStruct является валидатором параметров содержащихся в типе AttackPatternDomainObjectsSTIX
-// возвращает ВАЛИДНЫЙ объект AttackPatternDomainObjectsSTIX (к сожалению нельзя править существующий объект
-// из-за ошибки 'cannot use e (variable of type datamodels.AttackPatternDomainObjectsSTIX) as datamodels.HandlerSTIXObject
-// value in struct literal: missing method ValidateStruct (ValidateStruct has pointer receiver)' возникающей в
-// функции GetListSTIXObjectFromJSON если приемник ValidateStruct работает по ссылке)
-func (apstix AttackPatternDomainObjectsSTIX) ValidateStruct() bool {
-	if !(regexp.MustCompile(`^(attack-pattern--)[0-9a-f|-]+$`).MatchString(apstix.ID)) {
-		return false
-	}
-
-	//обязательное поле
-	if apstix.Name == "" {
-		return false
-	}
-
-	return apstix.validateStructCommonFields()
-}
-
-// SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
-func (apstix AttackPatternDomainObjectsSTIX) SanitizeStruct() AttackPatternDomainObjectsSTIX {
-	apstix.CommonPropertiesDomainObjectSTIX = apstix.sanitizeStruct()
-
-	apstix.Name = commonlibs.StringSanitize(apstix.Name)
-	apstix.Description = commonlibs.StringSanitize(apstix.Description)
-
-	if len(apstix.Aliases) > 0 {
-		aliasesTmp := make([]string, 0, len(apstix.Aliases))
-
-		for _, v := range apstix.Aliases {
-			aliasesTmp = append(aliasesTmp, commonlibs.StringSanitize(v))
-		}
-
-		apstix.Aliases = aliasesTmp
-	}
-
-	apstix.KillChainPhases = apstix.KillChainPhases.SanitizeStructKillChainPhasesTypeSTIX()
-
-	return apstix
-}
-
-// GetID возвращает ID STIX объекта
-func (apstix AttackPatternDomainObjectsSTIX) GetID() string {
-	return apstix.ID
-}
-
-// GetType возвращает Type STIX объекта
-func (apstix AttackPatternDomainObjectsSTIX) GetType() string {
-	return apstix.Type
-}
-
-// ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (apstix AttackPatternDomainObjectsSTIX) ToStringBeautiful() string {
-	str := strings.Builder{}
-
-	str.WriteString(apstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(apstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'name': '%s'\n", apstix.Name))
-	str.WriteString(fmt.Sprintf("'description': '%s'\n", apstix.Description))
-	str.WriteString(fmt.Sprintf("'aliases': \n%v", func(l []string) string {
-		str := strings.Builder{}
-
-		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'aliase '%d'': '%s'\n", k, v))
-		}
-
-		return str.String()
-	}(apstix.Aliases)))
-	str.WriteString(fmt.Sprintf("'kill_chain_phases': \n%v", func(l KillChainPhasesTypeSTIX) string {
-		str := strings.Builder{}
-
-		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'key': '%v' 'kill_chain_name': '%s'\n", k, v.KillChainName))
-			str.WriteString(fmt.Sprintf("\t'key': '%v' 'phase_name': '%s'\n", k, v.PhaseName))
-		}
-
-		return str.String()
-	}(apstix.KillChainPhases)))
-
-	return str.String()
-}
-
-// GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
-func (apstix AttackPatternDomainObjectsSTIX) GeneratingDataForIndexing() map[string]string {
-	dataForIndex := map[string]string{
-		"id":   apstix.ID,
-		"type": apstix.Type,
-	}
-
-	if apstix.Name != "" {
-		dataForIndex["name"] = apstix.Name
-	}
-
-	if apstix.Description != "" {
-		dataForIndex["description"] = apstix.Description
-	}
-
-	if len(apstix.Aliases) > 0 {
-		var strTmp string
-
-		for _, v := range apstix.Aliases {
-			strTmp += fmt.Sprintf(" %s", v)
-		}
-
-		dataForIndex["aliases"] = strTmp
-	}
-
-	return dataForIndex
-}
-
-/* --- CampaignDomainObjectsSTIX --- */
-
-// DecoderJSON выполняет декодирование JSON объекта
-func (cstix CampaignDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
-	if err := json.Unmarshal(*raw, &cstix); err != nil {
-		return nil, err
-	}
-
-	return cstix, nil
-}
-
-// EncoderJSON выполняет кодирование в JSON объект
-func (cstix CampaignDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
-	result, err := json.Marshal(cstix)
-
-	return &result, err
-}
-
-// ValidateStruct является валидатором параметров содержащихся в типе CampaignDomainObjectsSTIX
-func (cstix CampaignDomainObjectsSTIX) ValidateStruct() bool {
-	if !(regexp.MustCompile(`^(campaign--)[0-9a-f|-]+$`).MatchString(cstix.ID)) {
-		return false
-	}
-
-	return cstix.validateStructCommonFields()
-}
-
-// SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
-func (cstix CampaignDomainObjectsSTIX) SanitizeStruct() CampaignDomainObjectsSTIX {
-	cstix.CommonPropertiesDomainObjectSTIX = cstix.sanitizeStruct()
-
-	cstix.Name = commonlibs.StringSanitize(cstix.Name)
-	cstix.Description = commonlibs.StringSanitize(cstix.Description)
-
-	if len(cstix.Aliases) > 0 {
-		aliasesTmp := make([]string, 0, len(cstix.Aliases))
-		for _, v := range cstix.Aliases {
-			aliasesTmp = append(aliasesTmp, commonlibs.StringSanitize(v))
-		}
-		cstix.Aliases = aliasesTmp
-	}
-
-	cstix.Objective = commonlibs.StringSanitize(cstix.Objective)
-
-	return cstix
-}
-
-// GetID возвращает ID STIX объекта
-func (cstix CampaignDomainObjectsSTIX) GetID() string {
-	return cstix.ID
-}
-
-// GetType возвращает Type STIX объекта
-func (cstix CampaignDomainObjectsSTIX) GetType() string {
-	return cstix.Type
-}
-
-// ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (cstix CampaignDomainObjectsSTIX) ToStringBeautiful() string {
-	str := strings.Builder{}
-
-	str.WriteString(cstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(cstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'name': '%s'\n", cstix.Name))
-	str.WriteString(fmt.Sprintf("'description': '%s'\n", cstix.Description))
-	str.WriteString(fmt.Sprintf("'aliases': \n%v", func(l []string) string {
-		str := strings.Builder{}
-
-		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'aliase '%d'': '%s'\n", k, v))
-		}
-
-		return str.String()
-	}(cstix.Aliases)))
-	str.WriteString(fmt.Sprintf("'first_seen': '%v'\n", cstix.FirstSeen))
-	str.WriteString(fmt.Sprintf("'last_seen': '%v'\n", cstix.LastSeen))
-	str.WriteString(fmt.Sprintf("'objective': '%s'\n", cstix.Objective))
-
-	return str.String()
-}
-
-// GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
-func (cstix CampaignDomainObjectsSTIX) GeneratingDataForIndexing() map[string]string {
-	dataForIndex := map[string]string{
-		"id":   cstix.ID,
-		"type": cstix.Type,
-	}
-
-	if cstix.Name != "" {
-		dataForIndex["name"] = cstix.Name
-	}
-
-	if cstix.Description != "" {
-		dataForIndex["description"] = cstix.Description
-	}
-
-	if len(cstix.Aliases) > 0 {
-		var strTmp string
-
-		for _, v := range cstix.Aliases {
-			strTmp += fmt.Sprintf(" %s", v)
-		}
-
-		dataForIndex["aliases"] = strTmp
-	}
-
-	return dataForIndex
-}
-
-/* --- CourseOfActionDomainObjectsSTIX --- */
-
-// DecoderJSON выполняет декодирование JSON объекта
-func (castix CourseOfActionDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
-	if err := json.Unmarshal(*raw, &castix); err != nil {
-		return nil, err
-	}
-
-	return castix, nil
-}
-
-// EncoderJSON выполняет кодирование в JSON объект
-func (castix CourseOfActionDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
-	result, err := json.Marshal(castix)
-
-	return &result, err
-}
-
-// ValidateStruct является валидатором параметров содержащихся в типе CourseOfActionDomainObjectsSTIX
-func (castix CourseOfActionDomainObjectsSTIX) ValidateStruct() bool {
-	if !(regexp.MustCompile(`^(course-of-action--)[0-9a-f|-]+$`).MatchString(castix.ID)) {
-		return false
-	}
-
-	//обязательное поле
-	if castix.Name == "" {
-		return false
-	}
-
-	return castix.validateStructCommonFields()
-}
-
-// SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
-func (castix CourseOfActionDomainObjectsSTIX) SanitizeStruct() CourseOfActionDomainObjectsSTIX {
-	castix.CommonPropertiesDomainObjectSTIX = castix.sanitizeStruct()
-
-	castix.Name = commonlibs.StringSanitize(castix.Name)
-	castix.Description = commonlibs.StringSanitize(castix.Description)
-	//cstix.Action - ЗАРЕЗЕРВИРОВАНО
-
-	return castix
-}
-
-// GetID возвращает ID STIX объекта
-func (castix CourseOfActionDomainObjectsSTIX) GetID() string {
-	return castix.ID
-}
-
-// GetType возвращает Type STIX объекта
-func (castix CourseOfActionDomainObjectsSTIX) GetType() string {
-	return castix.Type
-}
-
-// ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (castix CourseOfActionDomainObjectsSTIX) ToStringBeautiful() string {
-	str := strings.Builder{}
-
-	str.WriteString(castix.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(castix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'name': '%s'\n", castix.Name))
-	str.WriteString(fmt.Sprintf("'description': '%s'\n", castix.Description))
-	str.WriteString(fmt.Sprintf("'action': '%v'\n", castix.Action))
-
-	return str.String()
-}
-
-// GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
-func (castix CourseOfActionDomainObjectsSTIX) GeneratingDataForIndexing() map[string]string {
-	dataForIndex := map[string]string{
-		"id":   castix.ID,
-		"type": castix.Type,
-	}
-
-	if castix.Name != "" {
-		dataForIndex["name"] = castix.Name
-	}
-
-	if castix.Description != "" {
-		dataForIndex["description"] = castix.Description
-	}
-
-	return dataForIndex
-}
-
-/* --- GroupingDomainObjectsSTIX --- */
-
-// DecoderJSON выполняет декодирование JSON объекта
-func (gstix GroupingDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
-	if err := json.Unmarshal(*raw, &gstix); err != nil {
-		return nil, err
-	}
-
-	return gstix, nil
-}
-
-// EncoderJSON выполняет кодирование в JSON объект
-func (gstix GroupingDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
-	result, err := json.Marshal(gstix)
-
-	return &result, err
-}
-
-// ValidateStruct является валидатором параметров содержащихся в типе GroupingDomainObjectsSTIX
-func (gstix GroupingDomainObjectsSTIX) ValidateStruct() bool {
-	if !(regexp.MustCompile(`^(grouping--)[0-9a-f|-]+$`).MatchString(gstix.ID)) {
-		return false
-	}
-
-	if !gstix.validateStructCommonFields() {
-		return false
-	}
-
-	//обязательное поле
-	if gstix.Context == "" {
-		return false
-	}
-
-	for _, v := range gstix.ObjectRefs {
-		if !v.CheckIdentifierTypeSTIX() {
-			return false
-		}
-	}
-
-	return true
-}
-
-// SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
-func (gstix GroupingDomainObjectsSTIX) SanitizeStruct() GroupingDomainObjectsSTIX {
-	gstix.CommonPropertiesDomainObjectSTIX = gstix.sanitizeStruct()
-
-	gstix.Name = commonlibs.StringSanitize(gstix.Name)
-	gstix.Description = commonlibs.StringSanitize(gstix.Description)
-	gstix.Context = gstix.Context.SanitizeStructOpenVocabTypeSTIX()
-
-	return gstix
-}
-
-// GetID возвращает ID STIX объекта
-func (gstix GroupingDomainObjectsSTIX) GetID() string {
-	return gstix.ID
-}
-
-// GetType возвращает Type STIX объекта
-func (gstix GroupingDomainObjectsSTIX) GetType() string {
-	return gstix.Type
-}
-
-// ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (gstix GroupingDomainObjectsSTIX) ToStringBeautiful() string {
-	str := strings.Builder{}
-
-	str.WriteString(gstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(gstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'name': '%s'\n", gstix.Name))
-	str.WriteString(fmt.Sprintf("'description': '%s'\n", gstix.Description))
-	str.WriteString(fmt.Sprintf("'context': '%s'\n", gstix.Context))
-	str.WriteString(fmt.Sprintf("'object_refs': \n%v", func(l []IdentifierTypeSTIX) string {
-		str := strings.Builder{}
-
-		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'object_ref '%d'': '%v'\n", k, v))
-		}
-
-		return str.String()
-	}(gstix.ObjectRefs)))
-
-	return str.String()
-}
-
-// GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
-func (gstix GroupingDomainObjectsSTIX) GeneratingDataForIndexing() map[string]string {
-	dataForIndex := map[string]string{
-		"id":   gstix.ID,
-		"type": gstix.Type,
-	}
-
-	if gstix.Name != "" {
-		dataForIndex["name"] = gstix.Name
-	}
-
-	if gstix.Description != "" {
-		dataForIndex["description"] = gstix.Description
-	}
-
-	return dataForIndex
-}
-
-/* --- IdentityDomainObjectsSTIX --- */
-
-// DecoderJSON выполняет декодирование JSON объекта
-func (istix IdentityDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
-	if err := json.Unmarshal(*raw, &istix); err != nil {
-		return nil, err
-	}
-
-	return istix, nil
-}
-
-// EncoderJSON выполняет кодирование в JSON объект
-func (istix IdentityDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
-	result, err := json.Marshal(istix)
-
-	return &result, err
-}
-
-// ValidateStruct является валидатором параметров содержащихся в типе IdentityDomainObjectsSTIX
-func (istix IdentityDomainObjectsSTIX) ValidateStruct() bool {
-	if !(regexp.MustCompile(`^(identity--)[0-9a-f|-]+$`).MatchString(istix.ID)) {
-		return false
-	}
-
-	//обязательное поле
-	if istix.Name == "" {
-		return false
-	}
-
-	return istix.validateStructCommonFields()
-}
-
-// SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
-func (istix IdentityDomainObjectsSTIX) SanitizeStruct() IdentityDomainObjectsSTIX {
-	istix.CommonPropertiesDomainObjectSTIX = istix.sanitizeStruct()
-
-	istix.Name = commonlibs.StringSanitize(istix.Name)
-	istix.Description = commonlibs.StringSanitize(istix.Description)
-
-	if len(istix.Roles) > 0 {
-		rolesTmp := make([]string, 0, len(istix.Roles))
-		for _, v := range istix.Roles {
-			rolesTmp = append(rolesTmp, commonlibs.StringSanitize(v))
-		}
-		istix.Roles = rolesTmp
-	}
-
-	istix.IdentityClass = istix.IdentityClass.SanitizeStructOpenVocabTypeSTIX()
-
-	if len(istix.Sectors) > 0 {
-		sectorsTmp := make([]OpenVocabTypeSTIX, 0, len(istix.Sectors))
-		for _, v := range istix.Sectors {
-			tmp := v.SanitizeStructOpenVocabTypeSTIX()
-			sectorsTmp = append(sectorsTmp, tmp)
-		}
-
-		istix.Sectors = sectorsTmp
-	}
-
-	istix.ContactInformation = commonlibs.StringSanitize(istix.ContactInformation)
-
-	return istix
-}
-
-// GetID возвращает ID STIX объекта
-func (istix IdentityDomainObjectsSTIX) GetID() string {
-	return istix.ID
-}
-
-// GetType возвращает Type STIX объекта
-func (istix IdentityDomainObjectsSTIX) GetType() string {
-	return istix.Type
-}
-
-// ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (istix IdentityDomainObjectsSTIX) ToStringBeautiful() string {
-	str := strings.Builder{}
-
-	str.WriteString(istix.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(istix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'name': '%s'\n", istix.Name))
-	str.WriteString(fmt.Sprintf("'description': '%s'\n", istix.Description))
-	str.WriteString(fmt.Sprintf("'roles': \n%v", func(l []string) string {
-		str := strings.Builder{}
-
-		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'role '%d'': '%v'\n", k, v))
-		}
-
-		return str.String()
-	}(istix.Roles)))
-	str.WriteString(fmt.Sprintf("'identity_class': '%s'\n", istix.IdentityClass))
-	str.WriteString(fmt.Sprintf("'sectors': \n%v", func(l []OpenVocabTypeSTIX) string {
-		str := strings.Builder{}
-
-		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'sector '%d'': '%v'\n", k, v))
-		}
-
-		return str.String()
-	}(istix.Sectors)))
-	str.WriteString(fmt.Sprintf("'contact_information': '%s'\n", istix.ContactInformation))
-
-	return str.String()
-}
-
-// GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
-func (istix IdentityDomainObjectsSTIX) GeneratingDataForIndexing() map[string]string {
-	dataForIndex := map[string]string{
-		"id":   istix.ID,
-		"type": istix.Type,
-	}
-
-	if istix.Name != "" {
-		dataForIndex["name"] = istix.Name
-	}
-
-	if istix.Description != "" {
-		dataForIndex["description"] = istix.Description
-	}
-
-	if len(istix.Roles) > 0 {
-		var strTmp string
-
-		for _, v := range istix.Roles {
-			strTmp += fmt.Sprintf(" %s", v)
-		}
-
-		dataForIndex["aliases"] = strTmp
-	}
-
-	return dataForIndex
-}
-
-/* --- IndicatorDomainObjectsSTIX --- */
-
-// DecoderJSON выполняет декодирование JSON объекта
-func (istix IndicatorDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
-	if err := json.Unmarshal(*raw, &istix); err != nil {
-		return nil, err
-	}
-
-	return istix, nil
-}
-
-// EncoderJSON выполняет кодирование в JSON объект
-func (istix IndicatorDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
-	result, err := json.Marshal(istix)
-
-	return &result, err
-}
-
-// ValidateStruct является валидатором параметров содержащихся в типе IndicatorDomainObjectsSTIX
-func (istix IndicatorDomainObjectsSTIX) ValidateStruct() bool {
-	if !(regexp.MustCompile(`^(indicator--)[0-9a-f|-]+$`).MatchString(istix.ID)) {
-		return false
-	}
-
-	if !istix.validateStructCommonFields() {
-		return false
-	}
-
-	//обязательное поле
-	if istix.Pattern == "" {
-		return false
-	}
-
-	//обязательное поле
-	if istix.PatternType == "" {
-		return false
-	}
-
-	//обязательное поле
-	if istix.ValidFrom.Unix() < 0 {
-		return false
-	}
-
-	return true
-}
-
-// SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
-func (istix IndicatorDomainObjectsSTIX) SanitizeStruct() IndicatorDomainObjectsSTIX {
-	istix.CommonPropertiesDomainObjectSTIX = istix.sanitizeStruct()
-
-	istix.Name = commonlibs.StringSanitize(istix.Name)
-	istix.Description = commonlibs.StringSanitize(istix.Description)
-
-	if len(istix.IndicatorTypes) > 0 {
-		it := make([]OpenVocabTypeSTIX, 0, len(istix.IndicatorTypes))
-		for _, v := range istix.IndicatorTypes {
-			tmp := v.SanitizeStructOpenVocabTypeSTIX()
-			it = append(it, tmp)
-		}
-
-		istix.IndicatorTypes = it
-	}
-
-	istix.Pattern = commonlibs.StringSanitize(istix.Pattern)
-	istix.PatternType = istix.PatternType.SanitizeStructOpenVocabTypeSTIX()
-	istix.PatternVersion = commonlibs.StringSanitize(istix.PatternVersion)
-	istix.KillChainPhases = istix.KillChainPhases.SanitizeStructKillChainPhasesTypeSTIX()
-
-	return istix
-}
-
-// GetID возвращает ID STIX объекта
-func (istix IndicatorDomainObjectsSTIX) GetID() string {
-	return istix.ID
-}
-
-// GetType возвращает Type STIX объекта
-func (istix IndicatorDomainObjectsSTIX) GetType() string {
-	return istix.Type
-}
-
-// ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (istix IndicatorDomainObjectsSTIX) ToStringBeautiful() string {
-	str := strings.Builder{}
-
-	str.WriteString(istix.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(istix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'name': '%s'\n", istix.Name))
-	str.WriteString(fmt.Sprintf("'description': '%s'\n", istix.Description))
-	str.WriteString(fmt.Sprintf("'indicator_types': \n%v", func(l []OpenVocabTypeSTIX) string {
-		str := strings.Builder{}
-
-		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'indicator_type '%d'': '%v'\n", k, v))
-		}
-
-		return str.String()
-	}(istix.IndicatorTypes)))
-	str.WriteString(fmt.Sprintf("'pattern': '%s'\n", istix.Pattern))
-	str.WriteString(fmt.Sprintf("'pattern_type': '%s'\n", istix.PatternType))
-	str.WriteString(fmt.Sprintf("'pattern_version': '%s'\n", istix.PatternVersion))
-	str.WriteString(fmt.Sprintf("'valid_from': '%v'\n", istix.ValidFrom))
-	str.WriteString(fmt.Sprintf("'valid_until': '%v'\n", istix.ValidUntil))
-	str.WriteString(fmt.Sprintf("'sectors': \n%v", func(l []KillChainPhasesTypeElementSTIX) string {
-		str := strings.Builder{}
-
-		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'sector '%d'': '%v'\n", k, v))
-		}
-
-		return str.String()
-	}(istix.KillChainPhases)))
-
-	return str.String()
-}
-
-// GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
-func (istix IndicatorDomainObjectsSTIX) GeneratingDataForIndexing() map[string]string {
-	dataForIndex := map[string]string{
-		"id":   istix.ID,
-		"type": istix.Type,
-	}
-
-	if istix.Name != "" {
-		dataForIndex["name"] = istix.Name
-	}
-
-	if istix.Description != "" {
-		dataForIndex["description"] = istix.Description
-	}
-
-	return dataForIndex
-}
 
 /* --- InfrastructureDomainObjectsSTIX --- */
 
@@ -879,7 +38,7 @@ func (istix InfrastructureDomainObjectsSTIX) ValidateStruct() bool {
 		return false
 	}
 
-	if !istix.validateStructCommonFields() {
+	if !istix.ValidateStructCommonFields() {
 		return false
 	}
 
@@ -893,13 +52,13 @@ func (istix InfrastructureDomainObjectsSTIX) ValidateStruct() bool {
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
 func (istix InfrastructureDomainObjectsSTIX) SanitizeStruct() InfrastructureDomainObjectsSTIX {
-	istix.CommonPropertiesDomainObjectSTIX = istix.sanitizeStruct()
+	istix.CommonPropertiesDomainObjectSTIX = istix.SanitizeStruct().CommonPropertiesDomainObjectSTIX
 
 	istix.Name = commonlibs.StringSanitize(istix.Name)
 	istix.Description = commonlibs.StringSanitize(istix.Description)
 
 	if len(istix.InfrastructureTypes) > 0 {
-		it := make([]OpenVocabTypeSTIX, 0, len(istix.InfrastructureTypes))
+		it := make([]stixhelpers.OpenVocabTypeSTIX, 0, len(istix.InfrastructureTypes))
 		for _, v := range istix.InfrastructureTypes {
 			tmp := v.SanitizeStructOpenVocabTypeSTIX()
 			it = append(it, tmp)
@@ -939,7 +98,7 @@ func (istix InfrastructureDomainObjectsSTIX) ToStringBeautiful() string {
 	str.WriteString(istix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
 	str.WriteString(fmt.Sprintf("'name': '%s'\n", istix.Name))
 	str.WriteString(fmt.Sprintf("'description': '%s'\n", istix.Description))
-	str.WriteString(fmt.Sprintf("'infrastructure_types': \n%v", func(l []OpenVocabTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'infrastructure_types': \n%v", func(l []stixhelpers.OpenVocabTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -957,7 +116,7 @@ func (istix InfrastructureDomainObjectsSTIX) ToStringBeautiful() string {
 
 		return str.String()
 	}(istix.Aliases)))
-	str.WriteString(fmt.Sprintf("'sectors': \n%v", func(l []KillChainPhasesTypeElementSTIX) string {
+	str.WriteString(fmt.Sprintf("'sectors': \n%v", func(l []stixhelpers.KillChainPhasesTypeElementSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -1024,7 +183,7 @@ func (istix IntrusionSetDomainObjectsSTIX) ValidateStruct() bool {
 		return false
 	}
 
-	if !istix.validateStructCommonFields() {
+	if !istix.ValidateStructCommonFields() {
 		return false
 	}
 
@@ -1038,7 +197,7 @@ func (istix IntrusionSetDomainObjectsSTIX) ValidateStruct() bool {
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
 func (istix IntrusionSetDomainObjectsSTIX) SanitizeStruct() IntrusionSetDomainObjectsSTIX {
-	istix.CommonPropertiesDomainObjectSTIX = istix.sanitizeStruct()
+	istix.CommonPropertiesDomainObjectSTIX = istix.SanitizeStruct().CommonPropertiesDomainObjectSTIX
 
 	istix.Name = commonlibs.StringSanitize(istix.Name)
 	istix.Description = commonlibs.StringSanitize(istix.Description)
@@ -1063,7 +222,7 @@ func (istix IntrusionSetDomainObjectsSTIX) SanitizeStruct() IntrusionSetDomainOb
 	istix.PrimaryMotivation = istix.PrimaryMotivation.SanitizeStructOpenVocabTypeSTIX()
 
 	if len(istix.SecondaryMotivations) > 0 {
-		sm := make([]OpenVocabTypeSTIX, 0, len(istix.SecondaryMotivations))
+		sm := make([]stixhelpers.OpenVocabTypeSTIX, 0, len(istix.SecondaryMotivations))
 		for _, v := range istix.SecondaryMotivations {
 			tmp := v.SanitizeStructOpenVocabTypeSTIX()
 			sm = append(sm, tmp)
@@ -1115,7 +274,7 @@ func (istix IntrusionSetDomainObjectsSTIX) ToStringBeautiful() string {
 	}(istix.Goals)))
 	str.WriteString(fmt.Sprintf("'resource_level': '%s'\n", istix.FirstSeen))
 	str.WriteString(fmt.Sprintf("'primary_motivation': '%s'\n", istix.LastSeen))
-	str.WriteString(fmt.Sprintf("'secondary_motivations': \n%v", func(l []OpenVocabTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'secondary_motivations': \n%v", func(l []stixhelpers.OpenVocabTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -1180,7 +339,7 @@ func (lstix LocationDomainObjectsSTIX) ValidateStruct() bool {
 		return false
 	}
 
-	if !lstix.validateStructCommonFields() {
+	if !lstix.ValidateStructCommonFields() {
 		return false
 	}
 
@@ -1203,11 +362,11 @@ func (lstix LocationDomainObjectsSTIX) ValidateStruct() bool {
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
 func (lstix LocationDomainObjectsSTIX) SanitizeStruct() LocationDomainObjectsSTIX {
-	lstix.CommonPropertiesDomainObjectSTIX = lstix.sanitizeStruct()
+	lstix.CommonPropertiesDomainObjectSTIX = lstix.SanitizeStruct().CommonPropertiesDomainObjectSTIX
 
 	lstix.Name = commonlibs.StringSanitize(lstix.Name)
 	lstix.Description = commonlibs.StringSanitize(lstix.Description)
-	lstix.Region = OpenVocabTypeSTIX(commonlibs.StringSanitize(string(lstix.Region)))
+	lstix.Region = stixhelpers.OpenVocabTypeSTIX(commonlibs.StringSanitize(string(lstix.Region)))
 	lstix.AdministrativeArea = commonlibs.StringSanitize(lstix.AdministrativeArea)
 	lstix.City = commonlibs.StringSanitize(lstix.City)
 	lstix.StreetAddress = commonlibs.StringSanitize(lstix.StreetAddress)
@@ -1293,7 +452,7 @@ func (mstix MalwareDomainObjectsSTIX) ValidateStruct() bool {
 		return false
 	}
 
-	if !mstix.validateStructCommonFields() {
+	if !mstix.ValidateStructCommonFields() {
 		return false
 	}
 
@@ -1318,13 +477,13 @@ func (mstix MalwareDomainObjectsSTIX) ValidateStruct() bool {
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
 func (mstix MalwareDomainObjectsSTIX) SanitizeStruct() MalwareDomainObjectsSTIX {
-	mstix.CommonPropertiesDomainObjectSTIX = mstix.sanitizeStruct()
+	mstix.CommonPropertiesDomainObjectSTIX = mstix.SanitizeStruct().CommonPropertiesDomainObjectSTIX
 
 	mstix.Name = commonlibs.StringSanitize(mstix.Name)
 	mstix.Description = commonlibs.StringSanitize(mstix.Description)
 
 	if len(mstix.MalwareTypes) > 0 {
-		mt := make([]OpenVocabTypeSTIX, 0, len(mstix.MalwareTypes))
+		mt := make([]stixhelpers.OpenVocabTypeSTIX, 0, len(mstix.MalwareTypes))
 		for _, v := range mstix.MalwareTypes {
 			tmp := v.SanitizeStructOpenVocabTypeSTIX()
 			mt = append(mt, tmp)
@@ -1344,7 +503,7 @@ func (mstix MalwareDomainObjectsSTIX) SanitizeStruct() MalwareDomainObjectsSTIX 
 	mstix.KillChainPhases = mstix.KillChainPhases.SanitizeStructKillChainPhasesTypeSTIX()
 
 	if len(mstix.ArchitectureExecutionEnvs) > 0 {
-		aee := make([]OpenVocabTypeSTIX, 0, len(mstix.ArchitectureExecutionEnvs))
+		aee := make([]stixhelpers.OpenVocabTypeSTIX, 0, len(mstix.ArchitectureExecutionEnvs))
 		for _, v := range mstix.ArchitectureExecutionEnvs {
 			tmp := v.SanitizeStructOpenVocabTypeSTIX()
 			aee = append(aee, tmp)
@@ -1354,7 +513,7 @@ func (mstix MalwareDomainObjectsSTIX) SanitizeStruct() MalwareDomainObjectsSTIX 
 	}
 
 	if len(mstix.ImplementationLanguages) > 0 {
-		il := make([]OpenVocabTypeSTIX, 0, len(mstix.ImplementationLanguages))
+		il := make([]stixhelpers.OpenVocabTypeSTIX, 0, len(mstix.ImplementationLanguages))
 		for _, v := range mstix.ImplementationLanguages {
 			tmp := v.SanitizeStructOpenVocabTypeSTIX()
 			il = append(il, tmp)
@@ -1364,7 +523,7 @@ func (mstix MalwareDomainObjectsSTIX) SanitizeStruct() MalwareDomainObjectsSTIX 
 	}
 
 	if len(mstix.Capabilities) > 0 {
-		c := make([]OpenVocabTypeSTIX, 0, len(mstix.Capabilities))
+		c := make([]stixhelpers.OpenVocabTypeSTIX, 0, len(mstix.Capabilities))
 		for _, v := range mstix.Capabilities {
 			tmp := v.SanitizeStructOpenVocabTypeSTIX()
 			c = append(c, tmp)
@@ -1394,7 +553,7 @@ func (mstix MalwareDomainObjectsSTIX) ToStringBeautiful() string {
 	str.WriteString(mstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
 	str.WriteString(fmt.Sprintf("'name': '%s'\n", mstix.Name))
 	str.WriteString(fmt.Sprintf("'description': '%s'\n", mstix.Description))
-	str.WriteString(fmt.Sprintf("'malware_types': \n%v", func(l []OpenVocabTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'malware_types': \n%v", func(l []stixhelpers.OpenVocabTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -1413,7 +572,7 @@ func (mstix MalwareDomainObjectsSTIX) ToStringBeautiful() string {
 
 		return str.String()
 	}(mstix.Aliases)))
-	str.WriteString(fmt.Sprintf("'kill_chain_phases': \n%v", func(l KillChainPhasesTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'kill_chain_phases': \n%v", func(l stixhelpers.KillChainPhasesTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -1425,7 +584,7 @@ func (mstix MalwareDomainObjectsSTIX) ToStringBeautiful() string {
 	}(mstix.KillChainPhases)))
 	str.WriteString(fmt.Sprintf("'first_seen': '%v'\n", mstix.FirstSeen))
 	str.WriteString(fmt.Sprintf("'last_seen': '%v'\n", mstix.LastSeen))
-	str.WriteString(fmt.Sprintf("'operating_system_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'operating_system_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -1434,7 +593,7 @@ func (mstix MalwareDomainObjectsSTIX) ToStringBeautiful() string {
 
 		return str.String()
 	}(mstix.OperatingSystemRefs)))
-	str.WriteString(fmt.Sprintf("'architecture_execution_envs': \n%v", func(l []OpenVocabTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'architecture_execution_envs': \n%v", func(l []stixhelpers.OpenVocabTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -1443,7 +602,7 @@ func (mstix MalwareDomainObjectsSTIX) ToStringBeautiful() string {
 
 		return str.String()
 	}(mstix.ArchitectureExecutionEnvs)))
-	str.WriteString(fmt.Sprintf("'implementation_languages': \n%v", func(l []OpenVocabTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'implementation_languages': \n%v", func(l []stixhelpers.OpenVocabTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -1452,7 +611,7 @@ func (mstix MalwareDomainObjectsSTIX) ToStringBeautiful() string {
 
 		return str.String()
 	}(mstix.ImplementationLanguages)))
-	str.WriteString(fmt.Sprintf("'capabilities': \n%v", func(l []OpenVocabTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'capabilities': \n%v", func(l []stixhelpers.OpenVocabTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -1461,7 +620,7 @@ func (mstix MalwareDomainObjectsSTIX) ToStringBeautiful() string {
 
 		return str.String()
 	}(mstix.Capabilities)))
-	str.WriteString(fmt.Sprintf("'sample_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'sample_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -1526,7 +685,7 @@ func (mastix MalwareAnalysisDomainObjectsSTIX) ValidateStruct() bool {
 		return false
 	}
 
-	if !mastix.validateStructCommonFields() {
+	if !mastix.ValidateStructCommonFields() {
 		return false
 	}
 
@@ -1572,7 +731,7 @@ func (mastix MalwareAnalysisDomainObjectsSTIX) ValidateStruct() bool {
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
 func (mastix MalwareAnalysisDomainObjectsSTIX) SanitizeStruct() MalwareAnalysisDomainObjectsSTIX {
-	mastix.CommonPropertiesDomainObjectSTIX = mastix.sanitizeStruct()
+	mastix.CommonPropertiesDomainObjectSTIX = mastix.SanitizeStruct().CommonPropertiesDomainObjectSTIX
 
 	mastix.Product = commonlibs.StringSanitize(mastix.Product)
 	mastix.ConfigurationVersion = commonlibs.StringSanitize(mastix.ConfigurationVersion)
@@ -1586,8 +745,8 @@ func (mastix MalwareAnalysisDomainObjectsSTIX) SanitizeStruct() MalwareAnalysisD
 	mastix.AnalysisEngineVersion = commonlibs.StringSanitize(mastix.AnalysisEngineVersion)
 	mastix.AnalysisDefinitionVersion = commonlibs.StringSanitize(mastix.AnalysisDefinitionVersion)
 	mastix.ResultName = commonlibs.StringSanitize(mastix.ResultName)
-	mastix.Result = OpenVocabTypeSTIX(commonlibs.StringSanitize(string(mastix.Result)))
-	mastix.AvResult = OpenVocabTypeSTIX(commonlibs.StringSanitize(string(mastix.AvResult)))
+	mastix.Result = stixhelpers.OpenVocabTypeSTIX(commonlibs.StringSanitize(string(mastix.Result)))
+	mastix.AvResult = stixhelpers.OpenVocabTypeSTIX(commonlibs.StringSanitize(string(mastix.AvResult)))
 
 	return mastix
 }
@@ -1612,7 +771,7 @@ func (mastix MalwareAnalysisDomainObjectsSTIX) ToStringBeautiful() string {
 	str.WriteString(fmt.Sprintf("'version': '%s'\n", mastix.Version))
 	str.WriteString(fmt.Sprintf("'host_vm_ref': '%s'\n", mastix.HostVMRef))
 	str.WriteString(fmt.Sprintf("'operating_system_ref': '%s'\n", mastix.OperatingSystemRef))
-	str.WriteString(fmt.Sprintf("'installed_software_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'installed_software_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -1638,7 +797,7 @@ func (mastix MalwareAnalysisDomainObjectsSTIX) ToStringBeautiful() string {
 	str.WriteString(fmt.Sprintf("'analysis_ended': '%v'\n", mastix.AnalysisEnded))
 	str.WriteString(fmt.Sprintf("'result_name': '%s'\n", mastix.ResultName))
 	str.WriteString(fmt.Sprintf("'result': '%s'\n", mastix.Result))
-	str.WriteString(fmt.Sprintf("'analysis_sco_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'analysis_sco_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -1691,7 +850,7 @@ func (nstix NoteDomainObjectsSTIX) ValidateStruct() bool {
 		return false
 	}
 
-	if !nstix.validateStructCommonFields() {
+	if !nstix.ValidateStructCommonFields() {
 		return false
 	}
 
@@ -1710,7 +869,7 @@ func (nstix NoteDomainObjectsSTIX) ValidateStruct() bool {
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
 func (nstix NoteDomainObjectsSTIX) SanitizeStruct() NoteDomainObjectsSTIX {
-	nstix.CommonPropertiesDomainObjectSTIX = nstix.sanitizeStruct()
+	nstix.CommonPropertiesDomainObjectSTIX = nstix.SanitizeStruct().CommonPropertiesDomainObjectSTIX
 
 	nstix.Abstract = commonlibs.StringSanitize(nstix.Abstract)
 	nstix.Content = commonlibs.StringSanitize(nstix.Content)
@@ -1753,7 +912,7 @@ func (nstix NoteDomainObjectsSTIX) ToStringBeautiful() string {
 
 		return str.String()
 	}(nstix.Authors)))
-	str.WriteString(fmt.Sprintf("'object_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'object_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -1826,7 +985,7 @@ func (odstix ObservedDataDomainObjectsSTIX) ValidateStruct() bool {
 		return false
 	}
 
-	if !odstix.validateStructCommonFields() {
+	if !odstix.ValidateStructCommonFields() {
 		return false
 	}
 
@@ -1843,7 +1002,7 @@ func (odstix ObservedDataDomainObjectsSTIX) ValidateStruct() bool {
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
 func (odstix ObservedDataDomainObjectsSTIX) SanitizeStruct() ObservedDataDomainObjectsSTIX {
-	odstix.CommonPropertiesDomainObjectSTIX = odstix.sanitizeStruct()
+	odstix.CommonPropertiesDomainObjectSTIX = odstix.SanitizeStruct().CommonPropertiesDomainObjectSTIX
 
 	return odstix
 }
@@ -1867,7 +1026,7 @@ func (odstix ObservedDataDomainObjectsSTIX) ToStringBeautiful() string {
 	str.WriteString(fmt.Sprintf("'first_observed': '%v'\n", odstix.FirstObserved))
 	str.WriteString(fmt.Sprintf("'last_observed': '%v'\n", odstix.LastObserved))
 	str.WriteString(fmt.Sprintf("'number_observed': '%d'\n", odstix.NumberObserved))
-	str.WriteString(fmt.Sprintf("'object_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'object_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -1912,7 +1071,7 @@ func (ostix OpinionDomainObjectsSTIX) ValidateStruct() bool {
 		return false
 	}
 
-	if !ostix.validateStructCommonFields() {
+	if !ostix.ValidateStructCommonFields() {
 		return false
 	}
 
@@ -1931,7 +1090,7 @@ func (ostix OpinionDomainObjectsSTIX) ValidateStruct() bool {
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
 func (ostix OpinionDomainObjectsSTIX) SanitizeStruct() OpinionDomainObjectsSTIX {
-	ostix.CommonPropertiesDomainObjectSTIX = ostix.sanitizeStruct()
+	ostix.CommonPropertiesDomainObjectSTIX = ostix.SanitizeStruct().CommonPropertiesDomainObjectSTIX
 
 	ostix.Explanation = commonlibs.StringSanitize(ostix.Explanation)
 
@@ -1943,7 +1102,7 @@ func (ostix OpinionDomainObjectsSTIX) SanitizeStruct() OpinionDomainObjectsSTIX 
 		ostix.Authors = mTmp
 	}
 
-	ostix.Opinion = EnumTypeSTIX(commonlibs.StringSanitize(string(ostix.Opinion)))
+	ostix.Opinion = stixhelpers.EnumTypeSTIX(commonlibs.StringSanitize(string(ostix.Opinion)))
 
 	return ostix
 }
@@ -1975,7 +1134,7 @@ func (ostix OpinionDomainObjectsSTIX) ToStringBeautiful() string {
 		return str.String()
 	}(ostix.Authors)))
 	str.WriteString(fmt.Sprintf("'opinion': '%v'\n", ostix.Opinion))
-	str.WriteString(fmt.Sprintf("'object_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'object_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -2032,7 +1191,7 @@ func (rstix ReportDomainObjectsSTIX) ValidateStruct() bool {
 		return false
 	}
 
-	if !rstix.validateStructCommonFields() {
+	if !rstix.ValidateStructCommonFields() {
 		return false
 	}
 
@@ -2057,12 +1216,12 @@ func (rstix ReportDomainObjectsSTIX) ValidateStruct() bool {
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
 func (rstix ReportDomainObjectsSTIX) SanitizeStruct() ReportDomainObjectsSTIX {
-	rstix.CommonPropertiesDomainObjectSTIX = rstix.sanitizeStruct()
+	rstix.CommonPropertiesDomainObjectSTIX = rstix.SanitizeStruct().CommonPropertiesDomainObjectSTIX
 
 	rstix.Name = commonlibs.StringSanitize(rstix.Name)
 	rstix.Description = commonlibs.StringSanitize(rstix.Description)
 	if len(rstix.ReportTypes) > 0 {
-		r := make([]OpenVocabTypeSTIX, 0, len(rstix.ReportTypes))
+		r := make([]stixhelpers.OpenVocabTypeSTIX, 0, len(rstix.ReportTypes))
 		for _, v := range rstix.ReportTypes {
 			tmp := v.SanitizeStructOpenVocabTypeSTIX()
 			r = append(r, tmp)
@@ -2092,7 +1251,7 @@ func (rstix ReportDomainObjectsSTIX) ToStringBeautiful() string {
 	str.WriteString(rstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
 	str.WriteString(fmt.Sprintf("'name': '%s'\n", rstix.Name))
 	str.WriteString(fmt.Sprintf("'description': '%s'\n", rstix.Description))
-	str.WriteString(fmt.Sprintf("'report_types': \n%v", func(l []OpenVocabTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'report_types': \n%v", func(l []stixhelpers.OpenVocabTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -2102,7 +1261,7 @@ func (rstix ReportDomainObjectsSTIX) ToStringBeautiful() string {
 		return str.String()
 	}(rstix.ReportTypes)))
 	str.WriteString(fmt.Sprintf("'published': '%v'\n", rstix.Published))
-	str.WriteString(fmt.Sprintf("'object_refs': \n%v", func(l []IdentifierTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'object_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -2111,10 +1270,6 @@ func (rstix ReportDomainObjectsSTIX) ToStringBeautiful() string {
 
 		return str.String()
 	}(rstix.ObjectRefs)))
-	str.WriteString(fmt.Sprintln("'outside_specification':"))
-	str.WriteString(fmt.Sprintf("\t'additional_name': %v\n", rstix.OutsideSpecification.AdditionalName))
-	str.WriteString(fmt.Sprintf("\t'computer_threat_type': %v\n", rstix.OutsideSpecification.ComputerThreatType))
-	str.WriteString(fmt.Sprintf("\t'decisions_made_computer_threat': %v\n", rstix.OutsideSpecification.DecisionsMadeComputerThreat))
 
 	return str.String()
 }
@@ -2161,7 +1316,7 @@ func (tastix ThreatActorDomainObjectsSTIX) ValidateStruct() bool {
 		return false
 	}
 
-	if !tastix.validateStructCommonFields() {
+	if !tastix.ValidateStructCommonFields() {
 		return false
 	}
 
@@ -2174,13 +1329,13 @@ func (tastix ThreatActorDomainObjectsSTIX) ValidateStruct() bool {
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
 func (tastix ThreatActorDomainObjectsSTIX) SanitizeStruct() ThreatActorDomainObjectsSTIX {
-	tastix.CommonPropertiesDomainObjectSTIX = tastix.sanitizeStruct()
+	tastix.CommonPropertiesDomainObjectSTIX = tastix.SanitizeStruct().CommonPropertiesDomainObjectSTIX
 
 	tastix.Name = commonlibs.StringSanitize(tastix.Name)
 	tastix.Description = commonlibs.StringSanitize(tastix.Description)
 
 	if len(tastix.ThreatActorTypes) > 0 {
-		ta := make([]OpenVocabTypeSTIX, 0, len(tastix.ThreatActorTypes))
+		ta := make([]stixhelpers.OpenVocabTypeSTIX, 0, len(tastix.ThreatActorTypes))
 		for _, v := range tastix.ThreatActorTypes {
 			tmp := v.SanitizeStructOpenVocabTypeSTIX()
 			ta = append(ta, tmp)
@@ -2198,7 +1353,7 @@ func (tastix ThreatActorDomainObjectsSTIX) SanitizeStruct() ThreatActorDomainObj
 	}
 
 	if len(tastix.Roles) > 0 {
-		ta := make([]OpenVocabTypeSTIX, 0, len(tastix.Roles))
+		ta := make([]stixhelpers.OpenVocabTypeSTIX, 0, len(tastix.Roles))
 		for _, v := range tastix.Roles {
 			tmp := v.SanitizeStructOpenVocabTypeSTIX()
 			ta = append(ta, tmp)
@@ -2215,12 +1370,12 @@ func (tastix ThreatActorDomainObjectsSTIX) SanitizeStruct() ThreatActorDomainObj
 		tastix.Goals = mTmp
 	}
 
-	tastix.Sophistication = OpenVocabTypeSTIX(commonlibs.StringSanitize(string(tastix.Sophistication)))
-	tastix.ResourceLevel = OpenVocabTypeSTIX(commonlibs.StringSanitize(string(tastix.ResourceLevel)))
-	tastix.PrimaryMotivation = OpenVocabTypeSTIX(commonlibs.StringSanitize(string(tastix.PrimaryMotivation)))
+	tastix.Sophistication = stixhelpers.OpenVocabTypeSTIX(commonlibs.StringSanitize(string(tastix.Sophistication)))
+	tastix.ResourceLevel = stixhelpers.OpenVocabTypeSTIX(commonlibs.StringSanitize(string(tastix.ResourceLevel)))
+	tastix.PrimaryMotivation = stixhelpers.OpenVocabTypeSTIX(commonlibs.StringSanitize(string(tastix.PrimaryMotivation)))
 
 	if len(tastix.SecondaryMotivations) > 0 {
-		ta := make([]OpenVocabTypeSTIX, 0, len(tastix.SecondaryMotivations))
+		ta := make([]stixhelpers.OpenVocabTypeSTIX, 0, len(tastix.SecondaryMotivations))
 		for _, v := range tastix.SecondaryMotivations {
 			tmp := v.SanitizeStructOpenVocabTypeSTIX()
 			ta = append(ta, tmp)
@@ -2230,7 +1385,7 @@ func (tastix ThreatActorDomainObjectsSTIX) SanitizeStruct() ThreatActorDomainObj
 	}
 
 	if len(tastix.PersonalMotivations) > 0 {
-		ta := make([]OpenVocabTypeSTIX, 0, len(tastix.PersonalMotivations))
+		ta := make([]stixhelpers.OpenVocabTypeSTIX, 0, len(tastix.PersonalMotivations))
 		for _, v := range tastix.PersonalMotivations {
 			tmp := v.SanitizeStructOpenVocabTypeSTIX()
 			ta = append(ta, tmp)
@@ -2260,7 +1415,7 @@ func (tastix ThreatActorDomainObjectsSTIX) ToStringBeautiful() string {
 	str.WriteString(tastix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
 	str.WriteString(fmt.Sprintf("'name': '%s'\n", tastix.Name))
 	str.WriteString(fmt.Sprintf("'description': '%s'\n", tastix.Description))
-	str.WriteString(fmt.Sprintf("'threat_actor_types': \n%v", func(l []OpenVocabTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'threat_actor_types': \n%v", func(l []stixhelpers.OpenVocabTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -2280,7 +1435,7 @@ func (tastix ThreatActorDomainObjectsSTIX) ToStringBeautiful() string {
 	}(tastix.Aliases)))
 	str.WriteString(fmt.Sprintf("'first_seen': '%v'\n", tastix.FirstSeen))
 	str.WriteString(fmt.Sprintf("'last_seen': '%v'\n", tastix.LastSeen))
-	str.WriteString(fmt.Sprintf("'roles': \n%v", func(l []OpenVocabTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'roles': \n%v", func(l []stixhelpers.OpenVocabTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -2301,7 +1456,7 @@ func (tastix ThreatActorDomainObjectsSTIX) ToStringBeautiful() string {
 	str.WriteString(fmt.Sprintf("'sophistication': '%v'\n", tastix.FirstSeen))
 	str.WriteString(fmt.Sprintf("'resource_level': '%v'\n", tastix.LastSeen))
 	str.WriteString(fmt.Sprintf("'primary_motivation': '%v'\n", tastix.LastSeen))
-	str.WriteString(fmt.Sprintf("'secondary_motivations': \n%v", func(l []OpenVocabTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'secondary_motivations': \n%v", func(l []stixhelpers.OpenVocabTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -2310,7 +1465,7 @@ func (tastix ThreatActorDomainObjectsSTIX) ToStringBeautiful() string {
 
 		return str.String()
 	}(tastix.SecondaryMotivations)))
-	str.WriteString(fmt.Sprintf("'personal_motivations': \n%v", func(l []OpenVocabTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'personal_motivations': \n%v", func(l []stixhelpers.OpenVocabTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -2385,7 +1540,7 @@ func (tstix ToolDomainObjectsSTIX) ValidateStruct() bool {
 		return false
 	}
 
-	if !tstix.validateStructCommonFields() {
+	if !tstix.ValidateStructCommonFields() {
 		return false
 	}
 
@@ -2398,13 +1553,13 @@ func (tstix ToolDomainObjectsSTIX) ValidateStruct() bool {
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
 func (tstix ToolDomainObjectsSTIX) SanitizeStruct() ToolDomainObjectsSTIX {
-	tstix.CommonPropertiesDomainObjectSTIX = tstix.sanitizeStruct()
+	tstix.CommonPropertiesDomainObjectSTIX = tstix.SanitizeStruct().CommonPropertiesDomainObjectSTIX
 
 	tstix.Name = commonlibs.StringSanitize(tstix.Name)
 	tstix.Description = commonlibs.StringSanitize(tstix.Description)
 
 	if len(tstix.ToolTypes) > 0 {
-		t := make([]OpenVocabTypeSTIX, 0, len(tstix.ToolTypes))
+		t := make([]stixhelpers.OpenVocabTypeSTIX, 0, len(tstix.ToolTypes))
 		for _, v := range tstix.ToolTypes {
 			tmp := v.SanitizeStructOpenVocabTypeSTIX()
 			t = append(t, tmp)
@@ -2445,7 +1600,7 @@ func (tstix ToolDomainObjectsSTIX) ToStringBeautiful() string {
 	str.WriteString(tstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
 	str.WriteString(fmt.Sprintf("'name': '%s'\n", tstix.Name))
 	str.WriteString(fmt.Sprintf("'description': '%s'\n", tstix.Description))
-	str.WriteString(fmt.Sprintf("'tool_types': \n%v", func(l []OpenVocabTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'tool_types': \n%v", func(l []stixhelpers.OpenVocabTypeSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -2463,7 +1618,7 @@ func (tstix ToolDomainObjectsSTIX) ToStringBeautiful() string {
 
 		return str.String()
 	}(tstix.Aliases)))
-	str.WriteString(fmt.Sprintf("'kill_chain_phases': \n%v", func(l []KillChainPhasesTypeElementSTIX) string {
+	str.WriteString(fmt.Sprintf("'kill_chain_phases': \n%v", func(l []stixhelpers.KillChainPhasesTypeElementSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
@@ -2529,7 +1684,7 @@ func (vstix VulnerabilityDomainObjectsSTIX) ValidateStruct() bool {
 		return false
 	}
 
-	if !vstix.validateStructCommonFields() {
+	if !vstix.ValidateStructCommonFields() {
 		return false
 	}
 
@@ -2542,7 +1697,7 @@ func (vstix VulnerabilityDomainObjectsSTIX) ValidateStruct() bool {
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
 func (vstix VulnerabilityDomainObjectsSTIX) SanitizeStruct() VulnerabilityDomainObjectsSTIX {
-	vstix.CommonPropertiesDomainObjectSTIX = vstix.sanitizeStruct()
+	vstix.CommonPropertiesDomainObjectSTIX = vstix.SanitizeStruct().CommonPropertiesDomainObjectSTIX
 
 	vstix.Name = commonlibs.StringSanitize(vstix.Name)
 	vstix.Description = commonlibs.StringSanitize(vstix.Description)

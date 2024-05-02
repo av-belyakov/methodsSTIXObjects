@@ -1,4 +1,4 @@
-package datamodels
+package domainobjectsstix
 
 import (
 	"encoding/json"
@@ -111,49 +111,50 @@ func (e *IdentityDomainObjectsSTIX) SetValueSectors(v []stixhelpers.OpenVocabTyp
 }
 
 // ValidateStruct является валидатором параметров содержащихся в типе IdentityDomainObjectsSTIX
-func (istix IdentityDomainObjectsSTIX) ValidateStruct() bool {
-	if !(regexp.MustCompile(`^(identity--)[0-9a-f|-]+$`).MatchString(istix.ID)) {
+func (e IdentityDomainObjectsSTIX) ValidateStruct() bool {
+	if !(regexp.MustCompile(`^(identity--)[0-9a-f|-]+$`).MatchString(e.ID)) {
 		return false
 	}
 
 	//обязательное поле
-	if istix.Name == "" {
+	if e.Name == "" {
 		return false
 	}
 
-	return istix.ValidateStructCommonFields()
+	return e.ValidateStructCommonFields()
 }
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
-func (istix IdentityDomainObjectsSTIX) SanitizeStruct() IdentityDomainObjectsSTIX {
-	istix.CommonPropertiesDomainObjectSTIX = istix.SanitizeStruct().CommonPropertiesDomainObjectSTIX
+func (e IdentityDomainObjectsSTIX) SanitizeStruct() IdentityDomainObjectsSTIX {
+	e.CommonPropertiesDomainObjectSTIX = e.SanitizeStruct().CommonPropertiesDomainObjectSTIX
 
-	istix.Name = commonlibs.StringSanitize(istix.Name)
-	istix.Description = commonlibs.StringSanitize(istix.Description)
+	e.Name = commonlibs.StringSanitize(e.Name)
+	e.Description = commonlibs.StringSanitize(e.Description)
 
-	if len(istix.Roles) > 0 {
-		rolesTmp := make([]string, 0, len(istix.Roles))
-		for _, v := range istix.Roles {
+	if len(e.Roles) > 0 {
+		rolesTmp := make([]string, 0, len(e.Roles))
+		for _, v := range e.Roles {
 			rolesTmp = append(rolesTmp, commonlibs.StringSanitize(v))
 		}
-		istix.Roles = rolesTmp
+
+		e.Roles = rolesTmp
 	}
 
-	istix.IdentityClass = istix.IdentityClass.SanitizeStructOpenVocabTypeSTIX()
+	e.IdentityClass = e.IdentityClass.SanitizeStructOpenVocabTypeSTIX()
 
-	if len(istix.Sectors) > 0 {
-		sectorsTmp := make([]stixhelpers.OpenVocabTypeSTIX, 0, len(istix.Sectors))
-		for _, v := range istix.Sectors {
+	if len(e.Sectors) > 0 {
+		sectorsTmp := make([]stixhelpers.OpenVocabTypeSTIX, 0, len(e.Sectors))
+		for _, v := range e.Sectors {
 			tmp := v.SanitizeStructOpenVocabTypeSTIX()
 			sectorsTmp = append(sectorsTmp, tmp)
 		}
 
-		istix.Sectors = sectorsTmp
+		e.Sectors = sectorsTmp
 	}
 
-	istix.ContactInformation = commonlibs.StringSanitize(istix.ContactInformation)
+	e.ContactInformation = commonlibs.StringSanitize(e.ContactInformation)
 
-	return istix
+	return e
 }
 
 // GetID возвращает ID STIX объекта
@@ -162,18 +163,18 @@ func (istix IdentityDomainObjectsSTIX) GetID() string {
 }
 
 // GetType возвращает Type STIX объекта
-func (istix IdentityDomainObjectsSTIX) GetType() string {
-	return istix.Type
+func (e IdentityDomainObjectsSTIX) GetType() string {
+	return e.Type
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (istix IdentityDomainObjectsSTIX) ToStringBeautiful() string {
+func (e IdentityDomainObjectsSTIX) ToStringBeautiful() string {
 	str := strings.Builder{}
 
-	str.WriteString(istix.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(istix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'name': '%s'\n", istix.Name))
-	str.WriteString(fmt.Sprintf("'description': '%s'\n", istix.Description))
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'name': '%s'\n", e.Name))
+	str.WriteString(fmt.Sprintf("'description': '%s'\n", e.Description))
 	str.WriteString(fmt.Sprintf("'roles': \n%v", func(l []string) string {
 		str := strings.Builder{}
 
@@ -182,8 +183,8 @@ func (istix IdentityDomainObjectsSTIX) ToStringBeautiful() string {
 		}
 
 		return str.String()
-	}(istix.Roles)))
-	str.WriteString(fmt.Sprintf("'identity_class': '%s'\n", istix.IdentityClass))
+	}(e.Roles)))
+	str.WriteString(fmt.Sprintf("'identity_class': '%s'\n", e.IdentityClass))
 	str.WriteString(fmt.Sprintf("'sectors': \n%v", func(l []stixhelpers.OpenVocabTypeSTIX) string {
 		str := strings.Builder{}
 
@@ -192,8 +193,8 @@ func (istix IdentityDomainObjectsSTIX) ToStringBeautiful() string {
 		}
 
 		return str.String()
-	}(istix.Sectors)))
-	str.WriteString(fmt.Sprintf("'contact_information': '%s'\n", istix.ContactInformation))
+	}(e.Sectors)))
+	str.WriteString(fmt.Sprintf("'contact_information': '%s'\n", e.ContactInformation))
 
 	return str.String()
 }

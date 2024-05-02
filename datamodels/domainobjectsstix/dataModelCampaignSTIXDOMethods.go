@@ -1,4 +1,4 @@
-package datamodels
+package domainobjectsstix
 
 import (
 	"encoding/json"
@@ -76,21 +76,6 @@ func (e *CampaignDomainObjectsSTIX) GetAnyDescription(i interface{}) {
 	e.Description = fmt.Sprint(i)
 }
 
-// -------- Aliases property ---------
-func (e *CampaignDomainObjectsSTIX) GetAliases() []string {
-	return e.Aliases
-}
-
-// SetValueAliases устанавливает значение для поля Aliases
-func (e *CampaignDomainObjectsSTIX) SetValueAliases(v string) {
-	e.Aliases = append(e.Aliases, v)
-}
-
-// SetAnyAliases устанавливает ЛЮБОЕ значение для поля Aliases
-func (e *CampaignDomainObjectsSTIX) SetAnyAliases(i interface{}) {
-	e.Aliases = append(e.Aliases, fmt.Sprint(i))
-}
-
 // -------- FirstSeen property ---------
 func (e *CampaignDomainObjectsSTIX) GetFirstSeen() string {
 	return e.FirstSeen
@@ -123,53 +108,69 @@ func (e *CampaignDomainObjectsSTIX) SetAnyLastSeen(i interface{}) {
 	e.LastSeen = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
 }
 
+// -------- Aliases property ---------
+func (e *CampaignDomainObjectsSTIX) GetAliases() []string {
+	return e.Aliases
+}
+
+// SetValueAliases устанавливает значение для поля Aliases
+func (e *CampaignDomainObjectsSTIX) SetValueAliases(v string) {
+	e.Aliases = append(e.Aliases, v)
+}
+
+// SetAnyAliases устанавливает ЛЮБОЕ значение для поля Aliases
+func (e *CampaignDomainObjectsSTIX) SetAnyAliases(i interface{}) {
+	e.Aliases = append(e.Aliases, fmt.Sprint(i))
+}
+
 // ValidateStruct является валидатором параметров содержащихся в типе CampaignDomainObjectsSTIX
-func (cstix CampaignDomainObjectsSTIX) ValidateStruct() bool {
-	if !(regexp.MustCompile(`^(campaign--)[0-9a-f|-]+$`).MatchString(cstix.ID)) {
+func (e CampaignDomainObjectsSTIX) ValidateStruct() bool {
+	if !(regexp.MustCompile(`^(campaign--)[0-9a-f|-]+$`).MatchString(e.ID)) {
 		return false
 	}
 
-	return cstix.ValidateStructCommonFields()
+	return e.ValidateStructCommonFields()
 }
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
-func (cstix CampaignDomainObjectsSTIX) SanitizeStruct() CampaignDomainObjectsSTIX {
-	cstix.CommonPropertiesDomainObjectSTIX = cstix.SanitizeStruct().CommonPropertiesDomainObjectSTIX
+func (e CampaignDomainObjectsSTIX) SanitizeStruct() CampaignDomainObjectsSTIX {
+	e.CommonPropertiesDomainObjectSTIX = e.SanitizeStruct().CommonPropertiesDomainObjectSTIX
 
-	cstix.Name = commonlibs.StringSanitize(cstix.Name)
-	cstix.Description = commonlibs.StringSanitize(cstix.Description)
+	e.Name = commonlibs.StringSanitize(e.Name)
+	e.Description = commonlibs.StringSanitize(e.Description)
 
-	if len(cstix.Aliases) > 0 {
-		aliasesTmp := make([]string, 0, len(cstix.Aliases))
-		for _, v := range cstix.Aliases {
+	if len(e.Aliases) > 0 {
+		aliasesTmp := make([]string, 0, len(e.Aliases))
+		for _, v := range e.Aliases {
 			aliasesTmp = append(aliasesTmp, commonlibs.StringSanitize(v))
 		}
-		cstix.Aliases = aliasesTmp
+
+		e.Aliases = aliasesTmp
 	}
 
-	cstix.Objective = commonlibs.StringSanitize(cstix.Objective)
+	e.Objective = commonlibs.StringSanitize(e.Objective)
 
-	return cstix
+	return e
 }
 
 // GetID возвращает ID STIX объекта
-func (cstix CampaignDomainObjectsSTIX) GetID() string {
-	return cstix.ID
+func (e CampaignDomainObjectsSTIX) GetID() string {
+	return e.ID
 }
 
 // GetType возвращает Type STIX объекта
-func (cstix CampaignDomainObjectsSTIX) GetType() string {
-	return cstix.Type
+func (e CampaignDomainObjectsSTIX) GetType() string {
+	return e.Type
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (cstix CampaignDomainObjectsSTIX) ToStringBeautiful() string {
+func (e CampaignDomainObjectsSTIX) ToStringBeautiful() string {
 	str := strings.Builder{}
 
-	str.WriteString(cstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(cstix.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'name': '%s'\n", cstix.Name))
-	str.WriteString(fmt.Sprintf("'description': '%s'\n", cstix.Description))
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'name': '%s'\n", e.Name))
+	str.WriteString(fmt.Sprintf("'description': '%s'\n", e.Description))
 	str.WriteString(fmt.Sprintf("'aliases': \n%v", func(l []string) string {
 		str := strings.Builder{}
 
@@ -178,33 +179,33 @@ func (cstix CampaignDomainObjectsSTIX) ToStringBeautiful() string {
 		}
 
 		return str.String()
-	}(cstix.Aliases)))
-	str.WriteString(fmt.Sprintf("'first_seen': '%s'\n", cstix.FirstSeen))
-	str.WriteString(fmt.Sprintf("'last_seen': '%s'\n", cstix.LastSeen))
-	str.WriteString(fmt.Sprintf("'objective': '%s'\n", cstix.Objective))
+	}(e.Aliases)))
+	str.WriteString(fmt.Sprintf("'first_seen': '%s'\n", e.FirstSeen))
+	str.WriteString(fmt.Sprintf("'last_seen': '%s'\n", e.LastSeen))
+	str.WriteString(fmt.Sprintf("'objective': '%s'\n", e.Objective))
 
 	return str.String()
 }
 
 // GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
-func (cstix CampaignDomainObjectsSTIX) GeneratingDataForIndexing() map[string]string {
+func (e CampaignDomainObjectsSTIX) GeneratingDataForIndexing() map[string]string {
 	dataForIndex := map[string]string{
-		"id":   cstix.ID,
-		"type": cstix.Type,
+		"id":   e.ID,
+		"type": e.Type,
 	}
 
-	if cstix.Name != "" {
-		dataForIndex["name"] = cstix.Name
+	if e.Name != "" {
+		dataForIndex["name"] = e.Name
 	}
 
-	if cstix.Description != "" {
-		dataForIndex["description"] = cstix.Description
+	if e.Description != "" {
+		dataForIndex["description"] = e.Description
 	}
 
-	if len(cstix.Aliases) > 0 {
+	if len(e.Aliases) > 0 {
 		var strTmp string
 
-		for _, v := range cstix.Aliases {
+		for _, v := range e.Aliases {
 			strTmp += fmt.Sprintf(" %s", v)
 		}
 

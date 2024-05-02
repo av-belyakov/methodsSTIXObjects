@@ -1,8 +1,6 @@
-package datamodels
+package domainobjectsstix
 
 import (
-	"time"
-
 	"github.com/av-belyakov/methodstixobjects/datamodels/commonproperties"
 	"github.com/av-belyakov/methodstixobjects/datamodels/commonpropertiesstixdo"
 	"github.com/av-belyakov/methodstixobjects/datamodels/stixhelpers"
@@ -127,9 +125,9 @@ type InfrastructureDomainObjectsSTIX struct {
 	commonpropertiesstixdo.CommonPropertiesDomainObjectSTIX
 	Name                string                              `json:"name" bson:"name" required:"true"`
 	Description         string                              `json:"description" bson:"description"`
+	FirstSeen           string                              `json:"first_seen" bson:"first_seen"`
+	LastSeen            string                              `json:"last_seen" bson:"last_seen"`
 	Aliases             []string                            `json:"aliases" bson:"aliases"`
-	FirstSeen           time.Time                           `json:"first_seen" bson:"first_seen"`
-	LastSeen            time.Time                           `json:"last_seen" bson:"last_seen"`
 	KillChainPhases     stixhelpers.KillChainPhasesTypeSTIX `json:"kill_chain_phases" bson:"kill_chain_phases"`
 	InfrastructureTypes []stixhelpers.OpenVocabTypeSTIX     `json:"infrastructure_types" bson:"infrastructure_types"`
 }
@@ -151,10 +149,10 @@ type IntrusionSetDomainObjectsSTIX struct {
 	commonpropertiesstixdo.CommonPropertiesDomainObjectSTIX
 	Name                 string                          `json:"name" bson:"name" required:"true"`
 	Description          string                          `json:"description" bson:"description"`
+	FirstSeen            string                          `json:"first_seen" bson:"first_seen"`
+	LastSeen             string                          `json:"last_seen" bson:"last_seen"`
 	Aliases              []string                        `json:"aliases" bson:"aliases"`
 	Goals                []string                        `json:"goals" bson:"goals"`
-	FirstSeen            time.Time                       `json:"first_seen" bson:"first_seen"`
-	LastSeen             time.Time                       `json:"last_seen" bson:"last_seen"`
 	ResourceLevel        stixhelpers.OpenVocabTypeSTIX   `json:"resource_level" bson:"resource_level"`
 	PrimaryMotivation    stixhelpers.OpenVocabTypeSTIX   `json:"primary_motivation" bson:"primary_motivation"`
 	SecondaryMotivations []stixhelpers.OpenVocabTypeSTIX `json:"secondary_motivations" bson:"secondary_motivations"`
@@ -211,9 +209,9 @@ type MalwareDomainObjectsSTIX struct {
 	IsFamily                  bool                                `json:"is_family" bson:"is_family" required:"true"`
 	Name                      string                              `json:"name" bson:"name"`
 	Description               string                              `json:"description" bson:"description"`
+	FirstSeen                 string                              `json:"first_seen" bson:"first_seen"`
+	LastSeen                  string                              `json:"last_seen" bson:"last_seen"`
 	Aliases                   []string                            `json:"aliases" bson:"aliases"`
-	FirstSeen                 time.Time                           `json:"first_seen" bson:"first_seen"`
-	LastSeen                  time.Time                           `json:"last_seen" bson:"last_seen"`
 	KillChainPhases           stixhelpers.KillChainPhasesTypeSTIX `json:"kill_chain_phases" bson:"kill_chain_phases"`
 	MalwareTypes              []stixhelpers.OpenVocabTypeSTIX     `json:"malware_types" bson:"malware_types"`
 	OperatingSystemRefs       []stixhelpers.IdentifierTypeSTIX    `json:"operating_system_refs" bson:"operating_system_refs"`
@@ -253,10 +251,10 @@ type MalwareAnalysisDomainObjectsSTIX struct {
 	ConfigurationVersion      string                           `json:"configuration_version" bson:"configuration_version"`
 	AnalysisEngineVersion     string                           `json:"analysis_engine_version" bson:"analysis_engine_version"`
 	AnalysisDefinitionVersion string                           `json:"analysis_definition_version" bson:"analysis_definition_version"`
+	Submitted                 string                           `json:"submitted" bson:"submitted"`
+	AnalysisStarted           string                           `json:"analysis_started" bson:"analysis_started"`
+	AnalysisEnded             string                           `json:"analysis_ended" bson:"analysis_ended"`
 	Modules                   []string                         `json:"modules" bson:"modules"`
-	Submitted                 time.Time                        `json:"submitted" bson:"submitted"`
-	AnalysisStarted           time.Time                        `json:"analysis_started" bson:"analysis_started"`
-	AnalysisEnded             time.Time                        `json:"analysis_ended" bson:"analysis_ended"`
 	HostVMRef                 stixhelpers.IdentifierTypeSTIX   `json:"host_vm_ref" bson:"host_vm_ref"`
 	OperatingSystemRef        stixhelpers.IdentifierTypeSTIX   `json:"operating_system_ref" bson:"operating_system_ref"`
 	Result                    stixhelpers.OpenVocabTypeSTIX    `json:"result" bson:"result"`
@@ -292,8 +290,8 @@ type ObservedDataDomainObjectsSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
 	commonpropertiesstixdo.CommonPropertiesDomainObjectSTIX
 	NumberObserved int                              `json:"number_observed" bson:"number_observed" required:"true"`
-	FirstObserved  time.Time                        `json:"first_observed" bson:"first_observed" required:"true"`
-	LastObserved   time.Time                        `json:"last_observed" bson:"last_observed" required:"true"`
+	FirstObserved  string                           `json:"first_observed" bson:"first_observed" required:"true"`
+	LastObserved   string                           `json:"last_observed" bson:"last_observed" required:"true"`
 	ObjectRefs     []stixhelpers.IdentifierTypeSTIX `json:"object_refs" bson:"object_refs"`
 }
 
@@ -326,7 +324,7 @@ type ReportDomainObjectsSTIX struct {
 	commonpropertiesstixdo.CommonPropertiesDomainObjectSTIX
 	Name        string                           `json:"name" bson:"name" required:"true"`
 	Description string                           `json:"description" bson:"description"`
-	Published   time.Time                        `json:"published" bson:"published" required:"true"`
+	Published   string                           `json:"published" bson:"published" required:"true"`
 	ReportTypes []stixhelpers.OpenVocabTypeSTIX  `json:"report_types" bson:"report_types"`
 	ObjectRefs  []stixhelpers.IdentifierTypeSTIX `json:"object_refs" bson:"object_refs" required:"true"`
 }
@@ -353,10 +351,10 @@ type ThreatActorDomainObjectsSTIX struct {
 	commonpropertiesstixdo.CommonPropertiesDomainObjectSTIX
 	Name                 string                          `json:"name" bson:"name" required:"true"`
 	Description          string                          `json:"description" bson:"description"`
+	FirstSeen            string                          `json:"first_seen" bson:"first_seen"`
+	LastSeen             string                          `json:"last_seen" bson:"last_seen"`
 	Aliases              []string                        `json:"aliases" bson:"aliases"`
 	Goals                []string                        `json:"goals" bson:"goals"`
-	FirstSeen            time.Time                       `json:"first_seen" bson:"first_seen"`
-	LastSeen             time.Time                       `json:"last_seen" bson:"last_seen"`
 	Sophistication       stixhelpers.OpenVocabTypeSTIX   `json:"sophistication" bson:"sophistication"`
 	ResourceLevel        stixhelpers.OpenVocabTypeSTIX   `json:"resource_level" bson:"resource_level"`
 	PrimaryMotivation    stixhelpers.OpenVocabTypeSTIX   `json:"primary_motivation" bson:"primary_motivation"`

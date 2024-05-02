@@ -1,0 +1,155 @@
+package domainobjectsstix
+
+import (
+	"encoding/json"
+	"fmt"
+	"regexp"
+	"strings"
+
+	"github.com/av-belyakov/methodstixobjects/commonlibs"
+	"github.com/av-belyakov/methodstixobjects/datamodels/stixhelpers"
+)
+
+/* --- ObservedDataDomainObjectsSTIX --- */
+
+// DecoderJSON выполняет декодирование JSON объекта
+func (e ObservedDataDomainObjectsSTIX) DecodeJSON(raw *json.RawMessage) (interface{}, error) {
+	if err := json.Unmarshal(*raw, &e); err != nil {
+		return nil, err
+	}
+
+	return e, nil
+}
+
+// EncoderJSON выполняет кодирование в JSON объект
+func (e ObservedDataDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
+	result, err := json.Marshal(e)
+
+	return &result, err
+}
+
+// -------- NumberObserved property ---------
+func (e *ObservedDataDomainObjectsSTIX) GetNumberObserved() int {
+	return e.NumberObserved
+}
+
+// SetValueNumberObserved устанавливает значение для поля NumberObserved
+func (e *ObservedDataDomainObjectsSTIX) SetValueNumberObserved(v int) {
+	e.NumberObserved = v
+}
+
+// SetAnyNumberObserved устанавливает ЛЮБОЕ значение для поля NumberObserved
+func (e *ObservedDataDomainObjectsSTIX) GetAnyNumberObserved(i interface{}) {
+	e.NumberObserved = commonlibs.ConversionAnyToInt(i)
+}
+
+// -------- FirstObserved property ---------
+func (e *ObservedDataDomainObjectsSTIX) GetFirstObserved() string {
+	return e.FirstObserved
+}
+
+// SetValueFirstObserved устанавливает значение в формате RFC3339 для поля FirstObserved
+func (e *ObservedDataDomainObjectsSTIX) SetValueFirstObserved(v string) {
+	e.FirstObserved = v
+}
+
+// SetAnyFirstObserved устанавливает ЛЮБОЕ значение для поля FirstObserved
+func (e *ObservedDataDomainObjectsSTIX) SetAnyFirstObserved(i interface{}) {
+	tmp := commonlibs.ConversionAnyToInt(i)
+	e.FirstObserved = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+}
+
+// -------- LastObserved property ---------
+func (e *ObservedDataDomainObjectsSTIX) GetLastObserved() string {
+	return e.LastObserved
+}
+
+// SetValueLastObserved устанавливает значение в формате RFC3339 для поля LastObserved
+func (e *ObservedDataDomainObjectsSTIX) SetValueLastObserved(v string) {
+	e.LastObserved = v
+}
+
+// SetAnyLastObserved устанавливает ЛЮБОЕ значение для поля LastObserved
+func (e *ObservedDataDomainObjectsSTIX) SetAnyLastObserved(i interface{}) {
+	tmp := commonlibs.ConversionAnyToInt(i)
+	e.LastObserved = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+}
+
+// -------- ObjectRefs property ---------
+func (e *ObservedDataDomainObjectsSTIX) GetObjectRefs() []stixhelpers.IdentifierTypeSTIX {
+	return e.ObjectRefs
+}
+
+func (e *ObservedDataDomainObjectsSTIX) SetValueObjectRefs(v []stixhelpers.IdentifierTypeSTIX) {
+	e.ObjectRefs = v
+}
+
+// ValidateStruct является валидатором параметров содержащихся в типе ObservedDataDomainObjectsSTIX
+func (e ObservedDataDomainObjectsSTIX) ValidateStruct() bool {
+	if !(regexp.MustCompile(`^(observed-data--)[0-9a-f|-]+$`).MatchString(e.ID)) {
+		return false
+	}
+
+	if e.NumberObserved <= 0 {
+		return false
+	}
+
+	if !e.ValidateStructCommonFields() {
+		return false
+	}
+
+	for _, v := range e.ObjectRefs {
+		if !v.CheckIdentifierTypeSTIX() {
+			return false
+		}
+	}
+
+	return true
+}
+
+// SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
+func (e ObservedDataDomainObjectsSTIX) SanitizeStruct() ObservedDataDomainObjectsSTIX {
+	e.CommonPropertiesDomainObjectSTIX = e.SanitizeStruct().CommonPropertiesDomainObjectSTIX
+
+	return e
+}
+
+// GetID возвращает ID STIX объекта
+func (e ObservedDataDomainObjectsSTIX) GetID() string {
+	return e.ID
+}
+
+// GetType возвращает Type STIX объекта
+func (e ObservedDataDomainObjectsSTIX) GetType() string {
+	return e.Type
+}
+
+// ToStringBeautiful выполняет красивое представление информации содержащейся в типе
+func (e ObservedDataDomainObjectsSTIX) ToStringBeautiful() string {
+	str := strings.Builder{}
+
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
+	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
+	str.WriteString(fmt.Sprintf("'first_observed': '%v'\n", e.FirstObserved))
+	str.WriteString(fmt.Sprintf("'last_observed': '%v'\n", e.LastObserved))
+	str.WriteString(fmt.Sprintf("'number_observed': '%d'\n", e.NumberObserved))
+	str.WriteString(fmt.Sprintf("'object_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
+		str := strings.Builder{}
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("\t'object_ref '%d'': '%v'\n", k, v))
+		}
+
+		return str.String()
+	}(e.ObjectRefs)))
+
+	return str.String()
+}
+
+// GeneratingDataForIndexing выполняет генерацию данных для их последующей индексации
+func (e ObservedDataDomainObjectsSTIX) GeneratingDataForIndexing() map[string]string {
+	return map[string]string{
+		"id":   e.ID,
+		"type": e.Type,
+	}
+}

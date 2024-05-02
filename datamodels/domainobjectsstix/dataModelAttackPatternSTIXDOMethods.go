@@ -1,4 +1,4 @@
-package datamodels
+package domainobjectsstix
 
 import (
 	"encoding/json"
@@ -125,6 +125,7 @@ func (e AttackPatternDomainObjectsSTIX) SanitizeStruct() AttackPatternDomainObje
 	for _, v := range e.KillChainPhases {
 		newKillChainPhases = append(newKillChainPhases, v.SanitizeStructKillChainPhasesTypeElementSTIX())
 	}
+
 	e.KillChainPhases = newKillChainPhases
 
 	return e

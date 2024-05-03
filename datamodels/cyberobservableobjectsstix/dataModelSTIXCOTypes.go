@@ -1,4 +1,4 @@
-package datamodels
+package cyberobservableobjectsstix
 
 import (
 	"encoding/json"
@@ -71,9 +71,9 @@ type DirectoryCyberObservableObjectSTIX struct {
 	OptionalCommonPropertiesCyberObservableObjectSTIX
 	Path         string                           `json:"path" bson:"path" required:"true"`
 	PathEnc      string                           `json:"path_enc" bson:"path_enc"`
-	Ctime        time.Time                        `json:"ctime" bson:"ctime"`
-	Mtime        time.Time                        `json:"mtime" bson:"mtime"`
-	Atime        time.Time                        `json:"atime" bson:"atime"`
+	Ctime        string                           `json:"ctime" bson:"ctime"`
+	Mtime        string                           `json:"mtime" bson:"mtime"`
+	Atime        string                           `json:"atime" bson:"atime"`
 	ContainsRefs []stixhelpers.IdentifierTypeSTIX `json:"contains_refs" bson:"contains_refs"`
 }
 
@@ -125,8 +125,8 @@ type EmailMessageCyberObservableObjectSTIX struct {
 	MessageID              string                                         `json:"message_id" bson:"message_id"`
 	Subject                string                                         `json:"subject" bson:"subject"`
 	Body                   string                                         `json:"body" bson:"body"`
+	Date                   string                                         `json:"date" bson:"date"`
 	ReceivedLines          []string                                       `json:"received_lines" bson:"received_lines"`
-	Date                   time.Time                                      `json:"date" bson:"date"`
 	FromRef                stixhelpers.IdentifierTypeSTIX                 `json:"from_ref" bson:"from_ref"`
 	SenderRef              stixhelpers.IdentifierTypeSTIX                 `json:"sender_ref" bson:"sender_ref"`
 	RawEmailRef            stixhelpers.IdentifierTypeSTIX                 `json:"raw_email_ref" bson:"raw_email_ref"`

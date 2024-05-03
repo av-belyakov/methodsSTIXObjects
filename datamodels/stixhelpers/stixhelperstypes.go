@@ -47,7 +47,7 @@ type OpenVocabTypeSTIX string
 
 // DictionaryTypeSTIX тип "dictionary", по терминалогии STIX, содержащий значения любых типов
 type DictionaryTypeSTIX struct {
-	dictionary interface{}
+	Dictionary interface{}
 }
 
 /********** 			Meta Object STIX 			**********/

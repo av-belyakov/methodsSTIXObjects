@@ -117,40 +117,40 @@ func (dtstix *DictionaryTypeSTIX) UnmarshalJSON(data []byte) error {
 	)
 
 	if err = json.Unmarshal(data, &str); err == nil {
-		dtstix.dictionary = str
+		dtstix.Dictionary = str
 
 		return nil
 	}
 	if err = json.Unmarshal(data, &num); err == nil {
-		dtstix.dictionary = num
+		dtstix.Dictionary = num
 		return nil
 	}
 	if err = json.Unmarshal(data, &listStr); err == nil {
-		dtstix.dictionary = listStr
+		dtstix.Dictionary = listStr
 		return nil
 	}
 	if err = json.Unmarshal(data, &listInt); err == nil {
-		dtstix.dictionary = listInt
+		dtstix.Dictionary = listInt
 		return nil
 	}
 	if err = json.Unmarshal(data, &mapStrStr); err == nil {
-		dtstix.dictionary = mapStrStr
+		dtstix.Dictionary = mapStrStr
 		return nil
 	}
 	if err = json.Unmarshal(data, &mapStrInt); err == nil {
-		dtstix.dictionary = mapStrInt
+		dtstix.Dictionary = mapStrInt
 		return nil
 	}
 	if err = json.Unmarshal(data, &mapIntInt); err == nil {
-		dtstix.dictionary = mapIntInt
+		dtstix.Dictionary = mapIntInt
 		return nil
 	}
 	if err = json.Unmarshal(data, &mapIntStr); err == nil {
-		dtstix.dictionary = mapIntStr
+		dtstix.Dictionary = mapIntStr
 		return nil
 	}
-	//		dtstix.dictionary = fmt.Sprintln(mapIntStr)
-	dtstix.dictionary = data
+
+	dtstix.Dictionary = data
 
 	return fmt.Errorf("JSON message parsing error, undefined value found in the DictionaryTypeSTIX type")
 }

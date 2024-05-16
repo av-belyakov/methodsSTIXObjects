@@ -39,7 +39,7 @@ func (e *OpinionDomainObjectsSTIX) SetValueExplanation(v string) {
 }
 
 // SetAnyExplanation устанавливает ЛЮБОЕ значение для поля Explanation
-func (e *OpinionDomainObjectsSTIX) GetAnyExplanation(i interface{}) {
+func (e *OpinionDomainObjectsSTIX) SetAnyExplanation(i interface{}) {
 	e.Explanation = fmt.Sprint(i)
 }
 
@@ -69,7 +69,7 @@ func (e *OpinionDomainObjectsSTIX) SetValueOpinion(v stixhelpers.EnumTypeSTIX) {
 }
 
 // SetAnyOpinion устанавливает ЛЮБОЕ значение для поля Opinion
-func (e *OpinionDomainObjectsSTIX) GetAnyOpinion(i interface{}) {
+func (e *OpinionDomainObjectsSTIX) SetAnyOpinion(i interface{}) {
 	e.Opinion = stixhelpers.EnumTypeSTIX(fmt.Sprint(i))
 }
 
@@ -107,7 +107,7 @@ func (e OpinionDomainObjectsSTIX) ValidateStruct() bool {
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
 func (e OpinionDomainObjectsSTIX) SanitizeStruct() OpinionDomainObjectsSTIX {
-	e.CommonPropertiesDomainObjectSTIX = e.SanitizeStruct().CommonPropertiesDomainObjectSTIX
+	e.CommonPropertiesDomainObjectSTIX = e.CommonPropertiesDomainObjectSTIX.SanitizeStruct()
 
 	e.Explanation = commonlibs.StringSanitize(e.Explanation)
 

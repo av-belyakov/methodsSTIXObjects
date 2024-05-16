@@ -42,7 +42,7 @@ func (e *CampaignDomainObjectsSTIX) SetValueName(v string) {
 }
 
 // SetAnyName устанавливает ЛЮБОЕ значение для поля Name
-func (e *CampaignDomainObjectsSTIX) GetAnyName(i interface{}) {
+func (e *CampaignDomainObjectsSTIX) SetAnyName(i interface{}) {
 	e.Name = fmt.Sprint(i)
 }
 
@@ -57,7 +57,7 @@ func (e *CampaignDomainObjectsSTIX) SetValueObjective(v string) {
 }
 
 // SetAnyObjective устанавливает ЛЮБОЕ значение для поля Objective
-func (e *CampaignDomainObjectsSTIX) GetAnyObjective(i interface{}) {
+func (e *CampaignDomainObjectsSTIX) SetAnyObjective(i interface{}) {
 	e.Objective = fmt.Sprint(i)
 }
 
@@ -72,7 +72,7 @@ func (e *CampaignDomainObjectsSTIX) SetValueDescription(v string) {
 }
 
 // SetAnyDescription устанавливает ЛЮБОЕ значение для поля Description
-func (e *CampaignDomainObjectsSTIX) GetAnyDescription(i interface{}) {
+func (e *CampaignDomainObjectsSTIX) SetAnyDescription(i interface{}) {
 	e.Description = fmt.Sprint(i)
 }
 
@@ -134,7 +134,7 @@ func (e CampaignDomainObjectsSTIX) ValidateStruct() bool {
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
 func (e CampaignDomainObjectsSTIX) SanitizeStruct() CampaignDomainObjectsSTIX {
-	e.CommonPropertiesDomainObjectSTIX = e.SanitizeStruct().CommonPropertiesDomainObjectSTIX
+	e.CommonPropertiesDomainObjectSTIX = e.CommonPropertiesDomainObjectSTIX.SanitizeStruct()
 
 	e.Name = commonlibs.StringSanitize(e.Name)
 	e.Description = commonlibs.StringSanitize(e.Description)

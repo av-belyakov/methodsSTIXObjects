@@ -40,7 +40,7 @@ func (e *EmailAddressCyberObservableObjectSTIX) SetValueValue(v string) {
 }
 
 // SetAnyValue устанавливает ЛЮБОЕ значение для поля Value
-func (e *EmailAddressCyberObservableObjectSTIX) GetAnyValue(i interface{}) {
+func (e *EmailAddressCyberObservableObjectSTIX) SetAnyValue(i interface{}) {
 	e.Value = fmt.Sprint(i)
 }
 
@@ -55,7 +55,7 @@ func (e *EmailAddressCyberObservableObjectSTIX) SetValueDisplayName(v string) {
 }
 
 // SetAnyDisplayName устанавливает ЛЮБОЕ значение для поля DisplayName
-func (e *EmailAddressCyberObservableObjectSTIX) GetAnyDisplayName(i interface{}) {
+func (e *EmailAddressCyberObservableObjectSTIX) SetAnyDisplayName(i interface{}) {
 	e.DisplayName = fmt.Sprint(i)
 }
 
@@ -74,7 +74,7 @@ func (e EmailAddressCyberObservableObjectSTIX) ValidateStruct() bool {
 		return false
 	}
 
-	if !e.validateStructCommonFields() {
+	if !e.OptionalCommonPropertiesCyberObservableObjectSTIX.ValidateStructCommonFields() {
 		return false
 	}
 

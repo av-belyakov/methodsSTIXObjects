@@ -43,7 +43,7 @@ func (e *LocationDomainObjectsSTIX) SetValueLatitude(v float32) {
 }
 
 // SetAnyLatitude устанавливает ЛЮБОЕ значение для поля Latitude
-func (e *LocationDomainObjectsSTIX) GetAnyLatitude(i interface{}) {
+func (e *LocationDomainObjectsSTIX) SetAnyLatitude(i interface{}) {
 	e.Latitude = float32(commonlibs.ConversionAnyToInt(i))
 }
 
@@ -58,7 +58,7 @@ func (e *LocationDomainObjectsSTIX) SetValueLongitude(v float32) {
 }
 
 // SetAnyLongitude устанавливает ЛЮБОЕ значение для поля Longitude
-func (e *LocationDomainObjectsSTIX) GetAnyLongitude(i interface{}) {
+func (e *LocationDomainObjectsSTIX) SetAnyLongitude(i interface{}) {
 	e.Longitude = float32(commonlibs.ConversionAnyToInt(i))
 }
 
@@ -73,7 +73,7 @@ func (e *LocationDomainObjectsSTIX) SetValuePrecision(v float32) {
 }
 
 // SetAnyPrecision устанавливает ЛЮБОЕ значение для поля Precision
-func (e *LocationDomainObjectsSTIX) GetAnyPrecision(i interface{}) {
+func (e *LocationDomainObjectsSTIX) SetAnyPrecision(i interface{}) {
 	e.Precision = float32(commonlibs.ConversionAnyToInt(i))
 }
 
@@ -88,7 +88,7 @@ func (e *LocationDomainObjectsSTIX) SetValueName(v string) {
 }
 
 // SetAnyName устанавливает ЛЮБОЕ значение для поля Name
-func (e *LocationDomainObjectsSTIX) GetAnyName(i interface{}) {
+func (e *LocationDomainObjectsSTIX) SetAnyName(i interface{}) {
 	e.Name = fmt.Sprint(i)
 }
 
@@ -103,7 +103,7 @@ func (e *LocationDomainObjectsSTIX) SetValueDescription(v string) {
 }
 
 // SetAnyDescription устанавливает ЛЮБОЕ значение для поля Description
-func (e *LocationDomainObjectsSTIX) GetAnyDescription(i interface{}) {
+func (e *LocationDomainObjectsSTIX) SetAnyDescription(i interface{}) {
 	e.Description = fmt.Sprint(i)
 }
 
@@ -118,7 +118,7 @@ func (e *LocationDomainObjectsSTIX) SetValueCountry(v string) {
 }
 
 // SetAnyCountry устанавливает ЛЮБОЕ значение для поля Country
-func (e *LocationDomainObjectsSTIX) GetAnyCountry(i interface{}) {
+func (e *LocationDomainObjectsSTIX) SetAnyCountry(i interface{}) {
 	e.Country = fmt.Sprint(i)
 }
 
@@ -133,7 +133,7 @@ func (e *LocationDomainObjectsSTIX) SetValueAdministrativeArea(v string) {
 }
 
 // SetAnyAdministrativeArea устанавливает ЛЮБОЕ значение для поля AdministrativeArea
-func (e *LocationDomainObjectsSTIX) GetAnyAdministrativeArea(i interface{}) {
+func (e *LocationDomainObjectsSTIX) SetAnyAdministrativeArea(i interface{}) {
 	e.AdministrativeArea = fmt.Sprint(i)
 }
 
@@ -148,7 +148,7 @@ func (e *LocationDomainObjectsSTIX) SetValueCity(v string) {
 }
 
 // SetAnyCity устанавливает ЛЮБОЕ значение для поля City
-func (e *LocationDomainObjectsSTIX) GetAnyCity(i interface{}) {
+func (e *LocationDomainObjectsSTIX) SetAnyCity(i interface{}) {
 	e.City = fmt.Sprint(i)
 }
 
@@ -163,7 +163,7 @@ func (e *LocationDomainObjectsSTIX) SetValueStreetAddress(v string) {
 }
 
 // SetAnyStreetAddress устанавливает ЛЮБОЕ значение для поля StreetAddress
-func (e *LocationDomainObjectsSTIX) GetAnyStreetAddress(i interface{}) {
+func (e *LocationDomainObjectsSTIX) SetAnyStreetAddress(i interface{}) {
 	e.StreetAddress = fmt.Sprint(i)
 }
 
@@ -178,7 +178,7 @@ func (e *LocationDomainObjectsSTIX) SetValuePostalCode(v string) {
 }
 
 // SetAnyPostalCode устанавливает ЛЮБОЕ значение для поля PostalCode
-func (e *LocationDomainObjectsSTIX) GetAnyPostalCode(i interface{}) {
+func (e *LocationDomainObjectsSTIX) SetAnyPostalCode(i interface{}) {
 	e.PostalCode = fmt.Sprint(i)
 }
 
@@ -220,7 +220,7 @@ func (e LocationDomainObjectsSTIX) ValidateStruct() bool {
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
 func (e LocationDomainObjectsSTIX) SanitizeStruct() LocationDomainObjectsSTIX {
-	e.CommonPropertiesDomainObjectSTIX = e.SanitizeStruct().CommonPropertiesDomainObjectSTIX
+	e.CommonPropertiesDomainObjectSTIX = e.CommonPropertiesDomainObjectSTIX.SanitizeStruct()
 
 	e.Name = commonlibs.StringSanitize(e.Name)
 	e.Description = commonlibs.StringSanitize(e.Description)

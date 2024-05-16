@@ -38,7 +38,7 @@ func (e *AutonomousSystemCyberObservableObjectSTIX) SetValueNumberObserved(v int
 }
 
 // SetAnyNumberObserved устанавливает ЛЮБОЕ значение для поля NumberObserved
-func (e *AutonomousSystemCyberObservableObjectSTIX) GetAnyNumberObserved(i interface{}) {
+func (e *AutonomousSystemCyberObservableObjectSTIX) SetAnyNumberObserved(i interface{}) {
 	e.Number = commonlibs.ConversionAnyToInt(i)
 }
 
@@ -53,7 +53,7 @@ func (e *AutonomousSystemCyberObservableObjectSTIX) SetValueName(v string) {
 }
 
 // SetAnyName устанавливает ЛЮБОЕ значение для поля Name
-func (e *AutonomousSystemCyberObservableObjectSTIX) GetAnyName(i interface{}) {
+func (e *AutonomousSystemCyberObservableObjectSTIX) SetAnyName(i interface{}) {
 	e.Name = fmt.Sprint(i)
 }
 
@@ -68,7 +68,7 @@ func (e *AutonomousSystemCyberObservableObjectSTIX) SetValueRIR(v string) {
 }
 
 // SetAnyRIR устанавливает ЛЮБОЕ значение для поля RIR
-func (e *AutonomousSystemCyberObservableObjectSTIX) GetAnyRIR(i interface{}) {
+func (e *AutonomousSystemCyberObservableObjectSTIX) SetAnyRIR(i interface{}) {
 	e.RIR = fmt.Sprint(i)
 }
 
@@ -78,7 +78,7 @@ func (e AutonomousSystemCyberObservableObjectSTIX) ValidateStruct() bool {
 		return false
 	}
 
-	if !e.validateStructCommonFields() {
+	if !e.OptionalCommonPropertiesCyberObservableObjectSTIX.ValidateStructCommonFields() {
 		return false
 	}
 

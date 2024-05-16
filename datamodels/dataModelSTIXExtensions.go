@@ -11,7 +11,7 @@ import (
 	"github.com/av-belyakov/methodstixobjects/datamodels/stixhelpers"
 )
 
-// decodingExtensionsSTIX декодирует следующие типы STIX расширений:
+// DecodingExtensionsSTIX декодирует следующие типы STIX расширений:
 // - "archive-ext"
 // - "ntfs-ext"
 // - "pdf-ext"
@@ -24,7 +24,7 @@ import (
 // - "windows-process-ext"
 // - "windows-service-ext"
 // - "unix-account-ext"
-func decodingExtensionsSTIX(extType string, rawMsg *json.RawMessage) (interface{}, error) {
+func DecodingExtensionsSTIX(extType string, rawMsg *json.RawMessage) (interface{}, error) {
 	var err error
 
 	//fmt.Printf("func 'decodingExtensionsSTIX', extType = %s, \n", extType)
@@ -97,12 +97,12 @@ func decodingExtensionsSTIX(extType string, rawMsg *json.RawMessage) (interface{
 	}
 }
 
-// checkingExtensionsSTIX выполняет проверку полей следующих типов STIX расширений:
+// CheckingExtensionsSTIX выполняет проверку полей следующих типов STIX расширений:
 // - "archive-ext"
 // - "windows-pebinary-ext"
 // - "http-request-ext"
 // - "windows-service-ext"
-func checkingExtensionsSTIX(extType interface{}) bool {
+func CheckingExtensionsSTIX(extType interface{}) bool {
 	switch et := extType.(type) {
 	case someextensionsstixco.ArchiveFileExtensionSTIX:
 		for _, v := range et.ContainsRefs {
@@ -143,7 +143,7 @@ func checkingExtensionsSTIX(extType interface{}) bool {
 	return true
 }
 
-// sanitizeExtensionsSTIX для ряда полей следующих типов STIX расширений:
+// SanitizeExtensionsSTIX для ряда полей следующих типов STIX расширений:
 // - "archive-ext"
 // - "ntfs-ext"
 // - "pdf-ext"
@@ -157,7 +157,7 @@ func checkingExtensionsSTIX(extType interface{}) bool {
 // - "windows-service-ext"
 // - "unix-account-ext"
 // выполняет замену некоторых специальных символов на их HTML код
-func sanitizeExtensionsSTIX(extType interface{}) interface{} {
+func SanitizeExtensionsSTIX(extType interface{}) interface{} {
 	sanitizeList := func(rh map[string]string) map[string]string {
 		mapTmp := make(map[string]string, len(rh))
 		for k, v := range rh {
@@ -335,7 +335,7 @@ func sanitizeExtensionsSTIX(extType interface{}) interface{} {
 	return extType
 }
 
-// toStringBeautiful выполняет красивое представление информации содержащейся в следующих типах
+// ToStringBeautiful выполняет красивое представление информации содержащейся в следующих типах
 // - "archive-ext"
 // - "ntfs-ext"
 // - "pdf-ext"
@@ -348,7 +348,7 @@ func sanitizeExtensionsSTIX(extType interface{}) interface{} {
 // - "windows-process-ext"
 // - "windows-service-ext"
 // - "unix-account-ext"
-func toStringBeautiful(extType interface{}) string {
+func ToStringBeautiful(extType interface{}) string {
 	str := strings.Builder{}
 	str.WriteString("\t\t")
 

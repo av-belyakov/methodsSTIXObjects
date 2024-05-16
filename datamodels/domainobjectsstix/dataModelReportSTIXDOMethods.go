@@ -39,7 +39,7 @@ func (e *ReportDomainObjectsSTIX) SetValueName(v string) {
 }
 
 // SetAnyName устанавливает ЛЮБОЕ значение для поля Name
-func (e *ReportDomainObjectsSTIX) GetAnyName(i interface{}) {
+func (e *ReportDomainObjectsSTIX) SetAnyName(i interface{}) {
 	e.Name = fmt.Sprint(i)
 }
 
@@ -54,7 +54,7 @@ func (e *ReportDomainObjectsSTIX) SetValueDescription(v string) {
 }
 
 // SetAnyDescription устанавливает ЛЮБОЕ значение для поля Description
-func (e *ReportDomainObjectsSTIX) GetAnyDescription(i interface{}) {
+func (e *ReportDomainObjectsSTIX) SetAnyDescription(i interface{}) {
 	e.Description = fmt.Sprint(i)
 }
 
@@ -69,7 +69,7 @@ func (e *ReportDomainObjectsSTIX) SetValuePublished(v string) {
 }
 
 // SetAnyPublished устанавливает ЛЮБОЕ значение для поля Published
-func (e *ReportDomainObjectsSTIX) GetAnyPublished(i interface{}) {
+func (e *ReportDomainObjectsSTIX) SetAnyPublished(i interface{}) {
 	e.Published = fmt.Sprint(i)
 }
 
@@ -122,7 +122,7 @@ func (e ReportDomainObjectsSTIX) ValidateStruct() bool {
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
 func (e ReportDomainObjectsSTIX) SanitizeStruct() ReportDomainObjectsSTIX {
-	e.CommonPropertiesDomainObjectSTIX = e.SanitizeStruct().CommonPropertiesDomainObjectSTIX
+	e.CommonPropertiesDomainObjectSTIX = e.CommonPropertiesDomainObjectSTIX.SanitizeStruct()
 
 	e.Name = commonlibs.StringSanitize(e.Name)
 	e.Description = commonlibs.StringSanitize(e.Description)

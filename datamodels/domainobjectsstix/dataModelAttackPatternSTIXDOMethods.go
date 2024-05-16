@@ -43,7 +43,7 @@ func (e *AttackPatternDomainObjectsSTIX) SetValueName(v string) {
 }
 
 // SetAnyName устанавливает ЛЮБОЕ значение для поля Name
-func (e *AttackPatternDomainObjectsSTIX) GetAnyName(i interface{}) {
+func (e *AttackPatternDomainObjectsSTIX) SetAnyName(i interface{}) {
 	e.Name = fmt.Sprint(i)
 }
 
@@ -58,7 +58,7 @@ func (e *AttackPatternDomainObjectsSTIX) SetValueDescription(v string) {
 }
 
 // SetAnyDescription устанавливает ЛЮБОЕ значение для поля Description
-func (e *AttackPatternDomainObjectsSTIX) GetAnyDescription(i interface{}) {
+func (e *AttackPatternDomainObjectsSTIX) SetAnyDescription(i interface{}) {
 	e.Description = fmt.Sprint(i)
 }
 
@@ -106,7 +106,7 @@ func (e AttackPatternDomainObjectsSTIX) ValidateStruct() bool {
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
 func (e AttackPatternDomainObjectsSTIX) SanitizeStruct() AttackPatternDomainObjectsSTIX {
-	e.CommonPropertiesDomainObjectSTIX = e.SanitizeStruct().CommonPropertiesDomainObjectSTIX
+	e.CommonPropertiesDomainObjectSTIX = e.CommonPropertiesDomainObjectSTIX.SanitizeStruct()
 
 	e.Name = commonlibs.StringSanitize(e.Name)
 	e.Description = commonlibs.StringSanitize(e.Description)

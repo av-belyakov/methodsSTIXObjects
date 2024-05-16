@@ -5,27 +5,13 @@ import (
 	"time"
 
 	"github.com/av-belyakov/methodstixobjects/datamodels/commonproperties"
+	"github.com/av-belyakov/methodstixobjects/datamodels/commonpropertiesstixco"
 	"github.com/av-belyakov/methodstixobjects/datamodels/somecomplextypesstixco"
 	"github.com/av-belyakov/methodstixobjects/datamodels/someextensionsstixco"
 	"github.com/av-belyakov/methodstixobjects/datamodels/stixhelpers"
 )
 
 /********** 			Cyber-observable Objects STIX (ТИПЫ)			**********/
-
-// OptionalCommonPropertiesCyberObservableObjectSTIX содержит опциональные общие свойства для Cyber-observable Objects STIX
-// SpecVersion - версия STIX спецификации.
-// ObjectMarkingRefs - определяет список ID ссылающиеся на объект "marking-definition", по терминалогии STIX, в котором содержатся
-// значения применяющиеся к этому объекту
-// GranularMarkings - определяет список "гранулярных меток" (granular_markings) относящихся к этому объекту
-// Defanged - определяет были ли определены данные содержащиеся в объекте
-// // Extensions - может содержать дополнительную информацию, относящуюся к объекту
-type OptionalCommonPropertiesCyberObservableObjectSTIX struct {
-	Defanged          bool                                   `json:"defanged" bson:"defanged"`
-	SpecVersion       string                                 `json:"spec_version" bson:"spec_version"`
-	ObjectMarkingRefs []stixhelpers.IdentifierTypeSTIX       `json:"object_marking_refs" bson:"object_marking_refs"`
-	GranularMarkings  []stixhelpers.GranularMarkingsTypeSTIX `json:"granular_markings" bson:"granular_markings"`
-	//Extensions        map[string]DictionaryTypeSTIX `json:"extensions" bson:"extensions"`
-}
 
 // ArtifactCyberObservableObjectSTIX объект "Artifact", по терминалогии STIX, позволяет захватывать массив байтов (8 бит) в виде строки
 // в кодировке base64 или связывать его с полезной нагрузкой, подобной файлу. Обязательно должен быть заполнено одно из полей PayloadBin или URL
@@ -38,7 +24,7 @@ type OptionalCommonPropertiesCyberObservableObjectSTIX struct {
 // DecryptionKey - определяет ключ для дешифрования зашифрованных данных
 type ArtifactCyberObservableObjectSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
-	OptionalCommonPropertiesCyberObservableObjectSTIX
+	commonpropertiesstixco.OptionalCommonPropertiesCyberObservableObjectSTIX
 	MimeType            string                     `json:"mime_type" bson:"mime_type"`
 	PayloadBin          string                     `json:"payload_bin" bson:"payload_bin"`
 	URL                 string                     `json:"url" bson:"url"`
@@ -53,7 +39,7 @@ type ArtifactCyberObservableObjectSTIX struct {
 // RIR - содержит название регионального Интернет-реестра (Regional Internet Registry) которым было дано имя Автономной системы
 type AutonomousSystemCyberObservableObjectSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
-	OptionalCommonPropertiesCyberObservableObjectSTIX
+	commonpropertiesstixco.OptionalCommonPropertiesCyberObservableObjectSTIX
 	Number int    `json:"number" bson:"number" required:"true"`
 	Name   string `json:"name" bson:"name"`
 	RIR    string `json:"rir" bson:"rir"`
@@ -68,7 +54,7 @@ type AutonomousSystemCyberObservableObjectSTIX struct {
 // ContainsRefs - содержит список файловых объектов или директорий содержащихся внутри директории
 type DirectoryCyberObservableObjectSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
-	OptionalCommonPropertiesCyberObservableObjectSTIX
+	commonpropertiesstixco.OptionalCommonPropertiesCyberObservableObjectSTIX
 	Path         string                           `json:"path" bson:"path" required:"true"`
 	PathEnc      string                           `json:"path_enc" bson:"path_enc"`
 	Ctime        string                           `json:"ctime" bson:"ctime"`
@@ -82,7 +68,7 @@ type DirectoryCyberObservableObjectSTIX struct {
 // ResolvesToRefs - список ссылок на один или несколько IP-адресов или доменных имен, на которые разрешается доменное имя
 type DomainNameCyberObservableObjectSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
-	OptionalCommonPropertiesCyberObservableObjectSTIX
+	commonpropertiesstixco.OptionalCommonPropertiesCyberObservableObjectSTIX
 	Value          string                           `json:"value" bson:"value" required:"true"`
 	ResolvesToRefs []stixhelpers.IdentifierTypeSTIX `json:"resolves_to_refs" bson:"resolves_to_refs"`
 }
@@ -93,7 +79,7 @@ type DomainNameCyberObservableObjectSTIX struct {
 // BelongsToRef - учетная запись пользователя, которой принадлежит адрес электронной почты, в качестве ссылки на объект учетной записи пользователя
 type EmailAddressCyberObservableObjectSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
-	OptionalCommonPropertiesCyberObservableObjectSTIX
+	commonpropertiesstixco.OptionalCommonPropertiesCyberObservableObjectSTIX
 	Value        string                         `json:"value" bson:"value"`
 	DisplayName  string                         `json:"display_name" bson:"display_name"`
 	BelongsToRef stixhelpers.IdentifierTypeSTIX `json:"belongs_to_ref" bson:"belongs_to_ref"`
@@ -119,7 +105,7 @@ type EmailAddressCyberObservableObjectSTIX struct {
 // RawEmailRef - содержит 'сырое' бинарное содержимое email сообщения
 type EmailMessageCyberObservableObjectSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
-	OptionalCommonPropertiesCyberObservableObjectSTIX
+	commonpropertiesstixco.OptionalCommonPropertiesCyberObservableObjectSTIX
 	IsMultipart            bool                                           `json:"is_multipart" bson:"is_multipart" required:"true"`
 	ContentType            string                                         `json:"content_type" bson:"content_type"`
 	MessageID              string                                         `json:"message_id" bson:"message_id"`
@@ -154,15 +140,15 @@ type EmailMessageCyberObservableObjectSTIX struct {
 // ContentRef - определяет контент файла. Данное значение ДОЛЖНО иметь тип artifact, то есть ссылатся на ArtifactCyberObservableObjectSTIX
 type CommonFileCyberObservableObjectSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
-	OptionalCommonPropertiesCyberObservableObjectSTIX
+	commonpropertiesstixco.OptionalCommonPropertiesCyberObservableObjectSTIX
 	Size               uint64                           `json:"size" bson:"size"`
 	Name               string                           `json:"name" bson:"name"`
 	NameEnc            string                           `json:"name_enc" bson:"name_enc"`
 	MagicNumberHex     string                           `json:"magic_number_hex" bson:"magic_number_hex"`
 	MimeType           string                           `json:"mime_type" bson:"mime_type"`
-	Ctime              time.Time                        `json:"ctime" bson:"ctime"`
-	Mtime              time.Time                        `json:"mtime" bson:"mtime"`
-	Atime              time.Time                        `json:"atime" bson:"atime"`
+	Ctime              string                           `json:"ctime" bson:"ctime"`
+	Mtime              string                           `json:"mtime" bson:"mtime"`
+	Atime              string                           `json:"atime" bson:"atime"`
 	Hashes             stixhelpers.HashesTypeSTIX       `json:"hashes" bson:"hashes"`
 	ParentDirectoryRef stixhelpers.IdentifierTypeSTIX   `json:"parent_directory_ref" bson:"parent_directory_ref"`
 	ContentRef         stixhelpers.IdentifierTypeSTIX   `json:"content_ref" bson:"content_ref"`
@@ -187,15 +173,15 @@ type CommonFileCyberObservableObjectSTIX struct {
 // ContentRef - определяет контент файла. Данное значение ДОЛЖНО иметь тип artifact, то есть ссылатся на ArtifactCyberObservableObjectSTIX
 type FileCyberObservableObjectSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
-	OptionalCommonPropertiesCyberObservableObjectSTIX
+	commonpropertiesstixco.OptionalCommonPropertiesCyberObservableObjectSTIX
 	Size               uint64                           `json:"size" bson:"size"`
 	Name               string                           `json:"name" bson:"name"`
 	NameEnc            string                           `json:"name_enc" bson:"name_enc"`
 	MagicNumberHex     string                           `json:"magic_number_hex" bson:"magic_number_hex"`
 	MimeType           string                           `json:"mime_type" bson:"mime_type"`
-	Ctime              time.Time                        `json:"ctime" bson:"ctime"`
-	Mtime              time.Time                        `json:"mtime" bson:"mtime"`
-	Atime              time.Time                        `json:"atime" bson:"atime"`
+	Ctime              string                           `json:"ctime" bson:"ctime"`
+	Mtime              string                           `json:"mtime" bson:"mtime"`
+	Atime              string                           `json:"atime" bson:"atime"`
 	ParentDirectoryRef stixhelpers.IdentifierTypeSTIX   `json:"parent_directory_ref" bson:"parent_directory_ref"`
 	Hashes             stixhelpers.HashesTypeSTIX       `json:"hashes" bson:"hashes"`
 	ContentRef         stixhelpers.IdentifierTypeSTIX   `json:"content_ref" bson:"content_ref"`
@@ -213,7 +199,7 @@ type FileCyberObservableObjectSTIX struct {
 // Объекты, на которые ссылается этот список, ДОЛЖНЫ быть типа autonomous-system.
 type IPv4AddressCyberObservableObjectSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
-	OptionalCommonPropertiesCyberObservableObjectSTIX
+	commonpropertiesstixco.OptionalCommonPropertiesCyberObservableObjectSTIX
 	Value          string                           `json:"value" bson:"value"`
 	ResolvesToRefs []stixhelpers.IdentifierTypeSTIX `json:"resolves_to_refs" bson:"resolves_to_refs"`
 	BelongsToRefs  []stixhelpers.IdentifierTypeSTIX `json:"belongs_to_refs" bson:"belongs_to_refs"`
@@ -228,7 +214,7 @@ type IPv4AddressCyberObservableObjectSTIX struct {
 // этот список,ДОЛЖНЫ быть типа autonomous-system.
 type IPv6AddressCyberObservableObjectSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
-	OptionalCommonPropertiesCyberObservableObjectSTIX
+	commonpropertiesstixco.OptionalCommonPropertiesCyberObservableObjectSTIX
 	Value          string                           `json:"value" bson:"value"`
 	ResolvesToRefs []stixhelpers.IdentifierTypeSTIX `json:"resolves_to_refs" bson:"resolves_to_refs"`
 	BelongsToRefs  []stixhelpers.IdentifierTypeSTIX `json:"belongs_to_refs" bson:"belongs_to_refs"`
@@ -240,7 +226,7 @@ type IPv6AddressCyberObservableObjectSTIX struct {
 // разделенного двоеточием, который ДОЛЖЕН включать начальные нули для каждого октета. Пример: 00:00:ab:cd:ef:01. (ОБЯЗАТЕЛЬНОЕ ЗНАЧЕНИЕ)
 type MACAddressCyberObservableObjectSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
-	OptionalCommonPropertiesCyberObservableObjectSTIX
+	commonpropertiesstixco.OptionalCommonPropertiesCyberObservableObjectSTIX
 	Value string `json:"value" bson:"value"`
 }
 
@@ -248,7 +234,7 @@ type MACAddressCyberObservableObjectSTIX struct {
 // Name - указывает имя объекта мьютекса (ОБЯЗАТЕЛЬНОЕ ЗНАЧЕНИЕ).
 type MutexCyberObservableObjectSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
-	OptionalCommonPropertiesCyberObservableObjectSTIX
+	commonpropertiesstixco.OptionalCommonPropertiesCyberObservableObjectSTIX
 	Name string `json:"name" bson:"name"`
 }
 
@@ -279,7 +265,7 @@ type MutexCyberObservableObjectSTIX struct {
 // EncapsulatedByRef - ссылки на другой объект сетевого трафика, который инкапсулирует этот объект. Объекты, на которые ссылается это свойство, ДОЛЖНЫ иметь тип network-traffic.
 type CommonNetworkTrafficCyberObservableObjectSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
-	OptionalCommonPropertiesCyberObservableObjectSTIX
+	commonpropertiesstixco.OptionalCommonPropertiesCyberObservableObjectSTIX
 	IsActive          bool                             `json:"is_active" bson:"is_active"`
 	SrcPort           int                              `json:"src_port" bson:"src_port"`
 	DstPort           int                              `json:"dst_port" bson:"dst_port"`
@@ -287,9 +273,9 @@ type CommonNetworkTrafficCyberObservableObjectSTIX struct {
 	DstPackets        int                              `json:"dst_packets" bson:"dst_packets"`
 	SrcByteCount      uint64                           `json:"src_byte_count" bson:"src_byte_count"`
 	DstByteCount      uint64                           `json:"dst_byte_count" bson:"dst_byte_count"`
+	Start             string                           `json:"start" bson:"start"`
+	End               string                           `json:"end" bson:"end"`
 	Protocols         []string                         `json:"protocols" bson:"protocols"`
-	Start             time.Time                        `json:"start" bson:"start"`
-	End               time.Time                        `json:"end" bson:"end"`
 	SrcRef            stixhelpers.IdentifierTypeSTIX   `json:"src_ref" bson:"src_ref"`
 	DstRef            stixhelpers.IdentifierTypeSTIX   `json:"dst_ref" bson:"dst_ref"`
 	SrcPayloadRef     stixhelpers.IdentifierTypeSTIX   `json:"src_payload_ref" bson:"src_payload_ref"`
@@ -326,7 +312,7 @@ type CommonNetworkTrafficCyberObservableObjectSTIX struct {
 // EncapsulatedByRef - ссылки на другой объект сетевого трафика, который инкапсулирует этот объект. Объекты, на которые ссылается это свойство, ДОЛЖНЫ иметь тип network-traffic.
 type NetworkTrafficCyberObservableObjectSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
-	OptionalCommonPropertiesCyberObservableObjectSTIX
+	commonpropertiesstixco.OptionalCommonPropertiesCyberObservableObjectSTIX
 	IsActive          bool                             `json:"is_active" bson:"is_active"`
 	SrcPort           int                              `json:"src_port" bson:"src_port"`
 	DstPort           int                              `json:"dst_port" bson:"dst_port"`
@@ -334,17 +320,17 @@ type NetworkTrafficCyberObservableObjectSTIX struct {
 	DstPackets        int                              `json:"dst_packets" bson:"dst_packets"`
 	SrcByteCount      uint64                           `json:"src_byte_count" bson:"src_byte_count"`
 	DstByteCount      uint64                           `json:"dst_byte_count" bson:"dst_byte_count"`
+	Start             string                           `json:"start" bson:"start"`
+	End               string                           `json:"end" bson:"end"`
 	Protocols         []string                         `json:"protocols" bson:"protocols"`
-	IPFix             map[string]string                `json:"ipfix" bson:"ipfix"`
-	Extensions        map[string]interface{}           `json:"extensions" bson:"extensions"`
-	Start             time.Time                        `json:"start" bson:"start"`
-	End               time.Time                        `json:"end" bson:"end"`
 	SrcRef            stixhelpers.IdentifierTypeSTIX   `json:"src_ref" bson:"src_ref"`
 	DstRef            stixhelpers.IdentifierTypeSTIX   `json:"dst_ref" bson:"dst_ref"`
 	SrcPayloadRef     stixhelpers.IdentifierTypeSTIX   `json:"src_payload_ref" bson:"src_payload_ref"`
 	DstPayloadRef     stixhelpers.IdentifierTypeSTIX   `json:"dst_payload_ref" bson:"dst_payload_ref"`
 	EncapsulatedByRef stixhelpers.IdentifierTypeSTIX   `json:"encapsulated_by_ref" bson:"encapsulated_by_ref"`
 	EncapsulatesRefs  []stixhelpers.IdentifierTypeSTIX `json:"encapsulates_refs" bson:"encapsulates_refs"`
+	IPFix             map[string]string                `json:"ipfix" bson:"ipfix"`
+	Extensions        map[string]interface{}           `json:"extensions" bson:"extensions"`
 }
 
 // CommonProcessCyberObservableObjectSTIX общий объект "Process Object", по терминологии STIX, содержит общие свойства экземпляра компьютерной программы,
@@ -368,19 +354,19 @@ type NetworkTrafficCyberObservableObjectSTIX struct {
 // объектов процесса. Объекты, на которые ссылается этот список, ДОЛЖНЫ иметь тип process.
 type CommonProcessCyberObservableObjectSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
-	OptionalCommonPropertiesCyberObservableObjectSTIX
+	commonpropertiesstixco.OptionalCommonPropertiesCyberObservableObjectSTIX
 	IsHidden             bool                             `json:"is_hidden" bson:"is_hidden"`
 	PID                  int                              `json:"pid" bson:"pid"`
 	Cwd                  string                           `json:"cwd" bson:"cwd"`
 	CommandLine          string                           `json:"command_line" bson:"command_line"`
-	CreatedTime          time.Time                        `json:"created_time" bson:"created_time"`
-	EnvironmentVariables map[string]string                `json:"environment_variables" bson:"environment_variables"`
-	Extensions           map[string]*json.RawMessage      `json:"extensions" bson:"extensions"`
+	CreatedTime          string                           `json:"created_time" bson:"created_time"`
 	CreatorUserRef       stixhelpers.IdentifierTypeSTIX   `json:"creator_user_ref" bson:"creator_user_ref"`
 	ImageRef             stixhelpers.IdentifierTypeSTIX   `json:"image_ref" bson:"image_ref"`
 	ParentRef            stixhelpers.IdentifierTypeSTIX   `json:"parent_ref" bson:"parent_ref"`
 	ChildRefs            []stixhelpers.IdentifierTypeSTIX `json:"child_refs" bson:"child_refs"`
 	OpenedConnectionRefs []stixhelpers.IdentifierTypeSTIX `json:"opened_connection_refs" bson:"opened_connection_refs"`
+	EnvironmentVariables map[string]string                `json:"environment_variables" bson:"environment_variables"`
+	Extensions           map[string]*json.RawMessage      `json:"extensions" bson:"extensions"`
 }
 
 // ProcessCyberObservableObjectSTIX объект "Process Object", по терминологии STIX, содержит общие свойства экземпляра компьютерной программы,
@@ -404,19 +390,19 @@ type CommonProcessCyberObservableObjectSTIX struct {
 // объектов процесса. Объекты, на которые ссылается этот список, ДОЛЖНЫ иметь тип process.
 type ProcessCyberObservableObjectSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
-	OptionalCommonPropertiesCyberObservableObjectSTIX
+	commonpropertiesstixco.OptionalCommonPropertiesCyberObservableObjectSTIX
 	IsHidden             bool                             `json:"is_hidden" bson:"is_hidden"`
 	PID                  int                              `json:"pid" bson:"pid"`
 	Cwd                  string                           `json:"cwd" bson:"cwd"`
 	CommandLine          string                           `json:"command_line" bson:"command_line"`
-	EnvironmentVariables map[string]string                `json:"environment_variables" bson:"environment_variables"`
-	Extensions           map[string]interface{}           `json:"extensions" bson:"extensions"`
-	CreatedTime          time.Time                        `json:"created_time" bson:"created_time"`
+	CreatedTime          string                           `json:"created_time" bson:"created_time"`
 	CreatorUserRef       stixhelpers.IdentifierTypeSTIX   `json:"creator_user_ref" bson:"creator_user_ref"`
 	ImageRef             stixhelpers.IdentifierTypeSTIX   `json:"image_ref" bson:"image_ref"`
 	ParentRef            stixhelpers.IdentifierTypeSTIX   `json:"parent_ref" bson:"parent_ref"`
 	ChildRefs            []stixhelpers.IdentifierTypeSTIX `json:"child_refs" bson:"child_refs"`
 	OpenedConnectionRefs []stixhelpers.IdentifierTypeSTIX `json:"opened_connection_refs" bson:"opened_connection_refs"`
+	EnvironmentVariables map[string]string                `json:"environment_variables" bson:"environment_variables"`
+	Extensions           map[string]interface{}           `json:"extensions" bson:"extensions"`
 }
 
 // SoftwareCyberObservableObjectSTIX объект "Software Object", по терминологии STIX, содержит свойства, связанные с
@@ -431,7 +417,7 @@ type ProcessCyberObservableObjectSTIX struct {
 // Version - содержит версию ПО
 type SoftwareCyberObservableObjectSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
-	OptionalCommonPropertiesCyberObservableObjectSTIX
+	commonpropertiesstixco.OptionalCommonPropertiesCyberObservableObjectSTIX
 	Name      string   `json:"name" bson:"name"`
 	CPE       string   `json:"cpe" bson:"cpe"`
 	SwID      string   `json:"swid" bson:"swid"`
@@ -444,7 +430,7 @@ type SoftwareCyberObservableObjectSTIX struct {
 // Value - содержит унифицированный указатель информационного ресурса (URL).
 type URLCyberObservableObjectSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
-	OptionalCommonPropertiesCyberObservableObjectSTIX
+	commonpropertiesstixco.OptionalCommonPropertiesCyberObservableObjectSTIX
 	Value string `json:"value" bson:"value"`
 }
 
@@ -482,7 +468,7 @@ type URLCyberObservableObjectSTIX struct {
 // AccountLastLogin - время, в формате "2016-05-12T08:17:27.000Z", когда к учетной записи был последний доступ.
 type UserAccountCyberObservableObjectSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
-	OptionalCommonPropertiesCyberObservableObjectSTIX
+	commonpropertiesstixco.OptionalCommonPropertiesCyberObservableObjectSTIX
 	IsServiceAccount      bool                                                     `json:"is_service_account" bson:"is_service_account"`
 	IsPrivileged          bool                                                     `json:"is_privileged" bson:"is_privileged"`
 	CanEscalatePrivs      bool                                                     `json:"can_escalate_privs" bson:"can_escalate_privs"`
@@ -511,7 +497,7 @@ type UserAccountCyberObservableObjectSTIX struct {
 // NumberOfSubkeys - Указывает количество подразделов, содержащихся в разделе реестра.
 type WindowsRegistryKeyCyberObservableObjectSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
-	OptionalCommonPropertiesCyberObservableObjectSTIX
+	commonpropertiesstixco.OptionalCommonPropertiesCyberObservableObjectSTIX
 	NumberOfSubkeys int                                                   `json:"number_of_subkeys" bson:"number_of_subkeys"`
 	Key             string                                                `json:"key" bson:"key"`
 	ModifiedTime    time.Time                                             `json:"modified_time" bson:"modified_time"`
@@ -538,7 +524,7 @@ type WindowsRegistryKeyCyberObservableObjectSTIX struct {
 // X509V3Extension - указывает любые стандартные расширения X.509 v3, которые могут использоваться в сертификате.
 type X509CertificateCyberObservableObjectSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
-	OptionalCommonPropertiesCyberObservableObjectSTIX
+	commonpropertiesstixco.OptionalCommonPropertiesCyberObservableObjectSTIX
 	IsSelfSigned              bool                                            `json:"is_self_signed" bson:"is_self_signed"`
 	SubjectPublicKeyExponent  int                                             `json:"subject_public_key_exponent" bson:"subject_public_key_exponent"`
 	Version                   string                                          `json:"version" bson:"version"`

@@ -43,7 +43,7 @@ func (e *IndicatorDomainObjectsSTIX) SetValueName(v string) {
 }
 
 // SetAnyName устанавливает ЛЮБОЕ значение для поля Name
-func (e *IndicatorDomainObjectsSTIX) GetAnyName(i interface{}) {
+func (e *IndicatorDomainObjectsSTIX) SetAnyName(i interface{}) {
 	e.Name = fmt.Sprint(i)
 }
 
@@ -58,7 +58,7 @@ func (e *IndicatorDomainObjectsSTIX) SetValuePattern(v string) {
 }
 
 // SetAnyPattern устанавливает ЛЮБОЕ значение для поля Pattern
-func (e *IndicatorDomainObjectsSTIX) GetAnyPattern(i interface{}) {
+func (e *IndicatorDomainObjectsSTIX) SetAnyPattern(i interface{}) {
 	e.Pattern = fmt.Sprint(i)
 }
 
@@ -73,7 +73,7 @@ func (e *IndicatorDomainObjectsSTIX) SetValuePatternVersion(v string) {
 }
 
 // SetAnyPatternVersion устанавливает ЛЮБОЕ значение для поля PatternVersion
-func (e *IndicatorDomainObjectsSTIX) GetAnyPatternVersion(i interface{}) {
+func (e *IndicatorDomainObjectsSTIX) SetAnyPatternVersion(i interface{}) {
 	e.PatternVersion = fmt.Sprint(i)
 }
 
@@ -88,7 +88,7 @@ func (e *IndicatorDomainObjectsSTIX) SetValueDescription(v string) {
 }
 
 // SetAnyDescription устанавливает ЛЮБОЕ значение для поля Description
-func (e *IndicatorDomainObjectsSTIX) GetAnyDescription(i interface{}) {
+func (e *IndicatorDomainObjectsSTIX) SetAnyDescription(i interface{}) {
 	e.Description = fmt.Sprint(i)
 }
 
@@ -176,7 +176,7 @@ func (e IndicatorDomainObjectsSTIX) ValidateStruct() bool {
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
 func (e IndicatorDomainObjectsSTIX) SanitizeStruct() IndicatorDomainObjectsSTIX {
-	e.CommonPropertiesDomainObjectSTIX = e.SanitizeStruct().CommonPropertiesDomainObjectSTIX
+	e.CommonPropertiesDomainObjectSTIX = e.CommonPropertiesDomainObjectSTIX.SanitizeStruct()
 
 	e.Name = commonlibs.StringSanitize(e.Name)
 	e.Description = commonlibs.StringSanitize(e.Description)

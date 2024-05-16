@@ -39,7 +39,7 @@ func (e *ObservedDataDomainObjectsSTIX) SetValueNumberObserved(v int) {
 }
 
 // SetAnyNumberObserved устанавливает ЛЮБОЕ значение для поля NumberObserved
-func (e *ObservedDataDomainObjectsSTIX) GetAnyNumberObserved(i interface{}) {
+func (e *ObservedDataDomainObjectsSTIX) SetAnyNumberObserved(i interface{}) {
 	e.NumberObserved = commonlibs.ConversionAnyToInt(i)
 }
 
@@ -109,7 +109,7 @@ func (e ObservedDataDomainObjectsSTIX) ValidateStruct() bool {
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
 func (e ObservedDataDomainObjectsSTIX) SanitizeStruct() ObservedDataDomainObjectsSTIX {
-	e.CommonPropertiesDomainObjectSTIX = e.SanitizeStruct().CommonPropertiesDomainObjectSTIX
+	e.CommonPropertiesDomainObjectSTIX = e.CommonPropertiesDomainObjectSTIX.SanitizeStruct()
 
 	return e
 }

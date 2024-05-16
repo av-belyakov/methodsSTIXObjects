@@ -39,7 +39,7 @@ func (e *DomainNameCyberObservableObjectSTIX) SetValueValue(v string) {
 }
 
 // SetAnyValue устанавливает ЛЮБОЕ значение для поля Value
-func (e *DomainNameCyberObservableObjectSTIX) GetAnyValue(i interface{}) {
+func (e *DomainNameCyberObservableObjectSTIX) SetAnyValue(i interface{}) {
 	e.Value = fmt.Sprint(i)
 }
 
@@ -58,7 +58,7 @@ func (e DomainNameCyberObservableObjectSTIX) ValidateStruct() bool {
 		return false
 	}
 
-	if !e.validateStructCommonFields() {
+	if !e.OptionalCommonPropertiesCyberObservableObjectSTIX.ValidateStructCommonFields() {
 		return false
 	}
 

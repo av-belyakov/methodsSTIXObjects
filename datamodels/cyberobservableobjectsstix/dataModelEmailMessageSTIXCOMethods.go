@@ -57,7 +57,7 @@ func (e *EmailMessageCyberObservableObjectSTIX) SetValueContentType(v string) {
 }
 
 // SetAnyContentType устанавливает ЛЮБОЕ значение для поля ContentType
-func (e *EmailMessageCyberObservableObjectSTIX) GetAnyContentType(i interface{}) {
+func (e *EmailMessageCyberObservableObjectSTIX) SetAnyContentType(i interface{}) {
 	e.ContentType = fmt.Sprint(i)
 }
 
@@ -72,7 +72,7 @@ func (e *EmailMessageCyberObservableObjectSTIX) SetValueMessageID(v string) {
 }
 
 // SetAnyMessageID устанавливает ЛЮБОЕ значение для поля MessageID
-func (e *EmailMessageCyberObservableObjectSTIX) GetAnyMessageID(i interface{}) {
+func (e *EmailMessageCyberObservableObjectSTIX) SetAnyMessageID(i interface{}) {
 	e.MessageID = fmt.Sprint(i)
 }
 
@@ -87,7 +87,7 @@ func (e *EmailMessageCyberObservableObjectSTIX) SetValueSubject(v string) {
 }
 
 // SetAnySubject устанавливает ЛЮБОЕ значение для поля Subject
-func (e *EmailMessageCyberObservableObjectSTIX) GetAnySubject(i interface{}) {
+func (e *EmailMessageCyberObservableObjectSTIX) SetAnySubject(i interface{}) {
 	e.Subject = fmt.Sprint(i)
 }
 
@@ -102,7 +102,7 @@ func (e *EmailMessageCyberObservableObjectSTIX) SetValueBody(v string) {
 }
 
 // SetAnyBody устанавливает ЛЮБОЕ значение для поля Body
-func (e *EmailMessageCyberObservableObjectSTIX) GetAny(i interface{}) {
+func (e *EmailMessageCyberObservableObjectSTIX) SetAnyBody(i interface{}) {
 	e.Body = fmt.Sprint(i)
 }
 
@@ -215,7 +215,7 @@ func (e EmailMessageCyberObservableObjectSTIX) ValidateStruct() bool {
 		return false
 	}
 
-	if !e.validateStructCommonFields() {
+	if !e.OptionalCommonPropertiesCyberObservableObjectSTIX.ValidateStructCommonFields() {
 		return false
 	}
 

@@ -39,7 +39,7 @@ func (e *ToolDomainObjectsSTIX) SetValueName(v string) {
 }
 
 // SetAnyName устанавливает ЛЮБОЕ значение для поля Name
-func (e *ToolDomainObjectsSTIX) GetAnyName(i interface{}) {
+func (e *ToolDomainObjectsSTIX) SetAnyName(i interface{}) {
 	e.Name = fmt.Sprint(i)
 }
 
@@ -54,7 +54,7 @@ func (e *ToolDomainObjectsSTIX) SetValueDescription(v string) {
 }
 
 // SetAnyDescription устанавливает ЛЮБОЕ значение для поля Description
-func (e *ToolDomainObjectsSTIX) GetAnyDescription(i interface{}) {
+func (e *ToolDomainObjectsSTIX) SetAnyDescription(i interface{}) {
 	e.Description = fmt.Sprint(i)
 }
 
@@ -69,7 +69,7 @@ func (e *ToolDomainObjectsSTIX) SetValueToolVersion(v string) {
 }
 
 // SetAnyToolVersion устанавливает ЛЮБОЕ значение для поля ToolVersion
-func (e *ToolDomainObjectsSTIX) GetAnyToolVersion(i interface{}) {
+func (e *ToolDomainObjectsSTIX) SetAnyToolVersion(i interface{}) {
 	e.ToolVersion = fmt.Sprint(i)
 }
 
@@ -125,7 +125,7 @@ func (e ToolDomainObjectsSTIX) ValidateStruct() bool {
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
 func (e ToolDomainObjectsSTIX) SanitizeStruct() ToolDomainObjectsSTIX {
-	e.CommonPropertiesDomainObjectSTIX = e.SanitizeStruct().CommonPropertiesDomainObjectSTIX
+	e.CommonPropertiesDomainObjectSTIX = e.CommonPropertiesDomainObjectSTIX.SanitizeStruct()
 
 	e.Name = commonlibs.StringSanitize(e.Name)
 	e.Description = commonlibs.StringSanitize(e.Description)

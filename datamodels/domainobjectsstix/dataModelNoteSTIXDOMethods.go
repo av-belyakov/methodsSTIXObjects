@@ -39,7 +39,7 @@ func (e *NoteDomainObjectsSTIX) SetValueAbstract(v string) {
 }
 
 // SetAnyAbstract устанавливает ЛЮБОЕ значение для поля Abstract
-func (e *NoteDomainObjectsSTIX) GetAnyAbstract(i interface{}) {
+func (e *NoteDomainObjectsSTIX) SetAnyAbstract(i interface{}) {
 	e.Abstract = fmt.Sprint(i)
 }
 
@@ -54,7 +54,7 @@ func (e *NoteDomainObjectsSTIX) SetValueContent(v string) {
 }
 
 // SetAnyContent устанавливает ЛЮБОЕ значение для поля Content
-func (e *NoteDomainObjectsSTIX) GetAnyContent(i interface{}) {
+func (e *NoteDomainObjectsSTIX) SetAnyContent(i interface{}) {
 	e.Content = fmt.Sprint(i)
 }
 
@@ -107,7 +107,7 @@ func (e NoteDomainObjectsSTIX) ValidateStruct() bool {
 
 // SanitizeStruct для ряда полей, выполняет замену некоторых специальных символов на их HTML код
 func (e NoteDomainObjectsSTIX) SanitizeStruct() NoteDomainObjectsSTIX {
-	e.CommonPropertiesDomainObjectSTIX = e.SanitizeStruct().CommonPropertiesDomainObjectSTIX
+	e.CommonPropertiesDomainObjectSTIX = e.CommonPropertiesDomainObjectSTIX.SanitizeStruct()
 
 	e.Abstract = commonlibs.StringSanitize(e.Abstract)
 	e.Content = commonlibs.StringSanitize(e.Content)

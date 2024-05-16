@@ -40,7 +40,7 @@ func (e *DirectoryCyberObservableObjectSTIX) SetValuePath(v string) {
 }
 
 // SetAnyPath устанавливает ЛЮБОЕ значение для поля Path
-func (e *DirectoryCyberObservableObjectSTIX) GetAnyPath(i interface{}) {
+func (e *DirectoryCyberObservableObjectSTIX) SetAnyPath(i interface{}) {
 	e.Path = fmt.Sprint(i)
 }
 
@@ -55,7 +55,7 @@ func (e *DirectoryCyberObservableObjectSTIX) SetValuePathEnc(v string) {
 }
 
 // SetAnyPathEnc устанавливает ЛЮБОЕ значение для поля PathEnc
-func (e *DirectoryCyberObservableObjectSTIX) GetAnyPathEnc(i interface{}) {
+func (e *DirectoryCyberObservableObjectSTIX) SetAnyPathEnc(i interface{}) {
 	e.PathEnc = fmt.Sprint(i)
 }
 
@@ -122,7 +122,7 @@ func (e DirectoryCyberObservableObjectSTIX) ValidateStruct() bool {
 		return false
 	}
 
-	if !e.validateStructCommonFields() {
+	if !e.OptionalCommonPropertiesCyberObservableObjectSTIX.ValidateStructCommonFields() {
 		return false
 	}
 

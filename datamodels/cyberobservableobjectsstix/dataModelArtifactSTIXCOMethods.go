@@ -44,7 +44,7 @@ func (e *ArtifactCyberObservableObjectSTIX) SetValueMimeType(v string) {
 }
 
 // SetAnyMimeType устанавливает ЛЮБОЕ значение для поля MimeType
-func (e *ArtifactCyberObservableObjectSTIX) GetAnyMimeType(i interface{}) {
+func (e *ArtifactCyberObservableObjectSTIX) SetAnyMimeType(i interface{}) {
 	e.MimeType = fmt.Sprint(i)
 }
 
@@ -59,7 +59,7 @@ func (e *ArtifactCyberObservableObjectSTIX) SetValuePayloadBin(v string) {
 }
 
 // SetAnyPayloadBin устанавливает ЛЮБОЕ значение для поля PayloadBin
-func (e *ArtifactCyberObservableObjectSTIX) GetAnyPayloadBin(i interface{}) {
+func (e *ArtifactCyberObservableObjectSTIX) SetAnyPayloadBin(i interface{}) {
 	e.PayloadBin = fmt.Sprint(i)
 }
 
@@ -74,7 +74,7 @@ func (e *ArtifactCyberObservableObjectSTIX) SetValueURL(v string) {
 }
 
 // SetAnyURL устанавливает ЛЮБОЕ значение для поля URL
-func (e *ArtifactCyberObservableObjectSTIX) GetAnyURL(i interface{}) {
+func (e *ArtifactCyberObservableObjectSTIX) SetAnyURL(i interface{}) {
 	e.URL = fmt.Sprint(i)
 }
 
@@ -89,7 +89,7 @@ func (e *ArtifactCyberObservableObjectSTIX) SetValueDecryptionKey(v string) {
 }
 
 // SetAnyDecryptionKey устанавливает ЛЮБОЕ значение для поля DecryptionKey
-func (e *ArtifactCyberObservableObjectSTIX) GetAnyDecryptionKey(i interface{}) {
+func (e *ArtifactCyberObservableObjectSTIX) SetAnyDecryptionKey(i interface{}) {
 	e.DecryptionKey = fmt.Sprint(i)
 }
 
@@ -114,7 +114,7 @@ func (e *ArtifactCyberObservableObjectSTIX) SetValueEncryptionAlgorithm(v stixhe
 }
 
 // SetAnyEncryptionAlgorithm устанавливает ЛЮБОЕ значение для поля EncryptionAlgorithm
-func (e *ArtifactCyberObservableObjectSTIX) GetAnyEncryptionAlgorithm(i interface{}) {
+func (e *ArtifactCyberObservableObjectSTIX) SetAnyEncryptionAlgorithm(i interface{}) {
 	e.EncryptionAlgorithm = stixhelpers.EnumTypeSTIX(fmt.Sprint(i))
 }
 
@@ -124,7 +124,7 @@ func (e ArtifactCyberObservableObjectSTIX) ValidateStruct() bool {
 		return false
 	}
 
-	if !e.validateStructCommonFields() {
+	if !e.OptionalCommonPropertiesCyberObservableObjectSTIX.ValidateStructCommonFields() {
 		return false
 	}
 

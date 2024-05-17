@@ -2,7 +2,6 @@ package cyberobservableobjectsstix
 
 import (
 	"encoding/json"
-	"time"
 
 	"github.com/av-belyakov/methodstixobjects/datamodels/commonproperties"
 	"github.com/av-belyakov/methodstixobjects/datamodels/commonpropertiesstixco"
@@ -477,11 +476,11 @@ type UserAccountCyberObservableObjectSTIX struct {
 	Credential            string                                                   `json:"credential" bson:"credential"`
 	AccountLogin          string                                                   `json:"account_login" bson:"account_login"`
 	DisplayName           string                                                   `json:"display_name" bson:"display_name"`
-	AccountCreated        time.Time                                                `json:"account_created" bson:"account_created"`
-	AccountExpires        time.Time                                                `json:"account_expires" bson:"account_expires"`
-	CredentialLastChanged time.Time                                                `json:"credential_last_changed" bson:"credential_last_changed"`
-	AccountFirstLogin     time.Time                                                `json:"account_first_login" bson:"account_first_login"`
-	AccountLastLogin      time.Time                                                `json:"account_last_login" bson:"account_last_login"`
+	AccountCreated        string                                                   `json:"account_created" bson:"account_created"`
+	AccountExpires        string                                                   `json:"account_expires" bson:"account_expires"`
+	CredentialLastChanged string                                                   `json:"credential_last_changed" bson:"credential_last_changed"`
+	AccountFirstLogin     string                                                   `json:"account_first_login" bson:"account_first_login"`
+	AccountLastLogin      string                                                   `json:"account_last_login" bson:"account_last_login"`
 	AccountType           stixhelpers.OpenVocabTypeSTIX                            `json:"account_type" bson:"account_type"`
 	Extensions            map[string]someextensionsstixco.UNIXAccountExtensionSTIX `json:"extensions" bson:"extensions"`
 }
@@ -500,7 +499,7 @@ type WindowsRegistryKeyCyberObservableObjectSTIX struct {
 	commonpropertiesstixco.OptionalCommonPropertiesCyberObservableObjectSTIX
 	NumberOfSubkeys int                                                   `json:"number_of_subkeys" bson:"number_of_subkeys"`
 	Key             string                                                `json:"key" bson:"key"`
-	ModifiedTime    time.Time                                             `json:"modified_time" bson:"modified_time"`
+	ModifiedTime    string                                                `json:"modified_time" bson:"modified_time"`
 	CreatorUserRef  stixhelpers.IdentifierTypeSTIX                        `json:"creator_user_ref" bson:"creator_user_ref"`
 	Values          []somecomplextypesstixco.WindowsRegistryValueTypeSTIX `json:"values" bson:"values"`
 }
@@ -534,8 +533,8 @@ type X509CertificateCyberObservableObjectSTIX struct {
 	Subject                   string                                          `json:"subject" bson:"subject"`
 	SubjectPublicKeyAlgorithm string                                          `json:"subject_public_key_algorithm" bson:"subject_public_key_algorithm"`
 	SubjectPublicKeyModulus   string                                          `json:"subject_public_key_modulus" bson:"subject_public_key_modulus"`
-	ValidityNotBefore         time.Time                                       `json:"validity_not_before" bson:"validity_not_before"`
-	ValidityNotAfter          time.Time                                       `json:"validity_not_after" bson:"validity_not_after"`
+	ValidityNotBefore         string                                          `json:"validity_not_before" bson:"validity_not_before"`
+	ValidityNotAfter          string                                          `json:"validity_not_after" bson:"validity_not_after"`
 	Hashes                    stixhelpers.HashesTypeSTIX                      `json:"hashes" bson:"hashes"`
 	X509V3Extensions          somecomplextypesstixco.X509V3ExtensionsTypeSTIX `json:"x509_v3_extensions" bson:"x509_v3_extensions"`
 }

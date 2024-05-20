@@ -29,8 +29,14 @@ func (e IPv6AddressCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, 
 	return &result, err
 }
 
-func (e *IPv6AddressCyberObservableObjectSTIX) Get() *IPv6AddressCyberObservableObjectSTIX {
-	return e
+func (e *IPv6AddressCyberObservableObjectSTIX) Get() (*IPv6AddressCyberObservableObjectSTIX, error) {
+	if e.GetValue() == "" {
+		err := fmt.Errorf("the required value 'Value' must not be empty")
+
+		return &IPv6AddressCyberObservableObjectSTIX{}, err
+	}
+
+	return e, nil
 }
 
 // -------- Value property ---------

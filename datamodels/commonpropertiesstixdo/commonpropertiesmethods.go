@@ -25,7 +25,7 @@ func (e *CommonPropertiesDomainObjectSTIX) SetValueRevoked(v bool) {
 }
 
 // SetAnyRevoked устанавливает ЛЮБОЕ значение для поля Revoked
-func (e *CommonPropertiesDomainObjectSTIX) GetAnyRevoked(i interface{}) {
+func (e *CommonPropertiesDomainObjectSTIX) SetAnyRevoked(i interface{}) {
 	if v, ok := i.(bool); ok {
 		e.Revoked = v
 	}
@@ -42,7 +42,7 @@ func (e *CommonPropertiesDomainObjectSTIX) SetValueDefanged(v bool) {
 }
 
 // SetAnyDefanged устанавливает ЛЮБОЕ значение для поля Defanged
-func (e *CommonPropertiesDomainObjectSTIX) GetAnyDefanged(i interface{}) {
+func (e *CommonPropertiesDomainObjectSTIX) SetAnyDefanged(i interface{}) {
 	if v, ok := i.(bool); ok {
 		e.Defanged = v
 	}
@@ -54,7 +54,7 @@ func (e *CommonPropertiesDomainObjectSTIX) GetСonfidence() int {
 }
 
 // SetValueСonfidence устанавливает значение для поля Сonfidence
-func (e *CommonPropertiesDomainObjectSTIX) SetValueTlp(v int) {
+func (e *CommonPropertiesDomainObjectSTIX) SetValueConfidence(v int) {
 	e.Сonfidence = v
 }
 
@@ -99,8 +99,14 @@ func (e *CommonPropertiesDomainObjectSTIX) GetCreated() string {
 }
 
 // SetValueCreated устанавливает значение в формате RFC3339 для поля Created
-func (e *CommonPropertiesDomainObjectSTIX) SetValueCreated(v string) {
+func (e *CommonPropertiesDomainObjectSTIX) SetValueCreated(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.Created = v
+
+	return nil
 }
 
 // SetAnyCreated устанавливает ЛЮБОЕ значение для поля Created
@@ -115,8 +121,14 @@ func (e *CommonPropertiesDomainObjectSTIX) GetModified() string {
 }
 
 // SetValueModified устанавливает значение в формате RFC3339 для поля Modified
-func (e *CommonPropertiesDomainObjectSTIX) SetValueModified(v string) {
+func (e *CommonPropertiesDomainObjectSTIX) SetValueModified(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.Modified = v
+
+	return nil
 }
 
 // SetAnyModified устанавливает ЛЮБОЕ значение для поля Modified
@@ -192,42 +204,42 @@ func (e *CommonPropertiesDomainObjectSTIX) SetValueGranularMarkings(v []stixhelp
 }
 
 // ValidateStructCommonFields выполняет проверку полей типа на соответствие корректным значениям
-func (cpdostix *CommonPropertiesDomainObjectSTIX) ValidateStructCommonFields() bool {
+func (e *CommonPropertiesDomainObjectSTIX) ValidateStructCommonFields() bool {
 	//валидация содержимого поля SpecVersion
-	if !(regexp.MustCompile(`^[0-9a-z.]+$`).MatchString(cpdostix.SpecVersion)) {
+	if !(regexp.MustCompile(`^[0-9a-z.]+$`).MatchString(e.SpecVersion)) {
 		return false
 	}
 
 	//валидация содержимого поля CreatedByRef
-	if len(fmt.Sprint(cpdostix.CreatedByRef)) > 0 {
-		if !(regexp.MustCompile(`^[0-9a-zA-Z-_]+(--)[0-9a-f|-]+$`).MatchString(fmt.Sprint(cpdostix.CreatedByRef))) {
+	if len(fmt.Sprint(e.CreatedByRef)) > 0 {
+		if !(regexp.MustCompile(`^[0-9a-zA-Z-_]+(--)[0-9a-f|-]+$`).MatchString(fmt.Sprint(e.CreatedByRef))) {
 			return false
 		}
 	}
 
 	//для поля Lang
-	if len(cpdostix.Lang) > 0 {
-		if !(regexp.MustCompile(`^[a-zA-Z]+$`)).MatchString(cpdostix.Lang) {
+	if len(e.Lang) > 0 {
+		if !(regexp.MustCompile(`^[a-zA-Z]+$`)).MatchString(e.Lang) {
 			return false
 		}
 	}
 
 	//вызываем метод проверки полей типа ExternalReferences
-	if ok := checkExternalReferencesTypeSTIX(cpdostix.ExternalReferences); !ok {
+	if ok := checkExternalReferencesTypeSTIX(e.ExternalReferences); !ok {
 		return false
 	}
 
 	//проверяем поле ObjectMarkingRefs
-	if len(cpdostix.ObjectMarkingRefs) > 0 {
-		for _, value := range cpdostix.ObjectMarkingRefs {
+	if len(e.ObjectMarkingRefs) > 0 {
+		for _, value := range e.ObjectMarkingRefs {
 			if !value.CheckIdentifierTypeSTIX() {
 				return false
 			}
 		}
 	}
 
-	if len(cpdostix.GranularMarkings) > 0 {
-		for _, value := range cpdostix.GranularMarkings {
+	if len(e.GranularMarkings) > 0 {
+		for _, value := range e.GranularMarkings {
 			//вызываем метод проверки полей типа GranularMarkingsTypeSTIX
 			if !value.CheckGranularMarkingsTypeSTIX() {
 				return false
@@ -239,45 +251,46 @@ func (cpdostix *CommonPropertiesDomainObjectSTIX) ValidateStructCommonFields() b
 }
 
 // SanitizeStruct выполняет очистку объекта от 'нежелательных' символов
-func (cpdostix CommonPropertiesDomainObjectSTIX) SanitizeStruct() CommonPropertiesDomainObjectSTIX {
+func (e CommonPropertiesDomainObjectSTIX) SanitizeStruct() CommonPropertiesDomainObjectSTIX {
 	//обработка содержимого списка поля Labels
-	if len(cpdostix.Labels) > 0 {
-		nl := make([]string, 0, len(cpdostix.Labels))
+	if len(e.Labels) > 0 {
+		nl := make([]string, 0, len(e.Labels))
 
-		for _, l := range cpdostix.Labels {
+		for _, l := range e.Labels {
 			nl = append(nl, commonlibs.StringSanitize(l))
 		}
 
-		cpdostix.Labels = nl
+		e.Labels = nl
 	}
 
 	//обработка содержимого списка поля ExternalReferences
-	cpdostix.ExternalReferences = sanitizeStructExternalReferencesTypeSTIX(cpdostix.ExternalReferences)
+	e.ExternalReferences = sanitizeStructExternalReferencesTypeSTIX(e.ExternalReferences)
 
 	//обработка содержимого списка поля Extension
-	if len(cpdostix.Extensions) > 0 {
-		newExtension := make(map[string]string, len(cpdostix.Extensions))
-		for extKey, extValue := range cpdostix.Extensions {
+	if len(e.Extensions) > 0 {
+		newExtension := make(map[string]string, len(e.Extensions))
+		for extKey, extValue := range e.Extensions {
 			newExtension[extKey] = commonlibs.StringSanitize(extValue)
 		}
-		cpdostix.Extensions = newExtension
+
+		e.Extensions = newExtension
 	}
 
 	//время модификации объекта
-	cpdostix.Modified = commonlibs.GetDateTimeFormatRFC3339(time.Now().UnixMilli())
+	e.Modified = commonlibs.GetDateTimeFormatRFC3339(time.Now().UnixMilli())
 
-	return cpdostix
+	return e
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (cp CommonPropertiesDomainObjectSTIX) ToStringBeautiful() string {
+func (e CommonPropertiesDomainObjectSTIX) ToStringBeautiful() string {
 	str := strings.Builder{}
 
-	str.WriteString(fmt.Sprintf("'spec_version': '%s'\n", cp.SpecVersion))
-	str.WriteString(fmt.Sprintf("'created': '%v'\n", cp.Created))
-	str.WriteString(fmt.Sprintf("'modified': '%v'\n", cp.Modified))
-	str.WriteString(fmt.Sprintf("'created_by_ref': '%s'\n", cp.CreatedByRef))
-	str.WriteString(fmt.Sprintf("'revoked': '%v'\n", cp.Revoked))
+	str.WriteString(fmt.Sprintf("'spec_version': '%s'\n", e.SpecVersion))
+	str.WriteString(fmt.Sprintf("'created': '%v'\n", e.Created))
+	str.WriteString(fmt.Sprintf("'modified': '%v'\n", e.Modified))
+	str.WriteString(fmt.Sprintf("'created_by_ref': '%s'\n", e.CreatedByRef))
+	str.WriteString(fmt.Sprintf("'revoked': '%v'\n", e.Revoked))
 	str.WriteString(fmt.Sprintf("'labels': \n%v", func(l []string) string {
 		str := strings.Builder{}
 
@@ -286,7 +299,7 @@ func (cp CommonPropertiesDomainObjectSTIX) ToStringBeautiful() string {
 		}
 
 		return str.String()
-	}(cp.Labels)))
+	}(e.Labels)))
 	str.WriteString(fmt.Sprintf("'external_references': \n%v", func(l []stixhelpers.ExternalReferenceTypeElementSTIX) string {
 		str := strings.Builder{}
 
@@ -300,7 +313,7 @@ func (cp CommonPropertiesDomainObjectSTIX) ToStringBeautiful() string {
 		}
 
 		return str.String()
-	}(cp.ExternalReferences)))
+	}(e.ExternalReferences)))
 	str.WriteString(fmt.Sprintf("'object_marking_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
 		str := strings.Builder{}
 
@@ -309,7 +322,7 @@ func (cp CommonPropertiesDomainObjectSTIX) ToStringBeautiful() string {
 		}
 
 		return str.String()
-	}(cp.ObjectMarkingRefs)))
+	}(e.ObjectMarkingRefs)))
 	str.WriteString(fmt.Sprintf("'granular_markings': \n%v", func(l []stixhelpers.GranularMarkingsTypeSTIX) string {
 		str := strings.Builder{}
 
@@ -329,8 +342,8 @@ func (cp CommonPropertiesDomainObjectSTIX) ToStringBeautiful() string {
 		}
 
 		return str.String()
-	}(cp.GranularMarkings)))
-	str.WriteString(fmt.Sprintf("'defanged': '%v'\n", cp.Defanged))
+	}(e.GranularMarkings)))
+	str.WriteString(fmt.Sprintf("'defanged': '%v'\n", e.Defanged))
 	str.WriteString(fmt.Sprintf("'extensions': \n%v", func(l map[string]string) string {
 		str := strings.Builder{}
 
@@ -339,7 +352,7 @@ func (cp CommonPropertiesDomainObjectSTIX) ToStringBeautiful() string {
 		}
 
 		return str.String()
-	}(cp.Extensions)))
+	}(e.Extensions)))
 
 	return str.String()
 }

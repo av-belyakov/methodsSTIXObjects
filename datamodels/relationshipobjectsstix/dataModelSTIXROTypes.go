@@ -1,8 +1,6 @@
 package datamodels
 
 import (
-	"time"
-
 	"github.com/av-belyakov/methodstixobjects/datamodels/commonproperties"
 	"github.com/av-belyakov/methodstixobjects/datamodels/stixhelpers"
 )
@@ -14,9 +12,9 @@ import (
 // Created - время создания объекта, в формате "2016-05-12T08:17:27.000Z" (ОБЯЗАТЕЛЬНОЕ ЗНАЧЕНИЕ).
 // Modified - время создания объекта, в формате "2016-05-12T08:17:27.000Z" (ОБЯЗАТЕЛЬНОЕ ЗНАЧЕНИЕ).
 type OptionalCommonPropertiesRelationshipObjectSTIX struct {
-	SpecVersion string    `json:"spec_version" bson:"spec_version"`
-	Created     time.Time `json:"created" bson:"created"`
-	Modified    time.Time `json:"modified" bson:"modified"`
+	SpecVersion string `json:"spec_version" bson:"spec_version"`
+	Created     string `json:"created" bson:"created"`
+	Modified    string `json:"modified" bson:"modified"`
 }
 
 // RelationshipObjectSTIX объект "Relationship", по терминалогии STIX, используется для связывания двух Domain Object STIX (SDO) или
@@ -34,8 +32,8 @@ type RelationshipObjectSTIX struct {
 	OptionalCommonPropertiesRelationshipObjectSTIX
 	RelationshipType string                         `json:"relationship_type" bson:"relationship_type"`
 	Description      string                         `json:"description" bson:"description"`
-	StartTime        time.Time                      `json:"start_time" bson:"start_time"`
-	StopTime         time.Time                      `json:"stop_time" bson:"stop_time"`
+	StartTime        string                         `json:"start_time" bson:"start_time"`
+	StopTime         string                         `json:"stop_time" bson:"stop_time"`
 	SourceRef        stixhelpers.IdentifierTypeSTIX `json:"source_ref" bson:"source_ref"`
 	TargetRef        stixhelpers.IdentifierTypeSTIX `json:"target_ref" bson:"target_ref"`
 }
@@ -53,12 +51,12 @@ type RelationshipObjectSTIX struct {
 type SightingObjectSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
 	OptionalCommonPropertiesRelationshipObjectSTIX
-	Summary          bool                              `json:"summary" bson:"summary"`
-	Count            int                               `json:"count" bson:"count"`
-	Description      string                            `json:"description" bson:"description"`
-	FirstSeen        time.Time                         `json:"first_seen" bson:"first_seen"`
-	LastSeen         time.Time                         `json:"last_seen" bson:"last_seen"`
-	SightingOfRef    stixhelpers.IdentifierTypeSTIX    `json:"sighting_of_ref" bson:"sighting_of_ref"`
-	ObservedDataRefs []*stixhelpers.IdentifierTypeSTIX `json:"observed_data_refs" bson:"observed_data_refs"`
-	WhereSightedRefs []*stixhelpers.IdentifierTypeSTIX `json:"where_sighted_refs" bson:"where_sighted_refs"`
+	Summary          bool                             `json:"summary" bson:"summary"`
+	Count            int                              `json:"count" bson:"count"`
+	Description      string                           `json:"description" bson:"description"`
+	FirstSeen        string                           `json:"first_seen" bson:"first_seen"`
+	LastSeen         string                           `json:"last_seen" bson:"last_seen"`
+	SightingOfRef    stixhelpers.IdentifierTypeSTIX   `json:"sighting_of_ref" bson:"sighting_of_ref"`
+	ObservedDataRefs []stixhelpers.IdentifierTypeSTIX `json:"observed_data_refs" bson:"observed_data_refs"`
+	WhereSightedRefs []stixhelpers.IdentifierTypeSTIX `json:"where_sighted_refs" bson:"where_sighted_refs"`
 }

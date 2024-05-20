@@ -29,8 +29,8 @@ func (e ArtifactCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, err
 	return &result, err
 }
 
-func (e *ArtifactCyberObservableObjectSTIX) Get() *ArtifactCyberObservableObjectSTIX {
-	return e
+func (e *ArtifactCyberObservableObjectSTIX) Get() (*ArtifactCyberObservableObjectSTIX, error) {
+	return e, nil
 }
 
 // -------- MimeType property ---------

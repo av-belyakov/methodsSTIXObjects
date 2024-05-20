@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/av-belyakov/methodstixobjects/commonlibs"
 	"github.com/av-belyakov/methodstixobjects/datamodels/somecomplextypesstixco"
@@ -27,6 +28,10 @@ func (e EmailMessageCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte,
 	result, err := json.Marshal(e)
 
 	return &result, err
+}
+
+func (e *EmailMessageCyberObservableObjectSTIX) Get() (*EmailMessageCyberObservableObjectSTIX, error) {
+	return e, nil
 }
 
 // -------- IsMultipart property ---------
@@ -112,8 +117,14 @@ func (e *EmailMessageCyberObservableObjectSTIX) GetDate() string {
 }
 
 // SetValueDate устанавливает значение в формате RFC3339 для поля Date
-func (e *EmailMessageCyberObservableObjectSTIX) SetValueDate(v string) {
+func (e *EmailMessageCyberObservableObjectSTIX) SetValueDate(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.Date = v
+
+	return nil
 }
 
 // SetAnyDate устанавливает ЛЮБОЕ значение для поля Date

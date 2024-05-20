@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/av-belyakov/methodstixobjects/commonlibs"
 	"github.com/av-belyakov/methodstixobjects/datamodels"
@@ -59,8 +60,8 @@ func (pstix ProcessCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, 
 	return &result, err
 }
 
-func (e *ProcessCyberObservableObjectSTIX) Get() *ProcessCyberObservableObjectSTIX {
-	return e
+func (e *ProcessCyberObservableObjectSTIX) Get() (*ProcessCyberObservableObjectSTIX, error) {
+	return e, nil
 }
 
 // -------- IsHidden property ---------
@@ -131,8 +132,14 @@ func (e *ProcessCyberObservableObjectSTIX) GetCreatedTime() string {
 }
 
 // SetValueCreatedTime устанавливает значение в формате RFC3339 для поля CreatedTime
-func (e *ProcessCyberObservableObjectSTIX) SetValueCreatedTime(v string) {
+func (e *ProcessCyberObservableObjectSTIX) SetValueCreatedTime(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.CreatedTime = v
+
+	return nil
 }
 
 // SetAnyCreatedTime устанавливает ЛЮБОЕ значение для поля CreatedTime

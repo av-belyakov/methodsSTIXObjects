@@ -27,8 +27,8 @@ func (e URLCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	return &result, err
 }
 
-func (e *URLCyberObservableObjectSTIX) Get() *URLCyberObservableObjectSTIX {
-	return e
+func (e *URLCyberObservableObjectSTIX) Get() (*URLCyberObservableObjectSTIX, error) {
+	return e, nil
 }
 
 // -------- Value property ---------

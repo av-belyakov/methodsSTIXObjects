@@ -28,6 +28,22 @@ func (e OpinionDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	return &result, err
 }
 
+func (e *OpinionDomainObjectsSTIX) Get() (*OpinionDomainObjectsSTIX, error) {
+	if e.GetOpinion() == "" {
+		err := fmt.Errorf("the required value 'Opinion' must not be empty")
+
+		return &OpinionDomainObjectsSTIX{}, err
+	}
+
+	if len(e.GetObjectRefs()) == 0 {
+		err := fmt.Errorf("the required value 'ObjectRefs' must not be empty")
+
+		return &OpinionDomainObjectsSTIX{}, err
+	}
+
+	return e, nil
+}
+
 // -------- Explanation property ---------
 func (e *OpinionDomainObjectsSTIX) GetExplanation() string {
 	return e.Explanation

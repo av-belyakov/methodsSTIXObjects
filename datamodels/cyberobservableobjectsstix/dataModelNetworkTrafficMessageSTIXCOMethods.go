@@ -6,6 +6,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/av-belyakov/methodstixobjects/commonlibs"
 	"github.com/av-belyakov/methodstixobjects/datamodels"
@@ -83,8 +84,8 @@ func (e NetworkTrafficCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byt
 	return &result, err
 }
 
-func (e *NetworkTrafficCyberObservableObjectSTIX) Get() *NetworkTrafficCyberObservableObjectSTIX {
-	return e
+func (e *NetworkTrafficCyberObservableObjectSTIX) Get() (*NetworkTrafficCyberObservableObjectSTIX, error) {
+	return e, nil
 }
 
 // -------- IsActive property ---------
@@ -200,8 +201,14 @@ func (e *NetworkTrafficCyberObservableObjectSTIX) GetStart() string {
 }
 
 // SetValueStart устанавливает значение в формате RFC3339 для поля Start
-func (e *NetworkTrafficCyberObservableObjectSTIX) SetValueStart(v string) {
+func (e *NetworkTrafficCyberObservableObjectSTIX) SetValueStart(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.Start = v
+
+	return nil
 }
 
 // SetAnyStart устанавливает ЛЮБОЕ значение для поля Start
@@ -216,8 +223,14 @@ func (e *NetworkTrafficCyberObservableObjectSTIX) GetEnd() string {
 }
 
 // SetValueEnd устанавливает значение в формате RFC3339 для поля End
-func (e *NetworkTrafficCyberObservableObjectSTIX) SetValueEnd(v string) {
+func (e *NetworkTrafficCyberObservableObjectSTIX) SetValueEnd(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.End = v
+
+	return nil
 }
 
 // SetAnyEnd устанавливает ЛЮБОЕ значение для поля End

@@ -28,6 +28,16 @@ func (e ReportDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	return &result, err
 }
 
+func (e *ReportDomainObjectsSTIX) Get() (*ReportDomainObjectsSTIX, error) {
+	if e.GetName() == "" {
+		err := fmt.Errorf("the required value 'Name' must not be empty")
+
+		return &ReportDomainObjectsSTIX{}, err
+	}
+
+	return e, nil
+}
+
 // -------- Name property ---------
 func (e *ReportDomainObjectsSTIX) GetName() string {
 	return e.Name

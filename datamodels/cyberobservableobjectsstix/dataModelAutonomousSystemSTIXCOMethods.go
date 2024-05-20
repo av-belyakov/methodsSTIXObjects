@@ -27,18 +27,28 @@ func (e AutonomousSystemCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]b
 	return &result, err
 }
 
+func (e *AutonomousSystemCyberObservableObjectSTIX) Get() (*AutonomousSystemCyberObservableObjectSTIX, error) {
+	if e.GetNumber() == 0 {
+		err := fmt.Errorf("the required value 'Number' must not be empty")
+
+		return &AutonomousSystemCyberObservableObjectSTIX{}, err
+	}
+
+	return e, nil
+}
+
 // -------- NumberObserved property ---------
-func (e *AutonomousSystemCyberObservableObjectSTIX) GetNumberObserved() int {
+func (e *AutonomousSystemCyberObservableObjectSTIX) GetNumber() int {
 	return e.Number
 }
 
-// SetValueNumberObserved устанавливает значение для поля NumberObserved
-func (e *AutonomousSystemCyberObservableObjectSTIX) SetValueNumberObserved(v int) {
+// SetValueNumberObserved устанавливает значение для поля Number
+func (e *AutonomousSystemCyberObservableObjectSTIX) SetValueNumber(v int) {
 	e.Number = v
 }
 
-// SetAnyNumberObserved устанавливает ЛЮБОЕ значение для поля NumberObserved
-func (e *AutonomousSystemCyberObservableObjectSTIX) SetAnyNumberObserved(i interface{}) {
+// SetAnyNumberObserved устанавливает ЛЮБОЕ значение для поля Number
+func (e *AutonomousSystemCyberObservableObjectSTIX) SetAnyNumber(i interface{}) {
 	e.Number = commonlibs.ConversionAnyToInt(i)
 }
 

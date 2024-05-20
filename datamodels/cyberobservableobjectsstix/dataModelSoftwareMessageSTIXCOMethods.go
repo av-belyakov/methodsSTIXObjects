@@ -27,8 +27,8 @@ func (e SoftwareCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, err
 	return &result, err
 }
 
-func (e *SoftwareCyberObservableObjectSTIX) Get() *SoftwareCyberObservableObjectSTIX {
-	return e
+func (e *SoftwareCyberObservableObjectSTIX) Get() (*SoftwareCyberObservableObjectSTIX, error) {
+	return e, nil
 }
 
 // -------- Name property ---------

@@ -28,8 +28,14 @@ func (e GroupingDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	return &result, err
 }
 
-func (e *GroupingDomainObjectsSTIX) Get() *GroupingDomainObjectsSTIX {
-	return e
+func (e *GroupingDomainObjectsSTIX) Get() (*GroupingDomainObjectsSTIX, error) {
+	if e.GetName() == "" {
+		err := fmt.Errorf("the required value 'Name' must not be empty")
+
+		return &GroupingDomainObjectsSTIX{}, err
+	}
+
+	return e, nil
 }
 
 // -------- Name property ---------

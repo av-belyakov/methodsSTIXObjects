@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/av-belyakov/methodstixobjects/commonlibs"
 	"github.com/av-belyakov/methodstixobjects/datamodels/stixhelpers"
@@ -28,8 +29,14 @@ func (e IntrusionSetDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) 
 	return &result, err
 }
 
-func (e *IntrusionSetDomainObjectsSTIX) Get() *IntrusionSetDomainObjectsSTIX {
-	return e
+func (e *IntrusionSetDomainObjectsSTIX) Get() (*IntrusionSetDomainObjectsSTIX, error) {
+	if e.GetName() == "" {
+		err := fmt.Errorf("the required value 'Name' must not be empty")
+
+		return &IntrusionSetDomainObjectsSTIX{}, err
+	}
+
+	return e, nil
 }
 
 // -------- Name property ---------
@@ -98,8 +105,14 @@ func (e *IntrusionSetDomainObjectsSTIX) GetFirstSeen() string {
 }
 
 // SetValueFirstSeen устанавливает значение в формате RFC3339 для поля FirstSeen
-func (e *IntrusionSetDomainObjectsSTIX) SetValueFirstSeen(v string) {
+func (e *IntrusionSetDomainObjectsSTIX) SetValueFirstSeen(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.FirstSeen = v
+
+	return nil
 }
 
 // SetAnyFirstSeen устанавливает ЛЮБОЕ значение для поля FirstSeen
@@ -114,8 +127,14 @@ func (e *IntrusionSetDomainObjectsSTIX) GetLastSeen() string {
 }
 
 // SetValueLastSeen устанавливает значение в формате RFC3339 для поля LastSeen
-func (e *IntrusionSetDomainObjectsSTIX) SetValueLastSeen(v string) {
+func (e *IntrusionSetDomainObjectsSTIX) SetValueLastSeen(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.LastSeen = v
+
+	return nil
 }
 
 // SetAnyLastSeen устанавливает ЛЮБОЕ значение для поля LastSeen

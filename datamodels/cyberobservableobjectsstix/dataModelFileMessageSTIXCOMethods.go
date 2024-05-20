@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/av-belyakov/methodstixobjects/commonlibs"
 	"github.com/av-belyakov/methodstixobjects/datamodels"
@@ -148,8 +149,14 @@ func (e *FileCyberObservableObjectSTIX) GetCtime() string {
 }
 
 // SetValueCtime устанавливает значение в формате RFC3339 для поля Ctime
-func (e *FileCyberObservableObjectSTIX) SetValueCtime(v string) {
+func (e *FileCyberObservableObjectSTIX) SetValueCtime(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.Ctime = v
+
+	return nil
 }
 
 // SetAnyCtime устанавливает ЛЮБОЕ значение для поля Ctime
@@ -164,8 +171,14 @@ func (e *FileCyberObservableObjectSTIX) GetMtime() string {
 }
 
 // SetValueMtime устанавливает значение в формате RFC3339 для поля Mtime
-func (e *FileCyberObservableObjectSTIX) SetValueMtime(v string) {
+func (e *FileCyberObservableObjectSTIX) SetValueMtime(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.Mtime = v
+
+	return nil
 }
 
 // SetAnyMtime устанавливает ЛЮБОЕ значение для поля Mtime
@@ -180,8 +193,14 @@ func (e *FileCyberObservableObjectSTIX) GetAtime() string {
 }
 
 // SetValueAtime устанавливает значение в формате RFC3339 для поля Atime
-func (e *FileCyberObservableObjectSTIX) SetValueAtime(v string) {
+func (e *FileCyberObservableObjectSTIX) SetValueAtime(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.Atime = v
+
+	return nil
 }
 
 // SetAnyAtime устанавливает ЛЮБОЕ значение для поля Atime

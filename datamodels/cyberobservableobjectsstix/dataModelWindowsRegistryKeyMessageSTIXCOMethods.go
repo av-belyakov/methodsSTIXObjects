@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/av-belyakov/methodstixobjects/commonlibs"
 	"github.com/av-belyakov/methodstixobjects/datamodels/somecomplextypesstixco"
@@ -29,8 +30,8 @@ func (wrkstix WindowsRegistryKeyCyberObservableObjectSTIX) EncodeJSON(interface{
 	return &result, err
 }
 
-func (e *WindowsRegistryKeyCyberObservableObjectSTIX) Get() *WindowsRegistryKeyCyberObservableObjectSTIX {
-	return e
+func (e *WindowsRegistryKeyCyberObservableObjectSTIX) Get() (*WindowsRegistryKeyCyberObservableObjectSTIX, error) {
+	return e, nil
 }
 
 // -------- NumberOfSubkeys property ---------
@@ -69,8 +70,14 @@ func (e *WindowsRegistryKeyCyberObservableObjectSTIX) GetModifiedTime() string {
 }
 
 // SetValueModifiedTime устанавливает значение в формате RFC3339 для поля ModifiedTime
-func (e *WindowsRegistryKeyCyberObservableObjectSTIX) SetValueModifiedTime(v string) {
+func (e *WindowsRegistryKeyCyberObservableObjectSTIX) SetValueModifiedTime(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.ModifiedTime = v
+
+	return nil
 }
 
 // SetAnyModifiedTime устанавливает ЛЮБОЕ значение для поля ModifiedTime

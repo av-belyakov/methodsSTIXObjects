@@ -28,8 +28,8 @@ func (e LocationDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	return &result, err
 }
 
-func (e *LocationDomainObjectsSTIX) Get() *LocationDomainObjectsSTIX {
-	return e
+func (e *LocationDomainObjectsSTIX) Get() (*LocationDomainObjectsSTIX, error) {
+	return e, nil
 }
 
 // -------- Latitude property ---------

@@ -29,6 +29,16 @@ func (e EmailAddressCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte,
 	return &result, err
 }
 
+func (e *EmailAddressCyberObservableObjectSTIX) Get() (*EmailAddressCyberObservableObjectSTIX, error) {
+	if e.GetValue() == "" {
+		err := fmt.Errorf("the required value 'Value' must not be empty")
+
+		return &EmailAddressCyberObservableObjectSTIX{}, err
+	}
+
+	return e, nil
+}
+
 // -------- Value property ---------
 func (e *EmailAddressCyberObservableObjectSTIX) GetValue() string {
 	return e.Value

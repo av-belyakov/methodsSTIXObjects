@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/asaskevich/govalidator"
 	"github.com/av-belyakov/methodstixobjects/commonlibs"
@@ -27,6 +28,16 @@ func (e DirectoryCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, er
 	result, err := json.Marshal(e)
 
 	return &result, err
+}
+
+func (e *DirectoryCyberObservableObjectSTIX) Get() (*DirectoryCyberObservableObjectSTIX, error) {
+	if e.GetPath() == "" {
+		err := fmt.Errorf("the required value 'Path' must not be empty")
+
+		return &DirectoryCyberObservableObjectSTIX{}, err
+	}
+
+	return e, nil
 }
 
 // -------- Path property ---------
@@ -65,8 +76,14 @@ func (e *DirectoryCyberObservableObjectSTIX) GetCtime() string {
 }
 
 // SetValueCtime устанавливает значение в формате RFC3339 для поля Ctime
-func (e *DirectoryCyberObservableObjectSTIX) SetValueCtime(v string) {
+func (e *DirectoryCyberObservableObjectSTIX) SetValueCtime(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.Ctime = v
+
+	return nil
 }
 
 // SetAnyCtime устанавливает ЛЮБОЕ значение для поля Ctime
@@ -81,8 +98,14 @@ func (e *DirectoryCyberObservableObjectSTIX) GetMtime() string {
 }
 
 // SetValueMtime устанавливает значение в формате RFC3339 для поля Mtime
-func (e *DirectoryCyberObservableObjectSTIX) SetValueMtime(v string) {
+func (e *DirectoryCyberObservableObjectSTIX) SetValueMtime(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.Mtime = v
+
+	return nil
 }
 
 // SetAnyMtime устанавливает ЛЮБОЕ значение для поля Mtime
@@ -97,8 +120,14 @@ func (e *DirectoryCyberObservableObjectSTIX) GetAtime() string {
 }
 
 // SetValueAtime устанавливает значение в формате RFC3339 для поля Atime
-func (e *DirectoryCyberObservableObjectSTIX) SetValueAtime(v string) {
+func (e *DirectoryCyberObservableObjectSTIX) SetValueAtime(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.Atime = v
+
+	return nil
 }
 
 // SetAnyAtime устанавливает ЛЮБОЕ значение для поля Atime

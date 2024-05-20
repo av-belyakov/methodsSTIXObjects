@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/av-belyakov/methodstixobjects/commonlibs"
 	"github.com/av-belyakov/methodstixobjects/datamodels/stixhelpers"
@@ -28,6 +29,22 @@ func (e ObservedDataDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) 
 	return &result, err
 }
 
+func (e *ObservedDataDomainObjectsSTIX) Get() (*ObservedDataDomainObjectsSTIX, error) {
+	if e.GetFirstObserved() == "1970-01-01T00:00:00+00:00" {
+		err := fmt.Errorf("the required value 'FirstObserved' must not be empty")
+
+		return &ObservedDataDomainObjectsSTIX{}, err
+	}
+
+	if e.GetLastObserved() == "1970-01-01T00:00:00+00:00" {
+		err := fmt.Errorf("the required value 'LastObserved' must not be empty")
+
+		return &ObservedDataDomainObjectsSTIX{}, err
+	}
+
+	return e, nil
+}
+
 // -------- NumberObserved property ---------
 func (e *ObservedDataDomainObjectsSTIX) GetNumberObserved() int {
 	return e.NumberObserved
@@ -49,8 +66,14 @@ func (e *ObservedDataDomainObjectsSTIX) GetFirstObserved() string {
 }
 
 // SetValueFirstObserved устанавливает значение в формате RFC3339 для поля FirstObserved
-func (e *ObservedDataDomainObjectsSTIX) SetValueFirstObserved(v string) {
+func (e *ObservedDataDomainObjectsSTIX) SetValueFirstObserved(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.FirstObserved = v
+
+	return nil
 }
 
 // SetAnyFirstObserved устанавливает ЛЮБОЕ значение для поля FirstObserved
@@ -65,8 +88,14 @@ func (e *ObservedDataDomainObjectsSTIX) GetLastObserved() string {
 }
 
 // SetValueLastObserved устанавливает значение в формате RFC3339 для поля LastObserved
-func (e *ObservedDataDomainObjectsSTIX) SetValueLastObserved(v string) {
+func (e *ObservedDataDomainObjectsSTIX) SetValueLastObserved(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.LastObserved = v
+
+	return nil
 }
 
 // SetAnyLastObserved устанавливает ЛЮБОЕ значение для поля LastObserved

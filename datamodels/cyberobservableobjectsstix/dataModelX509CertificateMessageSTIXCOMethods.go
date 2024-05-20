@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/av-belyakov/methodstixobjects/commonlibs"
 	"github.com/av-belyakov/methodstixobjects/datamodels/somecomplextypesstixco"
@@ -29,8 +30,8 @@ func (x509sstix X509CertificateCyberObservableObjectSTIX) EncodeJSON(interface{}
 	return &result, err
 }
 
-func (e *X509CertificateCyberObservableObjectSTIX) Get() *X509CertificateCyberObservableObjectSTIX {
-	return e
+func (e *X509CertificateCyberObservableObjectSTIX) Get() (*X509CertificateCyberObservableObjectSTIX, error) {
+	return e, nil
 }
 
 // -------- IsSelfSigned property ---------
@@ -176,8 +177,14 @@ func (e *X509CertificateCyberObservableObjectSTIX) GetValidityNotBefore() string
 }
 
 // SetValueValidityNotBefore устанавливает значение в формате RFC3339 для поля ValidityNotBefore
-func (e *X509CertificateCyberObservableObjectSTIX) SetValueValidityNotBefore(v string) {
+func (e *X509CertificateCyberObservableObjectSTIX) SetValueValidityNotBefore(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.ValidityNotBefore = v
+
+	return nil
 }
 
 // SetAnyValidityNotBefore устанавливает ЛЮБОЕ значение для поля ValidityNotBefore
@@ -192,8 +199,14 @@ func (e *X509CertificateCyberObservableObjectSTIX) GetValidityNotAfter() string 
 }
 
 // SetValueValidityNotAfter устанавливает значение в формате RFC3339 для поля ValidityNotAfter
-func (e *X509CertificateCyberObservableObjectSTIX) SetValueValidityNotAfter(v string) {
+func (e *X509CertificateCyberObservableObjectSTIX) SetValueValidityNotAfter(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.ValidityNotAfter = v
+
+	return nil
 }
 
 // SetAnyValidityNotAfter устанавливает ЛЮБОЕ значение для поля ValidityNotAfter

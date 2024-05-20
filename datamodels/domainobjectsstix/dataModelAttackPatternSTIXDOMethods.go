@@ -28,8 +28,14 @@ func (e AttackPatternDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error)
 	return &result, err
 }
 
-func (e *AttackPatternDomainObjectsSTIX) Get() *AttackPatternDomainObjectsSTIX {
-	return e
+func (e *AttackPatternDomainObjectsSTIX) Get() (*AttackPatternDomainObjectsSTIX, error) {
+	if e.GetName() == "" {
+		err := fmt.Errorf("the required value 'Name' must not be empty")
+
+		return &AttackPatternDomainObjectsSTIX{}, err
+	}
+
+	return e, nil
 }
 
 // -------- Name property ---------

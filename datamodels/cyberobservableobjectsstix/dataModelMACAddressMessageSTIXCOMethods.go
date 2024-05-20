@@ -27,8 +27,14 @@ func (e MACAddressCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, e
 	return &result, err
 }
 
-func (e *MACAddressCyberObservableObjectSTIX) Get() *MACAddressCyberObservableObjectSTIX {
-	return e
+func (e *MACAddressCyberObservableObjectSTIX) Get() (*MACAddressCyberObservableObjectSTIX, error) {
+	if e.GetValue() == "" {
+		err := fmt.Errorf("the required value 'Value' must not be empty")
+
+		return &MACAddressCyberObservableObjectSTIX{}, err
+	}
+
+	return e, nil
 }
 
 // -------- Value property ---------

@@ -28,6 +28,16 @@ func (tstix ToolDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	return &result, err
 }
 
+func (e *ToolDomainObjectsSTIX) Get() (*ToolDomainObjectsSTIX, error) {
+	if e.GetName() == "" {
+		err := fmt.Errorf("the required value 'Name' must not be empty")
+
+		return &ToolDomainObjectsSTIX{}, err
+	}
+
+	return e, nil
+}
+
 // -------- Name property ---------
 func (e *ToolDomainObjectsSTIX) GetName() string {
 	return e.Name

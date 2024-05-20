@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/av-belyakov/methodstixobjects/commonlibs"
 	"github.com/av-belyakov/methodstixobjects/datamodels/stixhelpers"
@@ -28,8 +29,14 @@ func (e IndicatorDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	return &result, err
 }
 
-func (e *IndicatorDomainObjectsSTIX) Get() *IndicatorDomainObjectsSTIX {
-	return e
+func (e *IndicatorDomainObjectsSTIX) Get() (*IndicatorDomainObjectsSTIX, error) {
+	if e.GetName() == "" {
+		err := fmt.Errorf("the required value 'Name' must not be empty")
+
+		return &IndicatorDomainObjectsSTIX{}, err
+	}
+
+	return e, nil
 }
 
 // -------- Name property ---------
@@ -98,8 +105,14 @@ func (e *IndicatorDomainObjectsSTIX) GetValidFrom() string {
 }
 
 // SetValueValidFrom устанавливает значение в формате RFC3339 для поля ValidFrom
-func (e *IndicatorDomainObjectsSTIX) SetValueValidFrom(v string) {
+func (e *IndicatorDomainObjectsSTIX) SetValueValidFrom(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.ValidFrom = v
+
+	return nil
 }
 
 // SetAnyValidFrom устанавливает ЛЮБОЕ значение для поля ValidFrom
@@ -114,8 +127,14 @@ func (e *IndicatorDomainObjectsSTIX) GetValidUntil() string {
 }
 
 // SetValueValidUntil устанавливает значение в формате RFC3339 для поля ValidUntil
-func (e *IndicatorDomainObjectsSTIX) SetValueValidUntil(v string) {
+func (e *IndicatorDomainObjectsSTIX) SetValueValidUntil(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.ValidUntil = v
+
+	return nil
 }
 
 // SetAnyValidUntil устанавливает ЛЮБОЕ значение для поля ValidUntil

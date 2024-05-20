@@ -28,6 +28,16 @@ func (e NoteDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	return &result, err
 }
 
+func (e *NoteDomainObjectsSTIX) Get() (*NoteDomainObjectsSTIX, error) {
+	if e.GetContent() == "" {
+		err := fmt.Errorf("the required value 'Content' must not be empty")
+
+		return &NoteDomainObjectsSTIX{}, err
+	}
+
+	return e, nil
+}
+
 // -------- Abstract property ---------
 func (e *NoteDomainObjectsSTIX) GetAbstract() string {
 	return e.Abstract

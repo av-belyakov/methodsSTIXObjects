@@ -27,8 +27,14 @@ func (e MutexCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error)
 	return &result, err
 }
 
-func (e *MutexCyberObservableObjectSTIX) Get() *MutexCyberObservableObjectSTIX {
-	return e
+func (e *MutexCyberObservableObjectSTIX) Get() (*MutexCyberObservableObjectSTIX, error) {
+	if e.GetName() == "" {
+		err := fmt.Errorf("the required value 'Name' must not be empty")
+
+		return &MutexCyberObservableObjectSTIX{}, err
+	}
+
+	return e, nil
 }
 
 // -------- Name property ---------

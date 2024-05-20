@@ -27,8 +27,14 @@ func (e CourseOfActionDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error
 	return &result, err
 }
 
-func (e *CourseOfActionDomainObjectsSTIX) Get() *CourseOfActionDomainObjectsSTIX {
-	return e
+func (e *CourseOfActionDomainObjectsSTIX) Get() (*CourseOfActionDomainObjectsSTIX, error) {
+	if e.GetName() == "" {
+		err := fmt.Errorf("the required value 'Name' must not be empty")
+
+		return &CourseOfActionDomainObjectsSTIX{}, err
+	}
+
+	return e, nil
 }
 
 // -------- Name property ---------

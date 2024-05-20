@@ -28,6 +28,16 @@ func (e DomainNameCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, e
 	return &result, err
 }
 
+func (e *DomainNameCyberObservableObjectSTIX) Get() (*DomainNameCyberObservableObjectSTIX, error) {
+	if e.GetValue() == "" {
+		err := fmt.Errorf("the required value 'Value' must not be empty")
+
+		return &DomainNameCyberObservableObjectSTIX{}, err
+	}
+
+	return e, nil
+}
+
 // -------- Value property ---------
 func (e *DomainNameCyberObservableObjectSTIX) GetValue() string {
 	return e.Value

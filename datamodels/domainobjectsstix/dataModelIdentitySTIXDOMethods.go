@@ -28,8 +28,14 @@ func (e IdentityDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	return &result, err
 }
 
-func (e *IdentityDomainObjectsSTIX) Get() *IdentityDomainObjectsSTIX {
-	return e
+func (e *IdentityDomainObjectsSTIX) Get() (*IdentityDomainObjectsSTIX, error) {
+	if e.GetName() == "" {
+		err := fmt.Errorf("the required value 'Name' must not be empty")
+
+		return &IdentityDomainObjectsSTIX{}, err
+	}
+
+	return e, nil
 }
 
 // -------- Name property ---------

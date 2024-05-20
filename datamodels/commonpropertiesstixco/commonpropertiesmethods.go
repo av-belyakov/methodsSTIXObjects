@@ -23,7 +23,7 @@ func (e *OptionalCommonPropertiesCyberObservableObjectSTIX) SetValueDefanged(v b
 }
 
 // SetAnyDefanged устанавливает ЛЮБОЕ значение для поля Defanged
-func (e *OptionalCommonPropertiesCyberObservableObjectSTIX) GetAnyDefanged(i interface{}) {
+func (e *OptionalCommonPropertiesCyberObservableObjectSTIX) SetAnyDefanged(i interface{}) {
 	if v, ok := i.(bool); ok {
 		e.Defanged = v
 	}

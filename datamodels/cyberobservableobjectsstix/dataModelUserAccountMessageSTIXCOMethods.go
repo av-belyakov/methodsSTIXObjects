@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/av-belyakov/methodstixobjects/commonlibs"
 	"github.com/av-belyakov/methodstixobjects/datamodels"
@@ -30,8 +31,8 @@ func (e UserAccountCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, 
 	return &result, err
 }
 
-func (e *UserAccountCyberObservableObjectSTIX) Get() *UserAccountCyberObservableObjectSTIX {
-	return e
+func (e *UserAccountCyberObservableObjectSTIX) Get() (*UserAccountCyberObservableObjectSTIX, error) {
+	return e, nil
 }
 
 // -------- IsServiceAccount property ---------
@@ -168,8 +169,14 @@ func (e *UserAccountCyberObservableObjectSTIX) GetAccountCreated() string {
 }
 
 // SetValueAccountCreated устанавливает значение в формате RFC3339 для поля AccountCreated
-func (e *UserAccountCyberObservableObjectSTIX) SetValueAccountCreated(v string) {
+func (e *UserAccountCyberObservableObjectSTIX) SetValueAccountCreated(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.AccountCreated = v
+
+	return nil
 }
 
 // SetAnyAccountCreated устанавливает ЛЮБОЕ значение для поля AccountCreated
@@ -184,8 +191,14 @@ func (e *UserAccountCyberObservableObjectSTIX) GetAccountExpires() string {
 }
 
 // SetValueAccountExpires устанавливает значение в формате RFC3339 для поля AccountExpires
-func (e *UserAccountCyberObservableObjectSTIX) SetValueAccountExpires(v string) {
+func (e *UserAccountCyberObservableObjectSTIX) SetValueAccountExpires(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.AccountExpires = v
+
+	return nil
 }
 
 // SetAnyAccountExpires устанавливает ЛЮБОЕ значение для поля AccountExpires
@@ -200,8 +213,14 @@ func (e *UserAccountCyberObservableObjectSTIX) GetCredentialLastChanged() string
 }
 
 // SetValueCredentialLastChanged устанавливает значение в формате RFC3339 для поля CredentialLastChanged
-func (e *UserAccountCyberObservableObjectSTIX) SetValueCredentialLastChanged(v string) {
+func (e *UserAccountCyberObservableObjectSTIX) SetValueCredentialLastChanged(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.CredentialLastChanged = v
+
+	return nil
 }
 
 // SetAnyCredentialLastChanged устанавливает ЛЮБОЕ значение для поля CredentialLastChanged
@@ -216,8 +235,14 @@ func (e *UserAccountCyberObservableObjectSTIX) GetAccountFirstLogin() string {
 }
 
 // SetValueAccountFirstLogin устанавливает значение в формате RFC3339 для поля AccountFirstLogin
-func (e *UserAccountCyberObservableObjectSTIX) SetValueAccountFirstLogin(v string) {
+func (e *UserAccountCyberObservableObjectSTIX) SetValueAccountFirstLogin(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.AccountFirstLogin = v
+
+	return nil
 }
 
 // SetAnyAccountFirstLogin устанавливает ЛЮБОЕ значение для поля AccountFirstLogin
@@ -232,8 +257,14 @@ func (e *UserAccountCyberObservableObjectSTIX) GetAccountLastLogin() string {
 }
 
 // SetValueAccountLastLogin устанавливает значение в формате RFC3339 для поля AccountLastLogin
-func (e *UserAccountCyberObservableObjectSTIX) SetValueAccountLastLogin(v string) {
+func (e *UserAccountCyberObservableObjectSTIX) SetValueAccountLastLogin(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.AccountLastLogin = v
+
+	return nil
 }
 
 // SetAnyAccountLastLogin устанавливает ЛЮБОЕ значение для поля AccountLastLogin

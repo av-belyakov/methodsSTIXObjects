@@ -27,6 +27,8 @@ func (e AutonomousSystemCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]b
 	return &result, err
 }
 
+// Get возвращает объект "Autonomous System", по терминалогии STIX, содержит параметры Автономной системы
+// Обязательные значения в полях Number
 func (e *AutonomousSystemCyberObservableObjectSTIX) Get() (*AutonomousSystemCyberObservableObjectSTIX, error) {
 	if e.GetNumber() == 0 {
 		err := fmt.Errorf("the required value 'Number' must not be empty")

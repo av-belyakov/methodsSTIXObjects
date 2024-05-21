@@ -28,6 +28,8 @@ func (e AttackPatternDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error)
 	return &result, err
 }
 
+// Get возвращает объект "Attack Pattern", по терминалогии STIX, описывающий способы компрометации цели
+// Обязательное значение в поле Name
 func (e *AttackPatternDomainObjectsSTIX) Get() (*AttackPatternDomainObjectsSTIX, error) {
 	if e.GetName() == "" {
 		err := fmt.Errorf("the required value 'Name' must not be empty")

@@ -29,6 +29,10 @@ func (e ObservedDataDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) 
 	return &result, err
 }
 
+// Get возвращает объект "Observed Data", по терминалогии STIX, содержит информацию о сущностях связанных с
+// кибер безопасностью, таких как файлы, системы или сети. Наблюдаемые данные это не результат анализа или заключение искусственного
+// интеллекта, это просто сырая информация без какого-либо контекста.
+// Обязательные значения в полях FirstObserved, LastObserved, NumberObserved
 func (e *ObservedDataDomainObjectsSTIX) Get() (*ObservedDataDomainObjectsSTIX, error) {
 	if e.GetFirstObserved() == "1970-01-01T00:00:00+00:00" {
 		err := fmt.Errorf("the required value 'FirstObserved' must not be empty")
@@ -76,10 +80,17 @@ func (e *ObservedDataDomainObjectsSTIX) SetValueFirstObserved(v string) error {
 	return nil
 }
 
-// SetAnyFirstObserved устанавливает ЛЮБОЕ значение для поля FirstObserved
-func (e *ObservedDataDomainObjectsSTIX) SetAnyFirstObserved(i interface{}) {
+// SetAnyFirstObserved устанавливает значение для поля FirstObserved
+// принимает число (timestamp 13 символов) или строку в формате RFC3339
+func (e *ObservedDataDomainObjectsSTIX) SetAnyFirstObserved(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueFirstObserved(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.FirstObserved = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- LastObserved property ---------
@@ -98,10 +109,17 @@ func (e *ObservedDataDomainObjectsSTIX) SetValueLastObserved(v string) error {
 	return nil
 }
 
-// SetAnyLastObserved устанавливает ЛЮБОЕ значение для поля LastObserved
-func (e *ObservedDataDomainObjectsSTIX) SetAnyLastObserved(i interface{}) {
+// SetAnyLastObserved устанавливает значение для поля LastObserved
+// принимает число (timestamp 13 символов) или строку в формате RFC3339
+func (e *ObservedDataDomainObjectsSTIX) SetAnyLastObserved(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueLastObserved(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.LastObserved = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- ObjectRefs property ---------

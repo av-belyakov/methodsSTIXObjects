@@ -28,6 +28,9 @@ func (e IPv4AddressCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, 
 	return &result, err
 }
 
+// Get возвращает объект "IPv4 Address Object", по терминалогии STIX, содержит один или
+// более IPv4 адресов, выраженных с помощью нотации CIDR.
+// Обязательные значения в полях Value
 func (e *IPv4AddressCyberObservableObjectSTIX) Get() (*IPv4AddressCyberObservableObjectSTIX, error) {
 	if e.GetValue() == "" {
 		err := fmt.Errorf("the required value 'Value' must not be empty")

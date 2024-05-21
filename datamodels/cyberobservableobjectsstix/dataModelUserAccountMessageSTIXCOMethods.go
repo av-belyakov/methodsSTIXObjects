@@ -31,6 +31,8 @@ func (e UserAccountCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, 
 	return &result, err
 }
 
+// Get возвращает объект "User Account Object", по терминалогии STIX, содержит экземпляр любого типа учетной записи пользователя
+// Обязательные значения в полях Name
 func (e *UserAccountCyberObservableObjectSTIX) Get() (*UserAccountCyberObservableObjectSTIX, error) {
 	return e, nil
 }

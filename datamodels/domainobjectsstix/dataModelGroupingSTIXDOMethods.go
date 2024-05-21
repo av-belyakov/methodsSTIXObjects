@@ -28,6 +28,8 @@ func (e GroupingDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	return &result, err
 }
 
+// Get возвращает объект "Grouping", по терминалогии STIX, объединяет различные объекты STIX в рамках какого то общего контекста
+// Обязательные значения в полях Name, Context, ObjectRefs
 func (e *GroupingDomainObjectsSTIX) Get() (*GroupingDomainObjectsSTIX, error) {
 	if e.GetName() == "" {
 		err := fmt.Errorf("the required value 'Name' must not be empty")

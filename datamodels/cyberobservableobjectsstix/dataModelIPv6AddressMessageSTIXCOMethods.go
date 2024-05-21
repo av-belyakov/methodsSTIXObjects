@@ -29,6 +29,9 @@ func (e IPv6AddressCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, 
 	return &result, err
 }
 
+// Get возвращает объект "IPv6 Address Object", по терминалогии STIX, содержит один или
+// более IPv6 адресов, выраженных с помощью нотации CIDR.
+// Обязательные значения в полях Value
 func (e *IPv6AddressCyberObservableObjectSTIX) Get() (*IPv6AddressCyberObservableObjectSTIX, error) {
 	if e.GetValue() == "" {
 		err := fmt.Errorf("the required value 'Value' must not be empty")

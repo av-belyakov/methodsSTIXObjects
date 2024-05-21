@@ -64,6 +64,7 @@ func (e FileCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) 
 	return &result, err
 }
 
+// Get возвращает объект "File Object", по терминалогии STIX, содержит объект со свойствами файла
 func (e *FileCyberObservableObjectSTIX) Get() *FileCyberObservableObjectSTIX {
 	return e
 }

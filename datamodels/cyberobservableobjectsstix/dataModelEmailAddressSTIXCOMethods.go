@@ -29,6 +29,8 @@ func (e EmailAddressCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte,
 	return &result, err
 }
 
+// Get возвращает объект "Email Address", по терминалогии STIX, содержит представление единственного email адреса
+// Обязательные значения в полях Value
 func (e *EmailAddressCyberObservableObjectSTIX) Get() (*EmailAddressCyberObservableObjectSTIX, error) {
 	if e.GetValue() == "" {
 		err := fmt.Errorf("the required value 'Value' must not be empty")

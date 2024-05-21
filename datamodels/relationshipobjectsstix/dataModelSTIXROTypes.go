@@ -1,4 +1,4 @@
-package datamodels
+package relationshipobjectsstix
 
 import (
 	"github.com/av-belyakov/methodstixobjects/datamodels/commonproperties"

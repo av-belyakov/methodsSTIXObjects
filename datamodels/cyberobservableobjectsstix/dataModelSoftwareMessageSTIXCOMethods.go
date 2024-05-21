@@ -27,6 +27,8 @@ func (e SoftwareCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, err
 	return &result, err
 }
 
+// Get возвращает объект "Software Object", по терминалогии STIX, содержит свойства, связанные с
+// программным обеспечением, включая программные продукты.
 func (e *SoftwareCyberObservableObjectSTIX) Get() (*SoftwareCyberObservableObjectSTIX, error) {
 	return e, nil
 }

@@ -28,6 +28,7 @@ func (e LocationDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	return &result, err
 }
 
+// Get возвращает объект "Location", по терминалогии STIX, содержит описание географического местоположения
 func (e *LocationDomainObjectsSTIX) Get() (*LocationDomainObjectsSTIX, error) {
 	return e, nil
 }

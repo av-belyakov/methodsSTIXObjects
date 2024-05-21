@@ -1,4 +1,4 @@
-package cmd
+package methodstixobjects
 
 import (
 	"encoding/json"

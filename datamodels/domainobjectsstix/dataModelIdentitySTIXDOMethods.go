@@ -28,6 +28,8 @@ func (e IdentityDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	return &result, err
 }
 
+// Get возвращает объект "Identity", по терминалогии STIX, содержит основную идентификационную информацию физичиских лиц, организаций и т.д.
+// Обязательные значения в полях Name
 func (e *IdentityDomainObjectsSTIX) Get() (*IdentityDomainObjectsSTIX, error) {
 	if e.GetName() == "" {
 		err := fmt.Errorf("the required value 'Name' must not be empty")

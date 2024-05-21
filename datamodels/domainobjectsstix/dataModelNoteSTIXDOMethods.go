@@ -28,6 +28,9 @@ func (e NoteDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	return &result, err
 }
 
+// Get возвращает объект "Note", по терминалогии STIX, содержит текстовую информации дополняющую текущий контекст анализа
+// либо содержащей результаты дополнительного анализа которые не может быть описан в терминах объектов STIX
+// Обязательные значения в полях Content, ObjectRefs
 func (e *NoteDomainObjectsSTIX) Get() (*NoteDomainObjectsSTIX, error) {
 	if e.GetContent() == "" {
 		err := fmt.Errorf("the required value 'Content' must not be empty")

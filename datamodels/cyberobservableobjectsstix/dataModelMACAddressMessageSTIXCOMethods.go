@@ -27,6 +27,9 @@ func (e MACAddressCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, e
 	return &result, err
 }
 
+// Get возвращает объект "MAC Address Object", по терминалогии STIX, содержит объект MAC-адрес, представляющий собой
+// один адрес управления доступом к среде (MAC).
+// Обязательные значения в полях Value
 func (e *MACAddressCyberObservableObjectSTIX) Get() (*MACAddressCyberObservableObjectSTIX, error) {
 	if e.GetValue() == "" {
 		err := fmt.Errorf("the required value 'Value' must not be empty")

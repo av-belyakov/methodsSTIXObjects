@@ -27,6 +27,8 @@ func (e CourseOfActionDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error
 	return &result, err
 }
 
+// Get возвращает объект "Course of Action", по терминалогии STIX, описывающий совокупность действий
+// Обязательное значение в поле Name
 func (e *CourseOfActionDomainObjectsSTIX) Get() (*CourseOfActionDomainObjectsSTIX, error) {
 	if e.GetName() == "" {
 		err := fmt.Errorf("the required value 'Name' must not be empty")

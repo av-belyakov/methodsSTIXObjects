@@ -28,6 +28,9 @@ func (e ReportDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	return &result, err
 }
 
+// Get возвращает объект "Report", по терминалогии STIX, содержит совокупность данных об угрозах, сосредоточенных на одной
+// или нескольких темах, таких как описание исполнителя, вредоносного ПО или метода атаки, включая контекст и связанные с ним детали.
+// Обязательные значения в полях Name, Published, ObjectRefs
 func (e *ReportDomainObjectsSTIX) Get() (*ReportDomainObjectsSTIX, error) {
 	if e.GetName() == "" {
 		err := fmt.Errorf("the required value 'Name' must not be empty")

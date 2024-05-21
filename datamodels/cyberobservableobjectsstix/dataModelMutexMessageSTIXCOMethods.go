@@ -27,6 +27,8 @@ func (e MutexCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error)
 	return &result, err
 }
 
+// Get возвращает объект "Mutex Object", по терминалогии STIX, содержит свойства объекта взаимного исключения (mutex).
+// Обязательные значения в полях Name
 func (e *MutexCyberObservableObjectSTIX) Get() (*MutexCyberObservableObjectSTIX, error) {
 	if e.GetName() == "" {
 		err := fmt.Errorf("the required value 'Name' must not be empty")

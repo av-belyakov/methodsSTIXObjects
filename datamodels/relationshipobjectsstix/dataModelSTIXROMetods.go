@@ -1,4 +1,4 @@
-package datamodels
+package relationshipobjectsstix
 
 import (
 	"encoding/json"
@@ -123,6 +123,10 @@ func (e RelationshipObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	return &result, err
 }
 
+// Get возвращает объект RelationshipObjectSTIX. Объект должен содержать обязательное значения:
+// RelationshipType - содержит наименование, используемое для идентификации объекта.
+// SourceRef - устанавливает идентификатор исходного (исходящего) объекта.
+// TargetRef - определяет идентификатор целевого (to) объекта.
 func (e *RelationshipObjectSTIX) Get() (*RelationshipObjectSTIX, error) {
 	if e.GetRelationshipType() == "" {
 		err := fmt.Errorf("the required value 'RelationshipType' must not be empty")
@@ -323,6 +327,8 @@ func (e SightingObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	return &result, err
 }
 
+// Get возвращает объект SightingObjectSTIX. Объект должен содержать обязательное значение
+// SightingOfRef (ссылку на объект Domain Object STIX).
 func (e *SightingObjectSTIX) Get() (*SightingObjectSTIX, error) {
 	if e.GetSightingOfRef() == "" {
 		err := fmt.Errorf("the required value 'SightingOfRef' must not be empty")

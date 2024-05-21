@@ -84,6 +84,8 @@ func (e NetworkTrafficCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byt
 	return &result, err
 }
 
+// Get возвращает объект "Network Traffic Object", по терминалогии STIX, содержит объект
+// сетевого трафика представляющий собой произвольный сетевой трафик, который исходит из источника и адресуется адресату.
 func (e *NetworkTrafficCyberObservableObjectSTIX) Get() (*NetworkTrafficCyberObservableObjectSTIX, error) {
 	return e, nil
 }

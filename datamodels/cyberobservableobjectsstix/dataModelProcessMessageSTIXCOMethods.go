@@ -60,6 +60,8 @@ func (pstix ProcessCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, 
 	return &result, err
 }
 
+// Get возвращает объект "Process Object", по терминалогии STIX, содержит общие свойства экземпляра компьютерной
+// программы, выполняемой в операционной системе.
 func (e *ProcessCyberObservableObjectSTIX) Get() (*ProcessCyberObservableObjectSTIX, error) {
 	return e, nil
 }

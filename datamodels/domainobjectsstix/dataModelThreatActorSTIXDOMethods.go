@@ -29,6 +29,9 @@ func (e ThreatActorDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	return &result, err
 }
 
+// Get возвращает объект "Threat Actor", по терминалогии STIX, содержит информацию о физических лицах или их
+// группах и организациях которые могут действовать со злым умыслом.
+// Обязательные значения в полях Name
 func (e *ThreatActorDomainObjectsSTIX) Get() (*ThreatActorDomainObjectsSTIX, error) {
 	if e.GetName() == "" {
 		err := fmt.Errorf("the required value 'Name' must not be empty")
@@ -85,10 +88,17 @@ func (e *ThreatActorDomainObjectsSTIX) SetValueFirstSeen(v string) error {
 	return nil
 }
 
-// SetAnyFirstSeen устанавливает ЛЮБОЕ значение для поля FirstSeen
-func (e *ThreatActorDomainObjectsSTIX) SetAnyFirstSeen(i interface{}) {
+// SetAnyFirstSeen устанавливает значение для поля FirstSeen
+// принимает число (timestamp 13 символов) или строку в формате RFC3339
+func (e *ThreatActorDomainObjectsSTIX) SetAnyFirstSeen(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueFirstSeen(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.FirstSeen = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- LastSeen property ---------
@@ -107,10 +117,17 @@ func (e *ThreatActorDomainObjectsSTIX) SetValueLastSeen(v string) error {
 	return nil
 }
 
-// SetAnyLastSeen устанавливает ЛЮБОЕ значение для поля LastSeen
-func (e *ThreatActorDomainObjectsSTIX) SetAnyLastSeen(i interface{}) {
+// SetAnyLastSeen устанавливает значение для поля LastSeen
+// принимает число (timestamp 13 символов) или строку в формате RFC3339
+func (e *ThreatActorDomainObjectsSTIX) SetAnyLastSeen(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueLastSeen(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.LastSeen = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- Aliases property ---------

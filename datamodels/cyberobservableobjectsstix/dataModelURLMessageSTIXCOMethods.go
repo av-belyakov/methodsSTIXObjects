@@ -27,6 +27,7 @@ func (e URLCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	return &result, err
 }
 
+// Get возвращает объект "URL Object", по терминалогии STIX, содержит унифицированный указатель информационного ресурса (URL).
 func (e *URLCyberObservableObjectSTIX) Get() (*URLCyberObservableObjectSTIX, error) {
 	return e, nil
 }

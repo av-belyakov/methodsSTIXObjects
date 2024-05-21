@@ -29,6 +29,9 @@ func (e InfrastructureDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error
 	return &result, err
 }
 
+// Get возвращает объект "Infrastructure", по терминалогии STIX, содержит описание любых систем, программных
+// служб, а так же любые связанные с ними физические или виртуальные ресурсы, предназначенные для поддержки какой-либо цели
+// Обязательные значения в полях Name
 func (e *InfrastructureDomainObjectsSTIX) Get() (*InfrastructureDomainObjectsSTIX, error) {
 	if e.GetName() == "" {
 		err := fmt.Errorf("the required value 'Name' must not be empty")
@@ -100,10 +103,17 @@ func (e *InfrastructureDomainObjectsSTIX) SetValueFirstSeen(v string) error {
 	return nil
 }
 
-// SetAnyFirstSeen устанавливает ЛЮБОЕ значение для поля FirstSeen
-func (e *InfrastructureDomainObjectsSTIX) SetAnyFirstSeen(i interface{}) {
+// SetAnyFirstSeen устанавливает значение для поля FirstSeen
+// принимает число (timestamp 13 символов) или строку в формате RFC3339
+func (e *InfrastructureDomainObjectsSTIX) SetAnyFirstSeen(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueFirstSeen(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.FirstSeen = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- LastSeen property ---------
@@ -122,10 +132,17 @@ func (e *InfrastructureDomainObjectsSTIX) SetValueLastSeen(v string) error {
 	return nil
 }
 
-// SetAnyLastSeen устанавливает ЛЮБОЕ значение для поля LastSeen
-func (e *InfrastructureDomainObjectsSTIX) SetAnyLastSeen(i interface{}) {
+// SetAnyLastSeen устанавливает значение для поля LastSeen
+// принимает число (timestamp 13 символов) или строку в формате RFC3339
+func (e *InfrastructureDomainObjectsSTIX) SetAnyLastSeen(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueLastSeen(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.LastSeen = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- KillChainPhases property ---------

@@ -1,4 +1,4 @@
-package cmd
+package methodstixobjects
 
 import "github.com/av-belyakov/methodstixobjects/datamodels/commonproperties"
 

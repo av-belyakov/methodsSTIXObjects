@@ -29,6 +29,9 @@ func (e IndicatorDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	return &result, err
 }
 
+// Get возвращает объект "Indicator", по терминалогии STIX, содержит шаблон который может быть использован для обнаружения
+// подозрительной или вредоносной киберактивности
+// Обязательные значения в полях Name, Pattern, PatternType, ValidFrom
 func (e *IndicatorDomainObjectsSTIX) Get() (*IndicatorDomainObjectsSTIX, error) {
 	if e.GetName() == "" {
 		err := fmt.Errorf("the required value 'Name' must not be empty")
@@ -137,10 +140,17 @@ func (e *IndicatorDomainObjectsSTIX) SetValueValidUntil(v string) error {
 	return nil
 }
 
-// SetAnyValidUntil устанавливает ЛЮБОЕ значение для поля ValidUntil
-func (e *IndicatorDomainObjectsSTIX) SetAnyValidUntil(i interface{}) {
+// SetAnyValidUntil устанавливает значение для поля ValidUntil
+// принимает число (timestamp 13 символов) или строку в формате RFC3339
+func (e *IndicatorDomainObjectsSTIX) SetAnyValidUntil(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueValidUntil(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.ValidUntil = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- PatternType property ---------

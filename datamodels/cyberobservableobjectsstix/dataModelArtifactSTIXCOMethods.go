@@ -29,6 +29,8 @@ func (e ArtifactCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, err
 	return &result, err
 }
 
+// Get возвращает объект "Artifact", по терминалогии STIX, позволяет захватывать массив байтов (8 бит) в виде строки
+// в кодировке base64 или связывать его с полезной нагрузкой, подобной файлу.
 func (e *ArtifactCyberObservableObjectSTIX) Get() (*ArtifactCyberObservableObjectSTIX, error) {
 	return e, nil
 }

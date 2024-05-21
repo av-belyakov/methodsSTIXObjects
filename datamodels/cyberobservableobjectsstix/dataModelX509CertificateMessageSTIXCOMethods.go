@@ -30,6 +30,9 @@ func (x509sstix X509CertificateCyberObservableObjectSTIX) EncodeJSON(interface{}
 	return &result, err
 }
 
+// Get возвращает объект "X.509 Certificate Object", по терминалогии STIX, представлет свойства
+// сертификата X.509, определенные в рекомендациях ITU X.509 [X.509]. X.509  Certificate объект должен содержать по крайней
+// мере одно cвойство специфичное для этого объекта (помимо type).
 func (e *X509CertificateCyberObservableObjectSTIX) Get() (*X509CertificateCyberObservableObjectSTIX, error) {
 	return e, nil
 }

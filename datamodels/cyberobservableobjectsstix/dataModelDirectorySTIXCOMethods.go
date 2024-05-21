@@ -30,6 +30,8 @@ func (e DirectoryCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, er
 	return &result, err
 }
 
+// Get возвращает объект "Directory", по терминалогии STIX, содержит свойства, общие для каталога файловой системы
+// Обязательные значения в полях Path
 func (e *DirectoryCyberObservableObjectSTIX) Get() (*DirectoryCyberObservableObjectSTIX, error) {
 	if e.GetPath() == "" {
 		err := fmt.Errorf("the required value 'Path' must not be empty")

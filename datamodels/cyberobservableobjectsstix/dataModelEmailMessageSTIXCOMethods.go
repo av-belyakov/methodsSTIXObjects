@@ -30,6 +30,8 @@ func (e EmailMessageCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte,
 	return &result, err
 }
 
+// Get возвращает объект "Email Message", по терминалогии STIX, содержит экземпляр email сообщения
+// Обязательные значения в полях IsMultipart
 func (e *EmailMessageCyberObservableObjectSTIX) Get() (*EmailMessageCyberObservableObjectSTIX, error) {
 	return e, nil
 }

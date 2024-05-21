@@ -30,6 +30,8 @@ func (wrkstix WindowsRegistryKeyCyberObservableObjectSTIX) EncodeJSON(interface{
 	return &result, err
 }
 
+// Get возвращает объект "Windows Registry Key Object", по терминалогии STIX, содержит описание значений полей
+// раздела реестра Windows.
 func (e *WindowsRegistryKeyCyberObservableObjectSTIX) Get() (*WindowsRegistryKeyCyberObservableObjectSTIX, error) {
 	return e, nil
 }

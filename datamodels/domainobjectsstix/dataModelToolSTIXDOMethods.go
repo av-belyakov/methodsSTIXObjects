@@ -28,6 +28,9 @@ func (tstix ToolDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	return &result, err
 }
 
+// Get возвращает объект "Tool", по терминалогии STIX, содержит информацию о легитимном ПО которое может быть
+// использованно для реализации компьютерных угроз
+// Обязательные значения в полях Name
 func (e *ToolDomainObjectsSTIX) Get() (*ToolDomainObjectsSTIX, error) {
 	if e.GetName() == "" {
 		err := fmt.Errorf("the required value 'Name' must not be empty")

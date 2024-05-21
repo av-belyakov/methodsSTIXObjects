@@ -28,6 +28,8 @@ func (e CampaignDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	return &result, err
 }
 
+// Get возвращает объект "Campaign", по терминалогии STIX, описывающий способы компрометации цели
+// Обязательное значение в поле Name
 func (e *CampaignDomainObjectsSTIX) Get() (*CampaignDomainObjectsSTIX, error) {
 	if e.GetName() == "" {
 		err := fmt.Errorf("the required value 'Name' must not be empty")
@@ -99,10 +101,17 @@ func (e *CampaignDomainObjectsSTIX) SetValueFirstSeen(v string) error {
 	return nil
 }
 
-// SetAnyFirstSeen устанавливает ЛЮБОЕ значение для поля FirstSeen
-func (e *CampaignDomainObjectsSTIX) SetAnyFirstSeen(i interface{}) {
+// SetAnyFirstSeen устанавливает значение для поля FirstSeen
+// принимает число (timestamp 13 символов) или строку в формате RFC3339
+func (e *CampaignDomainObjectsSTIX) SetAnyFirstSeen(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueFirstSeen(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.FirstSeen = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- LastSeen property ---------
@@ -121,10 +130,17 @@ func (e *CampaignDomainObjectsSTIX) SetValueLastSeen(v string) error {
 	return nil
 }
 
-// SetAnyLastSeen устанавливает ЛЮБОЕ значение для поля LastSeen
-func (e *CampaignDomainObjectsSTIX) SetAnyLastSeen(i interface{}) {
+// SetAnyLastSeen устанавливает значение для поля LastSeen
+// принимает число (timestamp 13 символов) или строку в формате RFC3339
+func (e *CampaignDomainObjectsSTIX) SetAnyLastSeen(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueLastSeen(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.LastSeen = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- Aliases property ---------

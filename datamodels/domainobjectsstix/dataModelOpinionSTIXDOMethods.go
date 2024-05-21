@@ -28,6 +28,9 @@ func (e OpinionDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) {
 	return &result, err
 }
 
+// Get возвращает объект "Opinion", по терминалогии STIX, содержит оценку информации в приведенной в каком либо другом объекте STIX,
+// которую произвел другой участник анализа.
+// Обязательные значения в полях Opinion, ObjectRefs
 func (e *OpinionDomainObjectsSTIX) Get() (*OpinionDomainObjectsSTIX, error) {
 	if e.GetOpinion() == "" {
 		err := fmt.Errorf("the required value 'Opinion' must not be empty")

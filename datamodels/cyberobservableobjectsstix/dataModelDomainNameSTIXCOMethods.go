@@ -28,6 +28,8 @@ func (e DomainNameCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, e
 	return &result, err
 }
 
+// Get возвращает объект "Domain Name", по терминалогии STIX, содержит сетевое доменное имя
+// Обязательные значения в полях Value
 func (e *DomainNameCyberObservableObjectSTIX) Get() (*DomainNameCyberObservableObjectSTIX, error) {
 	if e.GetValue() == "" {
 		err := fmt.Errorf("the required value 'Value' must not be empty")

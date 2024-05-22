@@ -118,10 +118,17 @@ func (e *IndicatorDomainObjectsSTIX) SetValueValidFrom(v string) error {
 	return nil
 }
 
-// SetAnyValidFrom устанавливает ЛЮБОЕ значение для поля ValidFrom
-func (e *IndicatorDomainObjectsSTIX) SetAnyValidFrom(i interface{}) {
+// SetAnyValidFrom устанавливает значение для поля ValidFrom
+// принимает число (timestamp 13 символов) или строку в формате RFC3339
+func (e *IndicatorDomainObjectsSTIX) SetAnyValidFrom(i interface{}) error {
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.ValidFrom = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	if str, ok := i.(string); ok {
+		return e.SetValueValidFrom(str)
+	}
+
+	return nil
 }
 
 // -------- ValidUntil property ---------
@@ -163,11 +170,11 @@ func (e *IndicatorDomainObjectsSTIX) SetValuePatternType(v stixhelpers.OpenVocab
 }
 
 // -------- KillChainPhases property ---------
-func (e *IndicatorDomainObjectsSTIX) GetKillChainPhases() stixhelpers.KillChainPhasesTypeSTIX {
+func (e *IndicatorDomainObjectsSTIX) GetKillChainPhases() []stixhelpers.KillChainPhasesTypeElementSTIX {
 	return e.KillChainPhases
 }
 
-func (e *IndicatorDomainObjectsSTIX) SetValueKillChainPhases(v stixhelpers.KillChainPhasesTypeSTIX) {
+func (e *IndicatorDomainObjectsSTIX) SetValueKillChainPhases(v []stixhelpers.KillChainPhasesTypeElementSTIX) {
 	e.KillChainPhases = v
 }
 
@@ -223,7 +230,12 @@ func (e IndicatorDomainObjectsSTIX) SanitizeStruct() IndicatorDomainObjectsSTIX 
 	e.Pattern = commonlibs.StringSanitize(e.Pattern)
 	e.PatternType = e.PatternType.SanitizeStructOpenVocabTypeSTIX()
 	e.PatternVersion = commonlibs.StringSanitize(e.PatternVersion)
-	e.KillChainPhases = e.KillChainPhases.SanitizeStructKillChainPhasesTypeSTIX()
+
+	killChainPhases := []stixhelpers.KillChainPhasesTypeElementSTIX(nil)
+	for _, v := range e.KillChainPhases {
+		killChainPhases = append(killChainPhases, v.SanitizeStructKillChainPhasesTypeElementSTIX())
+	}
+	e.KillChainPhases = killChainPhases
 
 	return e
 }

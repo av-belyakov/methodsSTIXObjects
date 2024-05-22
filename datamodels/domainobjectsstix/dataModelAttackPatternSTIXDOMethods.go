@@ -166,7 +166,7 @@ func (e AttackPatternDomainObjectsSTIX) ToStringBeautiful() string {
 
 		return str.String()
 	}(e.Aliases)))
-	str.WriteString(fmt.Sprintf("'kill_chain_phases': \n%v", func(l stixhelpers.KillChainPhasesTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("'kill_chain_phases': \n%v", func(l []stixhelpers.KillChainPhasesTypeElementSTIX) string {
 		str := strings.Builder{}
 
 		for k, v := range l {

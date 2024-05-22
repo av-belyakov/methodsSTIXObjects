@@ -100,15 +100,15 @@ type IdentityDomainObjectsSTIX struct {
 type IndicatorDomainObjectsSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
 	commonpropertiesstixdo.CommonPropertiesDomainObjectSTIX
-	Name            string                              `json:"name" bson:"name" required:"true"`
-	Pattern         string                              `json:"pattern" bson:"pattern" required:"true"`
-	PatternVersion  string                              `json:"pattern_version" bson:"pattern_version"`
-	Description     string                              `json:"description" bson:"description"`
-	ValidFrom       string                              `json:"valid_from" bson:"valid_from" required:"true"`
-	ValidUntil      string                              `json:"valid_until" bson:"valid_until"`
-	PatternType     stixhelpers.OpenVocabTypeSTIX       `json:"pattern_type" bson:"pattern_type" required:"true"`
-	KillChainPhases stixhelpers.KillChainPhasesTypeSTIX `json:"kill_chain_phases" bson:"kill_chain_phases"`
-	IndicatorTypes  []stixhelpers.OpenVocabTypeSTIX     `json:"indicator_types" bson:"indicator_types"`
+	Name            string                                       `json:"name" bson:"name" required:"true"`
+	Pattern         string                                       `json:"pattern" bson:"pattern" required:"true"`
+	PatternVersion  string                                       `json:"pattern_version" bson:"pattern_version"`
+	Description     string                                       `json:"description" bson:"description"`
+	ValidFrom       string                                       `json:"valid_from" bson:"valid_from" required:"true"`
+	ValidUntil      string                                       `json:"valid_until" bson:"valid_until"`
+	PatternType     stixhelpers.OpenVocabTypeSTIX                `json:"pattern_type" bson:"pattern_type" required:"true"`
+	KillChainPhases []stixhelpers.KillChainPhasesTypeElementSTIX `json:"kill_chain_phases" bson:"kill_chain_phases"`
+	IndicatorTypes  []stixhelpers.OpenVocabTypeSTIX              `json:"indicator_types" bson:"indicator_types"`
 }
 
 // InfrastructureDomainObjectsSTIX объект "Infrastructure", по терминалогии STIX, содержит описание любых систем, программных
@@ -123,13 +123,13 @@ type IndicatorDomainObjectsSTIX struct {
 type InfrastructureDomainObjectsSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
 	commonpropertiesstixdo.CommonPropertiesDomainObjectSTIX
-	Name                string                              `json:"name" bson:"name" required:"true"`
-	Description         string                              `json:"description" bson:"description"`
-	FirstSeen           string                              `json:"first_seen" bson:"first_seen"`
-	LastSeen            string                              `json:"last_seen" bson:"last_seen"`
-	Aliases             []string                            `json:"aliases" bson:"aliases"`
-	KillChainPhases     stixhelpers.KillChainPhasesTypeSTIX `json:"kill_chain_phases" bson:"kill_chain_phases"`
-	InfrastructureTypes []stixhelpers.OpenVocabTypeSTIX     `json:"infrastructure_types" bson:"infrastructure_types"`
+	Name                string                                       `json:"name" bson:"name" required:"true"`
+	Description         string                                       `json:"description" bson:"description"`
+	FirstSeen           string                                       `json:"first_seen" bson:"first_seen"`
+	LastSeen            string                                       `json:"last_seen" bson:"last_seen"`
+	Aliases             []string                                     `json:"aliases" bson:"aliases"`
+	KillChainPhases     []stixhelpers.KillChainPhasesTypeElementSTIX `json:"kill_chain_phases" bson:"kill_chain_phases"`
+	InfrastructureTypes []stixhelpers.OpenVocabTypeSTIX              `json:"infrastructure_types" bson:"infrastructure_types"`
 }
 
 // IntrusionSetDomainObjectsSTIX объект "Intrusion Set", по терминалогии STIX, содержит сгруппированный набор враждебного поведения и ресурсов
@@ -206,19 +206,19 @@ type LocationDomainObjectsSTIX struct {
 type MalwareDomainObjectsSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
 	commonpropertiesstixdo.CommonPropertiesDomainObjectSTIX
-	IsFamily                  bool                                `json:"is_family" bson:"is_family" required:"true"`
-	Name                      string                              `json:"name" bson:"name"`
-	Description               string                              `json:"description" bson:"description"`
-	FirstSeen                 string                              `json:"first_seen" bson:"first_seen"`
-	LastSeen                  string                              `json:"last_seen" bson:"last_seen"`
-	Aliases                   []string                            `json:"aliases" bson:"aliases"`
-	KillChainPhases           stixhelpers.KillChainPhasesTypeSTIX `json:"kill_chain_phases" bson:"kill_chain_phases"`
-	MalwareTypes              []stixhelpers.OpenVocabTypeSTIX     `json:"malware_types" bson:"malware_types"`
-	OperatingSystemRefs       []stixhelpers.IdentifierTypeSTIX    `json:"operating_system_refs" bson:"operating_system_refs"`
-	ArchitectureExecutionEnvs []stixhelpers.OpenVocabTypeSTIX     `json:"architecture_execution_envs" bson:"architecture_execution_envs"`
-	ImplementationLanguages   []stixhelpers.OpenVocabTypeSTIX     `json:"implementation_languages" bson:"implementation_languages"`
-	Capabilities              []stixhelpers.OpenVocabTypeSTIX     `json:"capabilities" bson:"capabilities"`
-	SampleRefs                []stixhelpers.IdentifierTypeSTIX    `json:"sample_refs" bson:"sample_refs"`
+	IsFamily                  bool                                         `json:"is_family" bson:"is_family" required:"true"`
+	Name                      string                                       `json:"name" bson:"name"`
+	Description               string                                       `json:"description" bson:"description"`
+	FirstSeen                 string                                       `json:"first_seen" bson:"first_seen"`
+	LastSeen                  string                                       `json:"last_seen" bson:"last_seen"`
+	Aliases                   []string                                     `json:"aliases" bson:"aliases"`
+	KillChainPhases           []stixhelpers.KillChainPhasesTypeElementSTIX `json:"kill_chain_phases" bson:"kill_chain_phases"`
+	MalwareTypes              []stixhelpers.OpenVocabTypeSTIX              `json:"malware_types" bson:"malware_types"`
+	OperatingSystemRefs       []stixhelpers.IdentifierTypeSTIX             `json:"operating_system_refs" bson:"operating_system_refs"`
+	ArchitectureExecutionEnvs []stixhelpers.OpenVocabTypeSTIX              `json:"architecture_execution_envs" bson:"architecture_execution_envs"`
+	ImplementationLanguages   []stixhelpers.OpenVocabTypeSTIX              `json:"implementation_languages" bson:"implementation_languages"`
+	Capabilities              []stixhelpers.OpenVocabTypeSTIX              `json:"capabilities" bson:"capabilities"`
+	SampleRefs                []stixhelpers.IdentifierTypeSTIX             `json:"sample_refs" bson:"sample_refs"`
 }
 
 // MalwareAnalysisDomainObjectsSTIX объект "Malware Analysis", по терминалогии STIX, содержит анализ вредоносных программ
@@ -375,12 +375,12 @@ type ThreatActorDomainObjectsSTIX struct {
 type ToolDomainObjectsSTIX struct {
 	commonproperties.CommonPropertiesObjectSTIX
 	commonpropertiesstixdo.CommonPropertiesDomainObjectSTIX
-	Name            string                              `json:"name" bson:"name" required:"true"`
-	Description     string                              `json:"description" bson:"description"`
-	ToolVersion     string                              `json:"tool_version" bson:"tool_version"`
-	Aliases         []string                            `json:"aliases" bson:"aliases"`
-	KillChainPhases stixhelpers.KillChainPhasesTypeSTIX `json:"kill_chain_phases" bson:"kill_chain_phases"`
-	ToolTypes       []stixhelpers.OpenVocabTypeSTIX     `json:"tool_types" bson:"tool_types"`
+	Name            string                                       `json:"name" bson:"name" required:"true"`
+	Description     string                                       `json:"description" bson:"description"`
+	ToolVersion     string                                       `json:"tool_version" bson:"tool_version"`
+	Aliases         []string                                     `json:"aliases" bson:"aliases"`
+	KillChainPhases []stixhelpers.KillChainPhasesTypeElementSTIX `json:"kill_chain_phases" bson:"kill_chain_phases"`
+	ToolTypes       []stixhelpers.OpenVocabTypeSTIX              `json:"tool_types" bson:"tool_types"`
 }
 
 // VulnerabilityDomainObjectsSTIX объект "Vulnerability", по терминологии STIX, содержит описание уязвимостей полученных в

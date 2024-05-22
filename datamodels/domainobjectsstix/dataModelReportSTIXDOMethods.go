@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/av-belyakov/methodstixobjects/commonlibs"
 	"github.com/av-belyakov/methodstixobjects/datamodels/stixhelpers"
@@ -73,17 +74,31 @@ func (e *ReportDomainObjectsSTIX) SetAnyDescription(i interface{}) {
 
 // -------- Published property ---------
 func (e *ReportDomainObjectsSTIX) GetPublished() string {
-	return e.Description
+	return e.Published
 }
 
-// SetValuePublished устанавливает значение для поля Published
-func (e *ReportDomainObjectsSTIX) SetValuePublished(v string) {
+// SetValuePublished устанавливает значение в формате RFC3339 для поля Published
+func (e *ReportDomainObjectsSTIX) SetValuePublished(v string) error {
+	if _, err := time.Parse(time.RFC3339, v); err != nil {
+		return err
+	}
+
 	e.Published = v
+
+	return nil
 }
 
-// SetAnyPublished устанавливает ЛЮБОЕ значение для поля Published
-func (e *ReportDomainObjectsSTIX) SetAnyPublished(i interface{}) {
-	e.Published = fmt.Sprint(i)
+// SetAnyPublished устанавливает значение для поля Published
+// принимает число (timestamp 13 символов) или строку в формате RFC3339
+func (e *ReportDomainObjectsSTIX) SetAnyPublished(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValuePublished(str)
+	}
+
+	tmp := commonlibs.ConversionAnyToInt(i)
+	e.Published = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- ReportTypes property ---------

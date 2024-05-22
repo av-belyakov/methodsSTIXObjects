@@ -72,15 +72,6 @@ func (itstix *IdentifierTypeSTIX) SetAny(i interface{}) {
 	itstix = &e
 }
 
-// SanitizeStructKillChainPhasesTypeSTIX выполняет замену некоторых специальных символов на их HTML код
-func (kcptstix KillChainPhasesTypeSTIX) SanitizeStructKillChainPhasesTypeSTIX() KillChainPhasesTypeSTIX {
-	for k := range kcptstix {
-		kcptstix[k].SanitizeStructKillChainPhasesTypeElementSTIX()
-	}
-
-	return kcptstix
-}
-
 // SanitizeStructKillChainPhasesTypeElementSTIX выполлняет проверку значения типа KillChainPhasesTypeElementSTIX
 func (kcptestix KillChainPhasesTypeElementSTIX) SanitizeStructKillChainPhasesTypeElementSTIX() KillChainPhasesTypeElementSTIX {
 	if kcptestix.KillChainName == "" {

@@ -89,9 +89,15 @@ func (e *DirectoryCyberObservableObjectSTIX) SetValueCtime(v string) error {
 }
 
 // SetAnyCtime устанавливает ЛЮБОЕ значение для поля Ctime
-func (e *DirectoryCyberObservableObjectSTIX) SetAnyCtime(i interface{}) {
+func (e *DirectoryCyberObservableObjectSTIX) SetAnyCtime(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueCtime(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.Ctime = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- Mtime property ---------
@@ -111,9 +117,15 @@ func (e *DirectoryCyberObservableObjectSTIX) SetValueMtime(v string) error {
 }
 
 // SetAnyMtime устанавливает ЛЮБОЕ значение для поля Mtime
-func (e *DirectoryCyberObservableObjectSTIX) SetAnyMtime(i interface{}) {
+func (e *DirectoryCyberObservableObjectSTIX) SetAnyMtime(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueMtime(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.Mtime = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- Atime property ---------
@@ -133,9 +145,15 @@ func (e *DirectoryCyberObservableObjectSTIX) SetValueAtime(v string) error {
 }
 
 // SetAnyAtime устанавливает ЛЮБОЕ значение для поля Atime
-func (e *DirectoryCyberObservableObjectSTIX) SetAnyAtime(i interface{}) {
+func (e *DirectoryCyberObservableObjectSTIX) SetAnyAtime(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueAtime(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.Atime = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- ContainsRefs property ---------

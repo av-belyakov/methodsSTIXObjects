@@ -43,11 +43,6 @@ func (e *LocationDomainObjectsSTIX) SetValueLatitude(v float32) {
 	e.Latitude = v
 }
 
-// SetAnyLatitude устанавливает ЛЮБОЕ значение для поля Latitude
-func (e *LocationDomainObjectsSTIX) SetAnyLatitude(i interface{}) {
-	e.Latitude = float32(commonlibs.ConversionAnyToInt(i))
-}
-
 // -------- Longitude property ---------
 func (e *LocationDomainObjectsSTIX) GetLongitude() float32 {
 	return e.Longitude
@@ -58,11 +53,6 @@ func (e *LocationDomainObjectsSTIX) SetValueLongitude(v float32) {
 	e.Longitude = v
 }
 
-// SetAnyLongitude устанавливает ЛЮБОЕ значение для поля Longitude
-func (e *LocationDomainObjectsSTIX) SetAnyLongitude(i interface{}) {
-	e.Longitude = float32(commonlibs.ConversionAnyToInt(i))
-}
-
 // -------- Precision property ---------
 func (e *LocationDomainObjectsSTIX) GetPrecision() float32 {
 	return e.Precision
@@ -71,11 +61,6 @@ func (e *LocationDomainObjectsSTIX) GetPrecision() float32 {
 // SetValuePrecision устанавливает значение для поля Precision
 func (e *LocationDomainObjectsSTIX) SetValuePrecision(v float32) {
 	e.Precision = v
-}
-
-// SetAnyPrecision устанавливает ЛЮБОЕ значение для поля Precision
-func (e *LocationDomainObjectsSTIX) SetAnyPrecision(i interface{}) {
-	e.Precision = float32(commonlibs.ConversionAnyToInt(i))
 }
 
 // -------- Name property ---------

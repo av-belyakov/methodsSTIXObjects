@@ -31,9 +31,6 @@ type HashesTypeSTIX map[string]string
 // начинаться с наименования организации или программного обеспечения сгенерировавшего его. Например, <example-source--ff26c055-6336-5bc5-b98d-13d6226742dd> (ОБЯЗАТЕЛЬНОЕ ЗНАЧЕНИЕ)
 type IdentifierTypeSTIX string
 
-// KillChainPhasesTypeSTIX тип "kill-chain-phases", по терминалогии STIX, содержащий цепочки фактов, приведших к какому либо урону
-type KillChainPhasesTypeSTIX []KillChainPhasesTypeElementSTIX
-
 // KillChainPhasesTypeElementSTIX тип содержащий набор элементов цепочки фактов, приведших к какому либо урону
 // KillChainName - имя цепочки (ОБЯЗАТЕЛЬНОЕ ЗНАЧЕНИЕ)
 // PhaseName - наименование фазы из спецификации STIX, например, "reconnaissance", "pre-attack" (ОБЯЗАТЕЛЬНОЕ ЗНАЧЕНИЕ)

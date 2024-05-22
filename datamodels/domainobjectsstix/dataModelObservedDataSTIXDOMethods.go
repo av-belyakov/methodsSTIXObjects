@@ -34,6 +34,12 @@ func (e ObservedDataDomainObjectsSTIX) EncodeJSON(interface{}) (*[]byte, error) 
 // интеллекта, это просто сырая информация без какого-либо контекста.
 // Обязательные значения в полях FirstObserved, LastObserved, NumberObserved
 func (e *ObservedDataDomainObjectsSTIX) Get() (*ObservedDataDomainObjectsSTIX, error) {
+	if e.GetNumberObserved() == 0 {
+		err := fmt.Errorf("the required value 'NumberObserved' must not be equal 0")
+
+		return &ObservedDataDomainObjectsSTIX{}, err
+	}
+
 	if e.GetFirstObserved() == "1970-01-01T00:00:00+00:00" {
 		err := fmt.Errorf("the required value 'FirstObserved' must not be empty")
 

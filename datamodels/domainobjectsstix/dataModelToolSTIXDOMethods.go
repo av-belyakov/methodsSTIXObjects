@@ -102,11 +102,11 @@ func (e *ToolDomainObjectsSTIX) SetAnyAliases(i interface{}) {
 }
 
 // -------- KillChainPhases property ---------
-func (e *ToolDomainObjectsSTIX) GetKillChainPhases() stixhelpers.KillChainPhasesTypeSTIX {
+func (e *ToolDomainObjectsSTIX) GetKillChainPhases() []stixhelpers.KillChainPhasesTypeElementSTIX {
 	return e.KillChainPhases
 }
 
-func (e *ToolDomainObjectsSTIX) SetValueKillChainPhases(v stixhelpers.KillChainPhasesTypeSTIX) {
+func (e *ToolDomainObjectsSTIX) SetValueKillChainPhases(v []stixhelpers.KillChainPhasesTypeElementSTIX) {
 	e.KillChainPhases = v
 }
 
@@ -162,7 +162,12 @@ func (e ToolDomainObjectsSTIX) SanitizeStruct() ToolDomainObjectsSTIX {
 		e.Aliases = mTmp
 	}
 
-	e.KillChainPhases = e.KillChainPhases.SanitizeStructKillChainPhasesTypeSTIX()
+	killChainPhases := []stixhelpers.KillChainPhasesTypeElementSTIX(nil)
+	for _, v := range e.KillChainPhases {
+		killChainPhases = append(killChainPhases, v.SanitizeStructKillChainPhasesTypeElementSTIX())
+	}
+	e.KillChainPhases = killChainPhases
+
 	e.ToolVersion = commonlibs.StringSanitize(e.ToolVersion)
 
 	return e

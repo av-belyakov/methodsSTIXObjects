@@ -146,11 +146,11 @@ func (e *InfrastructureDomainObjectsSTIX) SetAnyLastSeen(i interface{}) error {
 }
 
 // -------- KillChainPhases property ---------
-func (e *InfrastructureDomainObjectsSTIX) GetKillChainPhases() stixhelpers.KillChainPhasesTypeSTIX {
+func (e *InfrastructureDomainObjectsSTIX) GetKillChainPhases() []stixhelpers.KillChainPhasesTypeElementSTIX {
 	return e.KillChainPhases
 }
 
-func (e *InfrastructureDomainObjectsSTIX) SetValueKillChainPhases(v stixhelpers.KillChainPhasesTypeSTIX) {
+func (e *InfrastructureDomainObjectsSTIX) SetValueKillChainPhases(v []stixhelpers.KillChainPhasesTypeElementSTIX) {
 	e.KillChainPhases = v
 }
 
@@ -207,7 +207,11 @@ func (e InfrastructureDomainObjectsSTIX) SanitizeStruct() InfrastructureDomainOb
 		e.Aliases = aliasesTmp
 	}
 
-	e.KillChainPhases = e.KillChainPhases.SanitizeStructKillChainPhasesTypeSTIX()
+	killChainPhases := []stixhelpers.KillChainPhasesTypeElementSTIX(nil)
+	for _, v := range e.KillChainPhases {
+		killChainPhases = append(killChainPhases, v.SanitizeStructKillChainPhasesTypeElementSTIX())
+	}
+	e.KillChainPhases = killChainPhases
 
 	return e
 }

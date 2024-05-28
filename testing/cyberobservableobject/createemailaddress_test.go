@@ -20,10 +20,14 @@ func TestEmailAddressCyberObservableObjectSTIX(t *testing.T) {
 	_, err = nea.Get()
 	assert.NoError(t, err)
 	assert.Equal(t, nea.GetValue(), v)
+	nea.SetValueValue("av")
+	assert.Equal(t, nea.GetValue(), "av")
 
 	dn := "example@mail.ru"
 	nea.SetAnyDisplayName(dn)
 	assert.Equal(t, nea.GetDisplayName(), dn)
+	nea.SetValueDisplayName("d@cv.r")
+	assert.Equal(t, nea.GetDisplayName(), "d@cv.r")
 
 	br := stixhelpers.IdentifierTypeSTIX("Belongs To Ref")
 	nea.SetValueBelongsToRef(br)

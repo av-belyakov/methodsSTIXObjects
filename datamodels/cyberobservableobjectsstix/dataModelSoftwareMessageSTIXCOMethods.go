@@ -119,7 +119,7 @@ func (e *SoftwareCyberObservableObjectSTIX) SetValueLanguages(v string) {
 }
 
 // SetAnyLanguages устанавливает ЛЮБОЕ значение для поля Languages
-func (e *SoftwareCyberObservableObjectSTIX) SetAnyProtocols(i interface{}) {
+func (e *SoftwareCyberObservableObjectSTIX) SetAnyLanguages(i interface{}) {
 	e.Languages = append(e.Languages, fmt.Sprint(i))
 }
 

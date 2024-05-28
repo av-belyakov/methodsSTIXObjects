@@ -17,18 +17,26 @@ func TestArtifactCyberObservableObjectSTIX(t *testing.T) {
 
 	na.SetAnyMimeType("text/json")
 	assert.Equal(t, na.GetMimeType(), "text/json")
+	na.SetValueMimeType("t/j")
+	assert.Equal(t, na.GetMimeType(), "t/j")
 
 	pb := "6wdt7w8ft89r9373f="
 	na.SetAnyPayloadBin(pb)
 	assert.Equal(t, na.GetPayloadBin(), pb)
+	na.SetValuePayloadBin("yyd2")
+	assert.Equal(t, na.GetPayloadBin(), "yyd2")
 
 	url := "http://example.net/"
 	na.SetAnyURL(url)
 	assert.Equal(t, na.GetURL(), url)
+	na.SetValueURL("http://")
+	assert.Equal(t, na.GetURL(), "http://")
 
 	dk := "Decryption Key Example"
 	na.SetAnyDecryptionKey(dk)
 	assert.Equal(t, na.GetDecryptionKey(), dk)
+	na.SetValueDecryptionKey("dke")
+	assert.Equal(t, na.GetDecryptionKey(), "dke")
 
 	na.SetValueHashes(stixhelpers.HashesTypeSTIX{"1": "dd", "2": "ew"})
 	assert.Equal(t, len(na.GetHashes()), 2)

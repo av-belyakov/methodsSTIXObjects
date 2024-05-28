@@ -20,6 +20,8 @@ func TestDomainNameCyberObservableObjectSTIX(t *testing.T) {
 	_, err = ndn.Get()
 	assert.NoError(t, err)
 	assert.Equal(t, ndn.GetValue(), v)
+	ndn.SetValueValue("av")
+	assert.Equal(t, ndn.GetValue(), "av")
 
 	ndn.SetValueResolvesToRefs([]stixhelpers.IdentifierTypeSTIX{"a", "b"})
 	assert.Equal(t, len(ndn.GetResolvesToRefs()), 2)

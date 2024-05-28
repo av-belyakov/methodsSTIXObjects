@@ -65,8 +65,8 @@ func (e FileCyberObservableObjectSTIX) EncodeJSON(interface{}) (*[]byte, error) 
 }
 
 // Get возвращает объект "File Object", по терминалогии STIX, содержит объект со свойствами файла
-func (e *FileCyberObservableObjectSTIX) Get() *FileCyberObservableObjectSTIX {
-	return e
+func (e *FileCyberObservableObjectSTIX) Get() (*FileCyberObservableObjectSTIX, error) {
+	return e, nil
 }
 
 // -------- Size property ---------
@@ -161,9 +161,15 @@ func (e *FileCyberObservableObjectSTIX) SetValueCtime(v string) error {
 }
 
 // SetAnyCtime устанавливает ЛЮБОЕ значение для поля Ctime
-func (e *FileCyberObservableObjectSTIX) SetAnyCtime(i interface{}) {
+func (e *FileCyberObservableObjectSTIX) SetAnyCtime(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueCtime(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.Ctime = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- Mtime property ---------
@@ -183,9 +189,15 @@ func (e *FileCyberObservableObjectSTIX) SetValueMtime(v string) error {
 }
 
 // SetAnyMtime устанавливает ЛЮБОЕ значение для поля Mtime
-func (e *FileCyberObservableObjectSTIX) SetAnyMtime(i interface{}) {
+func (e *FileCyberObservableObjectSTIX) SetAnyMtime(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueMtime(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.Mtime = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- Atime property ---------
@@ -205,9 +217,15 @@ func (e *FileCyberObservableObjectSTIX) SetValueAtime(v string) error {
 }
 
 // SetAnyAtime устанавливает ЛЮБОЕ значение для поля Atime
-func (e *FileCyberObservableObjectSTIX) SetAnyFirstSeen(i interface{}) {
+func (e *FileCyberObservableObjectSTIX) SetAnyAtime(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueAtime(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.Atime = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- Hashes property ---------
@@ -247,11 +265,11 @@ func (e *FileCyberObservableObjectSTIX) SetValueContainsRefs(v []stixhelpers.Ide
 }
 
 // -------- Extensions property ---------
-func (e *FileCyberObservableObjectSTIX) GetExternalReferences() map[string]interface{} {
+func (e *FileCyberObservableObjectSTIX) GetExtensions() map[string]interface{} {
 	return e.Extensions
 }
 
-func (e *FileCyberObservableObjectSTIX) SetValueExternalReferences(v map[string]interface{}) {
+func (e *FileCyberObservableObjectSTIX) SetValueExtensions(v map[string]interface{}) {
 	e.Extensions = v
 }
 

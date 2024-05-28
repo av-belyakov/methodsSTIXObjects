@@ -20,9 +20,13 @@ func TestDirectoryCyberObservableObjectSTIX(t *testing.T) {
 	_, err = nd.Get()
 	assert.NoError(t, err)
 	assert.Equal(t, nd.GetPath(), p)
+	nd.SetValuePath("/pa")
+	assert.Equal(t, nd.GetPath(), "/pa")
 
 	nd.SetAnyPathEnc("utf8")
 	assert.Equal(t, nd.GetPathEnc(), "utf8")
+	nd.SetValuePathEnc("win-1258")
+	assert.Equal(t, nd.GetPathEnc(), "win-1258")
 
 	ct := "2024-02-11T07:01:01+00:00"
 	err = nd.SetAnyCtime(ct)

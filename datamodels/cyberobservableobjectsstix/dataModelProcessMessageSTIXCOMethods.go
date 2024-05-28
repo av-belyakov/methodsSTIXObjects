@@ -145,9 +145,15 @@ func (e *ProcessCyberObservableObjectSTIX) SetValueCreatedTime(v string) error {
 }
 
 // SetAnyCreatedTime устанавливает ЛЮБОЕ значение для поля CreatedTime
-func (e *ProcessCyberObservableObjectSTIX) SetAnyCreatedTime(i interface{}) {
+func (e *ProcessCyberObservableObjectSTIX) SetAnyCreatedTime(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueCreatedTime(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.CreatedTime = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- CreatorUserRef property ---------

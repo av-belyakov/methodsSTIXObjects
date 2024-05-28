@@ -214,9 +214,15 @@ func (e *NetworkTrafficCyberObservableObjectSTIX) SetValueStart(v string) error 
 }
 
 // SetAnyStart устанавливает ЛЮБОЕ значение для поля Start
-func (e *NetworkTrafficCyberObservableObjectSTIX) SetAnyStart(i interface{}) {
+func (e *NetworkTrafficCyberObservableObjectSTIX) SetAnyStart(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueStart(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.Start = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- End property ---------
@@ -236,9 +242,15 @@ func (e *NetworkTrafficCyberObservableObjectSTIX) SetValueEnd(v string) error {
 }
 
 // SetAnyEnd устанавливает ЛЮБОЕ значение для поля End
-func (e *NetworkTrafficCyberObservableObjectSTIX) SetAnyEnd(i interface{}) {
+func (e *NetworkTrafficCyberObservableObjectSTIX) SetAnyEnd(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueEnd(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.End = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- Protocols property ---------

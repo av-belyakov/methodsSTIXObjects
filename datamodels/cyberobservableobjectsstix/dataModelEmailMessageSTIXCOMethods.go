@@ -130,9 +130,15 @@ func (e *EmailMessageCyberObservableObjectSTIX) SetValueDate(v string) error {
 }
 
 // SetAnyDate устанавливает ЛЮБОЕ значение для поля Date
-func (e *EmailMessageCyberObservableObjectSTIX) SetAnyDate(i interface{}) {
+func (e *EmailMessageCyberObservableObjectSTIX) SetAnyDate(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueDate(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.Date = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- ReceivedLines property ---------

@@ -58,7 +58,7 @@ func (e *IPv6AddressCyberObservableObjectSTIX) SetAnyValue(i interface{}) {
 }
 
 // -------- ResolvesToRefs property ---------
-func (e *IPv6AddressCyberObservableObjectSTIX) GetContainsRefs() []stixhelpers.IdentifierTypeSTIX {
+func (e *IPv6AddressCyberObservableObjectSTIX) GetResolvesToRefs() []stixhelpers.IdentifierTypeSTIX {
 	return e.ResolvesToRefs
 }
 

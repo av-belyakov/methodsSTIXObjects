@@ -83,9 +83,15 @@ func (e *WindowsRegistryKeyCyberObservableObjectSTIX) SetValueModifiedTime(v str
 }
 
 // SetAnyModifiedTime устанавливает ЛЮБОЕ значение для поля ModifiedTime
-func (e *WindowsRegistryKeyCyberObservableObjectSTIX) SetAnyModifiedTime(i interface{}) {
+func (e *WindowsRegistryKeyCyberObservableObjectSTIX) SetAnyModifiedTime(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueModifiedTime(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.ModifiedTime = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- CreatorUserRef property ---------
@@ -102,7 +108,11 @@ func (e *WindowsRegistryKeyCyberObservableObjectSTIX) GetValues() []somecomplext
 	return e.Values
 }
 
-func (e *WindowsRegistryKeyCyberObservableObjectSTIX) SetValueValues(v []somecomplextypesstixco.WindowsRegistryValueTypeSTIX) {
+func (e *WindowsRegistryKeyCyberObservableObjectSTIX) SetValueValues(v somecomplextypesstixco.WindowsRegistryValueTypeSTIX) {
+	e.Values = append(e.Values, v)
+}
+
+func (e *WindowsRegistryKeyCyberObservableObjectSTIX) SetFullValueValues(v []somecomplextypesstixco.WindowsRegistryValueTypeSTIX) {
 	e.Values = v
 }
 

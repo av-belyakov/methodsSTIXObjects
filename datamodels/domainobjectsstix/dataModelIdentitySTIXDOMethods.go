@@ -114,7 +114,11 @@ func (e *IdentityDomainObjectsSTIX) GetSectors() []stixhelpers.OpenVocabTypeSTIX
 	return e.Sectors
 }
 
-func (e *IdentityDomainObjectsSTIX) SetValueSectors(v []stixhelpers.OpenVocabTypeSTIX) {
+func (e *IdentityDomainObjectsSTIX) SetValueSectors(v stixhelpers.OpenVocabTypeSTIX) {
+	e.Sectors = append(e.Sectors, v)
+}
+
+func (e *IdentityDomainObjectsSTIX) SetFullValueSectors(v []stixhelpers.OpenVocabTypeSTIX) {
 	e.Sectors = v
 }
 

@@ -1,14 +1,15 @@
-package methodstixobjects
+package relationshipobject
 
 import (
 	"testing"
 
+	methodstixobjects "github.com/av-belyakov/methodstixobjects/cmd"
 	"github.com/av-belyakov/methodstixobjects/datamodels/stixhelpers"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestCreateOptionalCommonPropertiesRelationshipObjectSTIX(t *testing.T) {
-	nocp := NewOptionalCommonPropertiesRelationshipObjectSTIX()
+	nocp := methodstixobjects.NewOptionalCommonPropertiesRelationshipObjectSTIX()
 
 	_, err := nocp.Get()
 	assert.Error(t, err)
@@ -23,7 +24,7 @@ func TestCreateOptionalCommonPropertiesRelationshipObjectSTIX(t *testing.T) {
 }
 
 func TestRelationshipObjectSTIX(t *testing.T) {
-	nro := NewRelationshipObjectSTIX()
+	nro := methodstixobjects.NewRelationshipObjectSTIX()
 
 	_, err := nro.Get()
 	assert.Error(t, err)
@@ -70,7 +71,7 @@ func TestRelationshipObjectSTIX(t *testing.T) {
 }
 
 func TestSightingObjectSTIX(t *testing.T) {
-	nso := NewSightingObjectSTIX()
+	nso := methodstixobjects.NewSightingObjectSTIX()
 
 	_, err := nso.Get()
 	assert.Error(t, err)

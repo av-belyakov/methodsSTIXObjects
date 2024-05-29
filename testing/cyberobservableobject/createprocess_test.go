@@ -59,27 +59,36 @@ func TestProcessCyberObservableObjectSTIX(t *testing.T) {
 	np.SetValueParentRef(pure)
 	assert.Equal(t, np.GetParentRef(), pure)
 
-	np.SetValueChildRefs([]stixhelpers.IdentifierTypeSTIX{
+	np.SetFullValueChildRefs([]stixhelpers.IdentifierTypeSTIX{
 		"child_ref_1",
 		"child_ref_2",
 		"child_ref_3",
 	})
 	assert.Equal(t, len(np.GetChildRefs()), 3)
+	np.SetValueChildRefs(stixhelpers.IdentifierTypeSTIX("child_ref_4"))
+	assert.Equal(t, len(np.GetChildRefs()), 4)
 
-	np.SetValueOpenedConnectionRefs([]stixhelpers.IdentifierTypeSTIX{
+	np.SetFullValueOpenedConnectionRefs([]stixhelpers.IdentifierTypeSTIX{
 		"oc_ref_1",
 		"oc_ref_2",
 	})
 	assert.Equal(t, len(np.GetOpenedConnectionRefs()), 2)
+	np.SetValueOpenedConnectionRefs(stixhelpers.IdentifierTypeSTIX("oc_ref_3"))
+	assert.Equal(t, len(np.GetOpenedConnectionRefs()), 3)
 
 	np.SetAnyEnvironmentVariables("env_key_1", "env_11")
 	np.SetAnyEnvironmentVariables("env_key_2", "env_22")
 	assert.Equal(t, len(np.GetEnvironmentVariables()), 2)
 
-	np.SetAnyExtensions("ext_1", 123)
-	np.SetAnyExtensions("ext_2", 234)
-	np.SetAnyExtensions("ext_3", 345)
-	assert.Equal(t, len(np.GetExtensions()), 3)
+	np.SetFullValueExtensions(map[string]interface{}{
+		"ext_01": 723,
+		"ext_02": "723ds",
+	})
+	assert.Equal(t, len(np.GetExtensions()), 2)
+	np.SetValueExtensions("ext_1", 123)
+	np.SetValueExtensions("ext_2", 234)
+	np.SetValueExtensions("ext_3", 345)
+	assert.Equal(t, len(np.GetExtensions()), 5)
 }
 
 /*

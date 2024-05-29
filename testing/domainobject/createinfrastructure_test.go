@@ -18,10 +18,15 @@ func TestInfrastructureDomainObjectsSTIX(t *testing.T) {
 	ni.SetAnyName("infrastructure name")
 	_, err = ni.Get()
 	assert.NoError(t, err)
+	ni.SetValueName("i name")
+	assert.Equal(t, ni.GetName(), "i name")
 
 	ni.SetAnyDescription("example_description")
 	assert.Equal(t, ni.GetDescription(), "example_description")
+	ni.SetValueDescription("exm_description")
+	assert.Equal(t, ni.GetDescription(), "exm_description")
 
+	// --- FirstSeen
 	vf := "2024-02-11T07:01:01+00:00"
 	err = ni.SetAnyFirstSeen(vf)
 	assert.NoError(t, err)
@@ -31,6 +36,7 @@ func TestInfrastructureDomainObjectsSTIX(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, ni.GetFirstSeen(), "2024-05-22T11:43:27+03:00")
 
+	// --- LastSeen
 	vu := "2024-02-10T11:21:01+00:00"
 	err = ni.SetAnyLastSeen(vu)
 	assert.NoError(t, err)
@@ -43,17 +49,22 @@ func TestInfrastructureDomainObjectsSTIX(t *testing.T) {
 	ni.SetAnyAliases("zxc")
 	ni.SetAnyAliases("asd")
 	ni.SetAnyAliases("qwe")
-	assert.Equal(t, len(ni.GetAliases()), 3)
+	ni.SetValueAliases("cdid")
+	assert.Equal(t, len(ni.GetAliases()), 4)
 
-	ni.SetValueKillChainPhases([]stixhelpers.KillChainPhasesTypeElementSTIX{
+	ni.SetFullValueKillChainPhases([]stixhelpers.KillChainPhasesTypeElementSTIX{
 		{KillChainName: "green chan", PhaseName: "first phase"},
 		{KillChainName: "red chan", PhaseName: "second phase"},
 		{KillChainName: "blue chan", PhaseName: "third phase"},
 	})
-	assert.Equal(t, len(ni.GetKillChainPhases()), 3)
+	ni.SetValueKillChainPhases(stixhelpers.KillChainPhasesTypeElementSTIX{
+		KillChainName: "orange chan", PhaseName: "second third phase",
+	})
+	assert.Equal(t, len(ni.GetKillChainPhases()), 4)
 
-	ni.SetValueIndicatorTypes([]stixhelpers.OpenVocabTypeSTIX{"1q", "2x", "3a", "4d"})
-	assert.Equal(t, len(ni.GetIndicatorTypes()), 4)
+	ni.SetFullValueIndicatorTypes([]stixhelpers.OpenVocabTypeSTIX{"1q", "2x", "3a", "4d"})
+	ni.SetValueIndicatorTypes(stixhelpers.OpenVocabTypeSTIX("43z"))
+	assert.Equal(t, len(ni.GetIndicatorTypes()), 5)
 }
 
 /*

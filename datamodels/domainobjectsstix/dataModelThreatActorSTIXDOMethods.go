@@ -192,7 +192,11 @@ func (e *ThreatActorDomainObjectsSTIX) GetSecondaryMotivations() []stixhelpers.O
 	return e.SecondaryMotivations
 }
 
-func (e *ThreatActorDomainObjectsSTIX) SetValueSecondaryMotivations(v []stixhelpers.OpenVocabTypeSTIX) {
+func (e *ThreatActorDomainObjectsSTIX) SetValueSecondaryMotivations(v stixhelpers.OpenVocabTypeSTIX) {
+	e.SecondaryMotivations = append(e.SecondaryMotivations, v)
+}
+
+func (e *ThreatActorDomainObjectsSTIX) SetFullValueSecondaryMotivations(v []stixhelpers.OpenVocabTypeSTIX) {
 	e.SecondaryMotivations = v
 }
 
@@ -201,7 +205,11 @@ func (e *ThreatActorDomainObjectsSTIX) GetPersonalMotivations() []stixhelpers.Op
 	return e.PersonalMotivations
 }
 
-func (e *ThreatActorDomainObjectsSTIX) SetValuePersonalMotivations(v []stixhelpers.OpenVocabTypeSTIX) {
+func (e *ThreatActorDomainObjectsSTIX) SetValuePersonalMotivations(v stixhelpers.OpenVocabTypeSTIX) {
+	e.PersonalMotivations = append(e.PersonalMotivations, v)
+}
+
+func (e *ThreatActorDomainObjectsSTIX) SetFullValuePersonalMotivations(v []stixhelpers.OpenVocabTypeSTIX) {
 	e.PersonalMotivations = v
 }
 
@@ -210,7 +218,11 @@ func (e *ThreatActorDomainObjectsSTIX) GetThreatActorTypes() []stixhelpers.OpenV
 	return e.ThreatActorTypes
 }
 
-func (e *ThreatActorDomainObjectsSTIX) SetValueThreatActorTypes(v []stixhelpers.OpenVocabTypeSTIX) {
+func (e *ThreatActorDomainObjectsSTIX) SetValueThreatActorTypes(v stixhelpers.OpenVocabTypeSTIX) {
+	e.ThreatActorTypes = append(e.ThreatActorTypes, v)
+}
+
+func (e *ThreatActorDomainObjectsSTIX) SetFullValueThreatActorTypes(v []stixhelpers.OpenVocabTypeSTIX) {
 	e.ThreatActorTypes = v
 }
 
@@ -219,7 +231,11 @@ func (e *ThreatActorDomainObjectsSTIX) GetRoles() []stixhelpers.OpenVocabTypeSTI
 	return e.Roles
 }
 
-func (e *ThreatActorDomainObjectsSTIX) SetValueRoles(v []stixhelpers.OpenVocabTypeSTIX) {
+func (e *ThreatActorDomainObjectsSTIX) SetValueRoles(v stixhelpers.OpenVocabTypeSTIX) {
+	e.Roles = append(e.Roles, v)
+}
+
+func (e *ThreatActorDomainObjectsSTIX) SetFullValueRoles(v []stixhelpers.OpenVocabTypeSTIX) {
 	e.Roles = v
 }
 

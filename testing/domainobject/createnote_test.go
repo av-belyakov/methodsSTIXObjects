@@ -19,17 +19,23 @@ func TestNoteDomainObjectsSTIX(t *testing.T) {
 	_, err = nn.Get()
 	assert.NoError(t, err)
 	assert.Equal(t, nn.GetContent(), "new content")
+	nn.SetValueContent("content")
+	assert.Equal(t, nn.GetContent(), "content")
 
 	a := "abstract example"
 	nn.SetAnyAbstract(a)
 	assert.Equal(t, nn.GetAbstract(), a)
+	nn.SetValueAbstract("abstract")
+	assert.Equal(t, nn.GetAbstract(), "abstract")
 
 	nn.SetAnyAuthors("z11")
 	nn.SetAnyAuthors("z22")
-	assert.Equal(t, len(nn.GetAuthors()), 2)
+	nn.SetValueAuthors("z33")
+	assert.Equal(t, len(nn.GetAuthors()), 3)
 
-	nn.SetValueObjectRefs([]stixhelpers.IdentifierTypeSTIX{"assdf", "vcvvv", "werrrt"})
-	assert.Equal(t, len(nn.GetObjectRefs()), 3)
+	nn.SetFullValueObjectRefs([]stixhelpers.IdentifierTypeSTIX{"assdf", "vcvvv", "werrrt"})
+	nn.SetValueObjectRefs(stixhelpers.IdentifierTypeSTIX("cdiid"))
+	assert.Equal(t, len(nn.GetObjectRefs()), 4)
 }
 
 /*

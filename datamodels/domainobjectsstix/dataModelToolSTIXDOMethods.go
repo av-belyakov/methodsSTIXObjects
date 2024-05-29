@@ -106,7 +106,11 @@ func (e *ToolDomainObjectsSTIX) GetKillChainPhases() []stixhelpers.KillChainPhas
 	return e.KillChainPhases
 }
 
-func (e *ToolDomainObjectsSTIX) SetValueKillChainPhases(v []stixhelpers.KillChainPhasesTypeElementSTIX) {
+func (e *ToolDomainObjectsSTIX) SetValueKillChainPhases(v stixhelpers.KillChainPhasesTypeElementSTIX) {
+	e.KillChainPhases = append(e.KillChainPhases, v)
+}
+
+func (e *ToolDomainObjectsSTIX) SetFullValueKillChainPhases(v []stixhelpers.KillChainPhasesTypeElementSTIX) {
 	e.KillChainPhases = v
 }
 
@@ -115,7 +119,11 @@ func (e *ToolDomainObjectsSTIX) GetToolTypes() []stixhelpers.OpenVocabTypeSTIX {
 	return e.ToolTypes
 }
 
-func (e *ToolDomainObjectsSTIX) SetValueToolTypes(v []stixhelpers.OpenVocabTypeSTIX) {
+func (e *ToolDomainObjectsSTIX) SetValueToolTypes(v stixhelpers.OpenVocabTypeSTIX) {
+	e.ToolTypes = append(e.ToolTypes, v)
+}
+
+func (e *ToolDomainObjectsSTIX) SetFullValueToolTypes(v []stixhelpers.OpenVocabTypeSTIX) {
 	e.ToolTypes = v
 }
 

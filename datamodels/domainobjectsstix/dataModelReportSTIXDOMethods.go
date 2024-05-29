@@ -106,13 +106,21 @@ func (e *ReportDomainObjectsSTIX) GetReportTypes() []stixhelpers.OpenVocabTypeST
 	return e.ReportTypes
 }
 
-func (e *ReportDomainObjectsSTIX) SetValueReportTypes(v []stixhelpers.OpenVocabTypeSTIX) {
+func (e *ReportDomainObjectsSTIX) SetValueReportTypes(v stixhelpers.OpenVocabTypeSTIX) {
+	e.ReportTypes = append(e.ReportTypes, v)
+}
+
+func (e *ReportDomainObjectsSTIX) SetFullValueReportTypes(v []stixhelpers.OpenVocabTypeSTIX) {
 	e.ReportTypes = v
 }
 
 // -------- ObjectRefs property ---------
 func (e *ReportDomainObjectsSTIX) GetObjectRefs() []stixhelpers.IdentifierTypeSTIX {
 	return e.ObjectRefs
+}
+
+func (e *ReportDomainObjectsSTIX) SetFullValueObjectRefs(v stixhelpers.IdentifierTypeSTIX) {
+	e.ObjectRefs = append(e.ObjectRefs, v)
 }
 
 func (e *ReportDomainObjectsSTIX) SetValueObjectRefs(v []stixhelpers.IdentifierTypeSTIX) {

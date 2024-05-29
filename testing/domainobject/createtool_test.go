@@ -18,27 +18,38 @@ func TestToolDomainObjectsSTIX(t *testing.T) {
 	nt.SetAnyName("tool name")
 	_, err = nt.Get()
 	assert.NoError(t, err)
+	nt.SetValueName("t_name")
+	assert.Equal(t, nt.GetName(), "t_name")
 
 	nt.SetAnyDescription("example_description")
 	assert.Equal(t, nt.GetDescription(), "example_description")
+	nt.SetValueDescription("exm_description")
+	assert.Equal(t, nt.GetDescription(), "exm_description")
 
 	nt.SetAnyToolVersion("tool v1.2")
 	assert.Equal(t, nt.GetToolVersion(), "tool v1.2")
+	nt.SetValueToolVersion("tool v2.3")
+	assert.Equal(t, nt.GetToolVersion(), "tool v2.3")
 
 	nt.SetAnyAliases("zxc")
 	nt.SetAnyAliases("asd")
 	nt.SetAnyAliases("qwe")
-	assert.Equal(t, len(nt.GetAliases()), 3)
+	nt.SetValueAliases("qwe")
+	assert.Equal(t, len(nt.GetAliases()), 4)
 
-	nt.SetValueKillChainPhases([]stixhelpers.KillChainPhasesTypeElementSTIX{
+	nt.SetFullValueKillChainPhases([]stixhelpers.KillChainPhasesTypeElementSTIX{
 		{KillChainName: "green chan", PhaseName: "first phase"},
 		{KillChainName: "red chan", PhaseName: "second phase"},
 		{KillChainName: "blue chan", PhaseName: "third phase"},
 	})
-	assert.Equal(t, len(nt.GetKillChainPhases()), 3)
+	nt.SetValueKillChainPhases(stixhelpers.KillChainPhasesTypeElementSTIX{
+		KillChainName: "grey chan", PhaseName: "first first phase",
+	})
+	assert.Equal(t, len(nt.GetKillChainPhases()), 4)
 
-	nt.SetValueToolTypes([]stixhelpers.OpenVocabTypeSTIX{"a", "b", "c", "d", "e", "f"})
-	assert.Equal(t, len(nt.GetToolTypes()), 6)
+	nt.SetFullValueToolTypes([]stixhelpers.OpenVocabTypeSTIX{"a", "b", "c", "d", "e", "f"})
+	nt.SetValueToolTypes(stixhelpers.OpenVocabTypeSTIX("g"))
+	assert.Equal(t, len(nt.GetToolTypes()), 7)
 }
 
 /*

@@ -18,10 +18,15 @@ func TestIntrusionSetDomainObjectsSTIX(t *testing.T) {
 	ni.SetAnyName("intrusion-set name")
 	_, err = ni.Get()
 	assert.NoError(t, err)
+	ni.SetValueName("i_name")
+	assert.Equal(t, ni.GetName(), "i_name")
 
 	ni.SetAnyDescription("example_description")
 	assert.Equal(t, ni.GetDescription(), "example_description")
+	ni.SetValueDescription("exm_description")
+	assert.Equal(t, ni.GetDescription(), "exm_description")
 
+	// --- FirstSeen
 	vf := "2024-02-11T07:01:01+00:00"
 	err = ni.SetAnyFirstSeen(vf)
 	assert.NoError(t, err)
@@ -31,6 +36,7 @@ func TestIntrusionSetDomainObjectsSTIX(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, ni.GetFirstSeen(), "2024-05-22T11:43:27+03:00")
 
+	// --- FirstSeen
 	vu := "2024-02-10T11:21:01+00:00"
 	err = ni.SetAnyLastSeen(vu)
 	assert.NoError(t, err)
@@ -43,11 +49,13 @@ func TestIntrusionSetDomainObjectsSTIX(t *testing.T) {
 	ni.SetAnyAliases("zxc")
 	ni.SetAnyAliases("asd")
 	ni.SetAnyAliases("qwe")
-	assert.Equal(t, len(ni.GetAliases()), 3)
+	ni.SetValueAliases("vdi")
+	assert.Equal(t, len(ni.GetAliases()), 4)
 
 	ni.SetAnyGoals("11")
 	ni.SetAnyGoals("22")
-	assert.Equal(t, len(ni.GetGoals()), 2)
+	ni.SetValueGoals("33")
+	assert.Equal(t, len(ni.GetGoals()), 3)
 
 	rl := stixhelpers.OpenVocabTypeSTIX("resource level")
 	ni.SetValueResourceLevel(rl)
@@ -57,8 +65,9 @@ func TestIntrusionSetDomainObjectsSTIX(t *testing.T) {
 	ni.SetValuePrimaryMotivation(pm)
 	assert.Equal(t, ni.GetPrimaryMotivation(), pm)
 
-	ni.SetValueSecondaryMotivations([]stixhelpers.OpenVocabTypeSTIX{"a", "b", "c", "d", "e", "f"})
-	assert.Equal(t, len(ni.GetSecondaryMotivations()), 6)
+	ni.SetFullValueSecondaryMotivations([]stixhelpers.OpenVocabTypeSTIX{"a", "b", "c", "d", "e", "f"})
+	ni.SetValueSecondaryMotivations(stixhelpers.OpenVocabTypeSTIX("z"))
+	assert.Equal(t, len(ni.GetSecondaryMotivations()), 7)
 }
 
 /*

@@ -17,9 +17,13 @@ func TestCourseOfActionDomainObjectsSTIX(t *testing.T) {
 	nca.SetAnyName("course-of-action name")
 	_, err = nca.Get()
 	assert.NoError(t, err)
+	nca.SetValueName("cof name")
+	assert.Equal(t, nca.GetName(), "cof name")
 
 	nca.SetAnyDescription("example_description")
 	assert.Equal(t, nca.GetDescription(), "example_description")
+	nca.SetValueDescription("exm_description")
+	assert.Equal(t, nca.GetDescription(), "exm_description")
 }
 
 /*

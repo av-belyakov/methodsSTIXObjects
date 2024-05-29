@@ -183,7 +183,11 @@ func (e *IntrusionSetDomainObjectsSTIX) GetSecondaryMotivations() []stixhelpers.
 	return e.SecondaryMotivations
 }
 
-func (e *IntrusionSetDomainObjectsSTIX) SetValueSecondaryMotivations(v []stixhelpers.OpenVocabTypeSTIX) {
+func (e *IntrusionSetDomainObjectsSTIX) SetValueSecondaryMotivations(v stixhelpers.OpenVocabTypeSTIX) {
+	e.SecondaryMotivations = append(e.SecondaryMotivations, v)
+}
+
+func (e *IntrusionSetDomainObjectsSTIX) SetFullValueSecondaryMotivations(v []stixhelpers.OpenVocabTypeSTIX) {
 	e.SecondaryMotivations = v
 }
 

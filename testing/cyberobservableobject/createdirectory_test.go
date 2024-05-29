@@ -55,7 +55,9 @@ func TestDirectoryCyberObservableObjectSTIX(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, nd.GetAtime(), "2024-05-22T11:43:27+03:00")
 
-	nd.SetValueContainsRefs([]stixhelpers.IdentifierTypeSTIX{"111a", "222b", "333c"})
+	nd.SetValueContainsRefs(stixhelpers.IdentifierTypeSTIX("000q"))
+	assert.Equal(t, len(nd.GetContainsRefs()), 1)
+	nd.SetFullValueContainsRefs([]stixhelpers.IdentifierTypeSTIX{"111a", "222b", "333c"})
 	assert.Equal(t, len(nd.GetContainsRefs()), 3)
 }
 

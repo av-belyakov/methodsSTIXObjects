@@ -188,7 +188,11 @@ func (e *ProcessCyberObservableObjectSTIX) GetChildRefs() []stixhelpers.Identifi
 	return e.ChildRefs
 }
 
-func (e *ProcessCyberObservableObjectSTIX) SetValueChildRefs(v []stixhelpers.IdentifierTypeSTIX) {
+func (e *ProcessCyberObservableObjectSTIX) SetValueChildRefs(v stixhelpers.IdentifierTypeSTIX) {
+	e.ChildRefs = append(e.ChildRefs, v)
+}
+
+func (e *ProcessCyberObservableObjectSTIX) SetFullValueChildRefs(v []stixhelpers.IdentifierTypeSTIX) {
 	e.ChildRefs = v
 }
 
@@ -197,7 +201,11 @@ func (e *ProcessCyberObservableObjectSTIX) GetOpenedConnectionRefs() []stixhelpe
 	return e.OpenedConnectionRefs
 }
 
-func (e *ProcessCyberObservableObjectSTIX) SetValueOpenedConnectionRefs(v []stixhelpers.IdentifierTypeSTIX) {
+func (e *ProcessCyberObservableObjectSTIX) SetValueOpenedConnectionRefs(v stixhelpers.IdentifierTypeSTIX) {
+	e.OpenedConnectionRefs = append(e.OpenedConnectionRefs, v)
+}
+
+func (e *ProcessCyberObservableObjectSTIX) SetFullValueOpenedConnectionRefs(v []stixhelpers.IdentifierTypeSTIX) {
 	e.OpenedConnectionRefs = v
 }
 
@@ -211,6 +219,11 @@ func (e *ProcessCyberObservableObjectSTIX) SetValueEnvironmentVariables(k, v str
 	e.EnvironmentVariables[k] = v
 }
 
+// SetFullValueEnvironmentVariables добаляет 'полное' значение в EnvironmentVariables
+func (e *ProcessCyberObservableObjectSTIX) SetFullValueEnvironmentVariables(v map[string]string) {
+	e.EnvironmentVariables = v
+}
+
 // SetAnyEnvironmentVariables устанавливает ЛЮБОЕ значение для поля EnvironmentVariables
 func (e *ProcessCyberObservableObjectSTIX) SetAnyEnvironmentVariables(k string, i interface{}) {
 	e.SetValueEnvironmentVariables(k, fmt.Sprint(i))
@@ -221,9 +234,12 @@ func (e *ProcessCyberObservableObjectSTIX) GetExtensions() map[string]interface{
 	return e.Extensions
 }
 
-// SetAnyExtensions устанавливает ЛЮБОЕ значение для поля Extensions
-func (e *ProcessCyberObservableObjectSTIX) SetAnyExtensions(k string, i interface{}) {
+func (e *ProcessCyberObservableObjectSTIX) SetValueExtensions(k string, i interface{}) {
 	e.Extensions[k] = i
+}
+
+func (e *ProcessCyberObservableObjectSTIX) SetFullValueExtensions(v map[string]interface{}) {
+	e.Extensions = v
 }
 
 // ValidateStruct является валидатором параметров содержащихся в типе ProcessCyberObservableObjectSTIX

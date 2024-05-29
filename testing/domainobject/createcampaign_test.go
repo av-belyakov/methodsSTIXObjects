@@ -17,25 +17,44 @@ func TestCampaignDomainObjectsSTIX(t *testing.T) {
 	cdo.SetAnyName("campaign name")
 	_, err = cdo.Get()
 	assert.NoError(t, err)
+	cdo.SetValueName("cap_name")
+	assert.Equal(t, cdo.GetName(), "cap_name")
 
 	cdo.SetAnyObjective("example_objective")
 	assert.Equal(t, cdo.GetObjective(), "example_objective")
+	cdo.SetValueObjective("e_o")
+	assert.Equal(t, cdo.GetObjective(), "e_o")
 
 	cdo.SetAnyDescription("example_description")
 	assert.Equal(t, cdo.GetDescription(), "example_description")
+	cdo.SetValueDescription("exm_description")
+	assert.Equal(t, cdo.GetDescription(), "exm_description")
 
-	err = cdo.SetAnyFirstSeen("2024-02-05T17:31:01+00:00")
+	// --- FirstSeen
+	fst := "2024-02-14T12:03:06+00:00"
+	err = cdo.SetAnyFirstSeen(fst)
 	assert.NoError(t, err)
-	assert.Equal(t, cdo.GetFirstSeen(), "2024-02-05T17:31:01+00:00")
+	assert.Equal(t, cdo.GetFirstSeen(), fst)
 
-	err = cdo.SetAnyLastSeen(1716302427100)
+	err = cdo.SetAnyFirstSeen(1716888824134)
 	assert.NoError(t, err)
-	assert.Equal(t, cdo.GetLastSeen(), "2024-05-21T17:40:27+03:00")
+	assert.Equal(t, cdo.GetFirstSeen(), "2024-05-28T12:33:44+03:00")
+
+	// --- LastSeen
+	lst := "2024-02-15T20:10:16+00:00"
+	err = cdo.SetAnyLastSeen(lst)
+	assert.NoError(t, err)
+	assert.Equal(t, cdo.GetLastSeen(), lst)
+
+	err = cdo.SetAnyLastSeen(1716888824134)
+	assert.NoError(t, err)
+	assert.Equal(t, cdo.GetLastSeen(), "2024-05-28T12:33:44+03:00")
 
 	cdo.SetAnyAliases("vfff")
 	cdo.SetAnyAliases("bfff")
 	cdo.SetAnyAliases("xfff")
-	assert.Equal(t, len(cdo.GetAliases()), 3)
+	cdo.SetValueAliases("vujdv")
+	assert.Equal(t, len(cdo.GetAliases()), 4)
 }
 
 /*

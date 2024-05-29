@@ -9,26 +9,31 @@ import (
 )
 
 func TestIPv6AddressCyberObservableObjectSTIX(t *testing.T) {
-	nipv4 := methodstixobjects.NewIPv6AddressCyberObservableObjectSTIX()
+	nipv6 := methodstixobjects.NewIPv6AddressCyberObservableObjectSTIX()
 
-	assert.Equal(t, nipv4.GetType(), "ipv6-addr")
-	_, err := nipv4.Get()
+	assert.Equal(t, nipv6.GetType(), "ipv6-addr")
+	_, err := nipv6.Get()
 	assert.Error(t, err)
 
-	nipv4.SetAnyValue("2001:cb:1a:fc:10:10:abc")
-	assert.Equal(t, nipv4.GetValue(), "2001:cb:1a:fc:10:10:abc")
-	nipv4.SetValueValue("2001:cb::fc:0:0:abc")
-	assert.Equal(t, nipv4.GetValue(), "2001:cb::fc:0:0:abc")
+	nipv6.SetAnyValue("2001:cb:1a:fc:10:10:abc")
+	assert.Equal(t, nipv6.GetValue(), "2001:cb:1a:fc:10:10:abc")
+	nipv6.SetValueValue("2001:cb::fc:0:0:abc")
+	assert.Equal(t, nipv6.GetValue(), "2001:cb::fc:0:0:abc")
 
-	nipv4.SetValueResolvesToRefs([]stixhelpers.IdentifierTypeSTIX{
+	nipv6.SetFullValueResolvesToRefs([]stixhelpers.IdentifierTypeSTIX{
 		"resolves_ref_1",
 		"resolves_ref_2",
 		"resolves_ref_3",
 	})
-	assert.Equal(t, len(nipv4.GetResolvesToRefs()), 3)
+	assert.Equal(t, len(nipv6.GetResolvesToRefs()), 3)
+	nipv6.SetValueResolvesToRefs(stixhelpers.IdentifierTypeSTIX("resolves_ref_4"))
+	assert.Equal(t, len(nipv6.GetResolvesToRefs()), 4)
 
-	nipv4.SetValueBelongsToRefs([]stixhelpers.IdentifierTypeSTIX{"res_bel_1", "res_bel_2", "res_bel_3"})
-	assert.Equal(t, len(nipv4.GetBelongsToRefs()), 3)
+	nipv6.SetFullValueBelongsToRefs([]stixhelpers.IdentifierTypeSTIX{"res_bel_1", "res_bel_2", "res_bel_3"})
+	assert.Equal(t, len(nipv6.GetBelongsToRefs()), 3)
+	nipv6.SetValueBelongsToRefs("res_bel_n")
+	assert.Equal(t, len(nipv6.GetBelongsToRefs()), 4)
+
 }
 
 /*

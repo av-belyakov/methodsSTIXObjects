@@ -84,7 +84,11 @@ func (e *GroupingDomainObjectsSTIX) GetObjectRefs() []stixhelpers.IdentifierType
 	return e.ObjectRefs
 }
 
-func (e *GroupingDomainObjectsSTIX) SetValueObjectRefs(v []stixhelpers.IdentifierTypeSTIX) {
+func (e *GroupingDomainObjectsSTIX) SetValueObjectRefs(v stixhelpers.IdentifierTypeSTIX) {
+	e.ObjectRefs = append(e.ObjectRefs, v)
+}
+
+func (e *GroupingDomainObjectsSTIX) SetFullValueObjectRefs(v []stixhelpers.IdentifierTypeSTIX) {
 	e.ObjectRefs = v
 }
 

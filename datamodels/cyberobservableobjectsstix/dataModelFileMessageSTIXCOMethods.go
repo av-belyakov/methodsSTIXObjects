@@ -260,7 +260,11 @@ func (e *FileCyberObservableObjectSTIX) GetContainsRefs() []stixhelpers.Identifi
 	return e.ContainsRefs
 }
 
-func (e *FileCyberObservableObjectSTIX) SetValueContainsRefs(v []stixhelpers.IdentifierTypeSTIX) {
+func (e *FileCyberObservableObjectSTIX) SetValueContainsRefs(v stixhelpers.IdentifierTypeSTIX) {
+	e.ContainsRefs = append(e.ContainsRefs, v)
+}
+
+func (e *FileCyberObservableObjectSTIX) SetFullValueContainsRefs(v []stixhelpers.IdentifierTypeSTIX) {
 	e.ContainsRefs = v
 }
 
@@ -269,7 +273,11 @@ func (e *FileCyberObservableObjectSTIX) GetExtensions() map[string]interface{} {
 	return e.Extensions
 }
 
-func (e *FileCyberObservableObjectSTIX) SetValueExtensions(v map[string]interface{}) {
+func (e *FileCyberObservableObjectSTIX) SetValueExtensions(k string, i interface{}) {
+	e.Extensions[k] = i
+}
+
+func (e *FileCyberObservableObjectSTIX) SetFullValueExtensions(v map[string]interface{}) {
 	e.Extensions = v
 }
 

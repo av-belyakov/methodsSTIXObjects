@@ -133,7 +133,11 @@ func (e *ObservedDataDomainObjectsSTIX) GetObjectRefs() []stixhelpers.Identifier
 	return e.ObjectRefs
 }
 
-func (e *ObservedDataDomainObjectsSTIX) SetValueObjectRefs(v []stixhelpers.IdentifierTypeSTIX) {
+func (e *ObservedDataDomainObjectsSTIX) SetValueObjectRefs(v stixhelpers.IdentifierTypeSTIX) {
+	e.ObjectRefs = append(e.ObjectRefs, v)
+}
+
+func (e *ObservedDataDomainObjectsSTIX) SetFullValueObjectRefs(v []stixhelpers.IdentifierTypeSTIX) {
 	e.ObjectRefs = v
 }
 

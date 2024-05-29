@@ -18,13 +18,19 @@ func TestIdentityDomainObjectsSTIX(t *testing.T) {
 	ni.SetAnyName("identity name")
 	_, err = ni.Get()
 	assert.NoError(t, err)
+	ni.SetValueName("i name")
+	assert.Equal(t, ni.GetName(), "i name")
 
 	ni.SetAnyDescription("example_description")
 	assert.Equal(t, ni.GetDescription(), "example_description")
+	ni.SetValueDescription("exm_description")
+	assert.Equal(t, ni.GetDescription(), "exm_description")
 
 	cimessage := "example contact information"
 	ni.SetAnyContactInformation(cimessage)
 	assert.Equal(t, ni.GetContactInformation(), cimessage)
+	ni.SetValueContactInformation("e c information")
+	assert.Equal(t, ni.GetContactInformation(), "e c information")
 
 	ni.SetAnyRoles("one")
 	ni.SetAnyRoles("two")
@@ -34,6 +40,9 @@ func TestIdentityDomainObjectsSTIX(t *testing.T) {
 	icmessage := stixhelpers.OpenVocabTypeSTIX("test identity class")
 	ni.SetValueIdentityClass(icmessage)
 	assert.Equal(t, ni.GetIdentityClass(), icmessage)
+
+	ni.SetValueSectors("section")
+	assert.Equal(t, len(ni.GetSectors()), 1)
 }
 
 /*

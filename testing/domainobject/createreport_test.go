@@ -18,10 +18,15 @@ func TestReportDomainObjectsSTIX(t *testing.T) {
 	ni.SetAnyName("report name")
 	_, err = ni.Get()
 	assert.NoError(t, err)
+	ni.SetValueName("r_name")
+	assert.Equal(t, ni.GetName(), "r_name")
 
 	ni.SetAnyDescription("example_description")
 	assert.Equal(t, ni.GetDescription(), "example_description")
+	ni.SetValueDescription("exm_description")
+	assert.Equal(t, ni.GetDescription(), "exm_description")
 
+	//--- Published
 	vf := "2024-02-11T07:01:01+00:00"
 	errt := ni.SetAnyPublished(vf)
 	assert.NoError(t, errt)
@@ -31,8 +36,9 @@ func TestReportDomainObjectsSTIX(t *testing.T) {
 	assert.NoError(t, errt)
 	assert.Equal(t, ni.GetPublished(), "2024-05-22T11:43:27+03:00")
 
-	ni.SetValueReportTypes([]stixhelpers.OpenVocabTypeSTIX{"1q", "2x", "3a", "4d"})
-	assert.Equal(t, len(ni.GetReportTypes()), 4)
+	ni.SetFullValueReportTypes([]stixhelpers.OpenVocabTypeSTIX{"1q", "2x", "3a", "4d"})
+	ni.SetValueReportTypes(stixhelpers.OpenVocabTypeSTIX("5v"))
+	assert.Equal(t, len(ni.GetReportTypes()), 5)
 
 	ni.SetValueObjectRefs([]stixhelpers.IdentifierTypeSTIX{"r11", "r22", "r33"})
 	assert.Equal(t, len(ni.GetObjectRefs()), 3)

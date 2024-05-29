@@ -60,7 +60,11 @@ func (e *DomainNameCyberObservableObjectSTIX) GetResolvesToRefs() []stixhelpers.
 	return e.ResolvesToRefs
 }
 
-func (e *DomainNameCyberObservableObjectSTIX) SetValueResolvesToRefs(v []stixhelpers.IdentifierTypeSTIX) {
+func (e *DomainNameCyberObservableObjectSTIX) SetValueResolvesToRefs(v stixhelpers.IdentifierTypeSTIX) {
+	e.ResolvesToRefs = append(e.ResolvesToRefs, v)
+}
+
+func (e *DomainNameCyberObservableObjectSTIX) SetFullValueResolvesToRefs(v []stixhelpers.IdentifierTypeSTIX) {
 	e.ResolvesToRefs = v
 }
 

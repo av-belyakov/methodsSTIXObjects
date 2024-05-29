@@ -18,9 +18,13 @@ func TestIndicatorDomainObjectsSTIX(t *testing.T) {
 	ni.SetAnyName("indicator name")
 	_, err = ni.Get()
 	assert.NoError(t, err)
+	ni.SetValueName("i name")
+	assert.Equal(t, ni.GetName(), "i name")
 
 	ni.SetAnyDescription("example_description")
 	assert.Equal(t, ni.GetDescription(), "example_description")
+	ni.SetValueDescription("exm_description")
+	assert.Equal(t, ni.GetDescription(), "exm_description")
 
 	pattern := "pattern example"
 	ni.SetAnyPattern(pattern)
@@ -30,6 +34,7 @@ func TestIndicatorDomainObjectsSTIX(t *testing.T) {
 	ni.SetAnyPatternVersion(patternVersion)
 	assert.Equal(t, ni.GetPatternVersion(), patternVersion)
 
+	// --- ValidFrom
 	vf := "2024-02-11T07:01:01+00:00"
 	err = ni.SetAnyValidFrom(vf)
 	assert.NoError(t, err)
@@ -39,6 +44,7 @@ func TestIndicatorDomainObjectsSTIX(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, ni.GetValidFrom(), "2024-05-22T11:43:27+03:00")
 
+	// --- ValidUntil
 	vu := "2024-02-10T11:21:01+00:00"
 	err = ni.SetAnyValidUntil(vu)
 	assert.NoError(t, err)
@@ -52,15 +58,19 @@ func TestIndicatorDomainObjectsSTIX(t *testing.T) {
 	ni.SetValuePatternType(pt)
 	assert.Equal(t, ni.GetPatternType(), pt)
 
-	ni.SetValueKillChainPhases([]stixhelpers.KillChainPhasesTypeElementSTIX{
+	ni.SetFullValueKillChainPhases([]stixhelpers.KillChainPhasesTypeElementSTIX{
 		{KillChainName: "green chan", PhaseName: "first phase"},
 		{KillChainName: "red chan", PhaseName: "second phase"},
 		{KillChainName: "blue chan", PhaseName: "third phase"},
 	})
-	assert.Equal(t, len(ni.GetKillChainPhases()), 3)
+	ni.SetValueKillChainPhases(stixhelpers.KillChainPhasesTypeElementSTIX{
+		KillChainName: "white chan", PhaseName: "first phase",
+	})
+	assert.Equal(t, len(ni.GetKillChainPhases()), 4)
 
-	ni.SetValueIndicatorTypes([]stixhelpers.OpenVocabTypeSTIX{"1q", "2x", "3a", "4d"})
-	assert.Equal(t, len(ni.GetIndicatorTypes()), 4)
+	ni.SetFullValueIndicatorTypes([]stixhelpers.OpenVocabTypeSTIX{"1q", "2x", "3a", "4d"})
+	ni.SetValueIndicatorTypes(stixhelpers.OpenVocabTypeSTIX("cvd"))
+	assert.Equal(t, len(ni.GetIndicatorTypes()), 5)
 }
 
 /*

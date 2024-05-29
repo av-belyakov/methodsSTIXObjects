@@ -17,7 +17,10 @@ func TestObservedDataDomainObjectsSTIX(t *testing.T) {
 
 	nod.SetAnyNumberObserved(10)
 	assert.Equal(t, nod.GetNumberObserved(), 10)
+	nod.SetValueNumberObserved(11)
+	assert.Equal(t, nod.GetNumberObserved(), 11)
 
+	//--- FirstObserved
 	vf := "2024-02-11T07:01:01+00:00"
 	errt := nod.SetAnyFirstObserved(vf)
 	assert.NoError(t, errt)
@@ -27,6 +30,7 @@ func TestObservedDataDomainObjectsSTIX(t *testing.T) {
 	assert.NoError(t, errt)
 	assert.Equal(t, nod.GetFirstObserved(), "2024-05-22T11:43:27+03:00")
 
+	//--- LastObserved
 	vu := "2024-02-10T11:21:01+00:00"
 	errt = nod.SetAnyLastObserved(vu)
 	assert.NoError(t, errt)
@@ -39,8 +43,9 @@ func TestObservedDataDomainObjectsSTIX(t *testing.T) {
 	_, err = nod.Get()
 	assert.NoError(t, err)
 
-	nod.SetValueObjectRefs([]stixhelpers.IdentifierTypeSTIX{"eee"})
-	assert.Equal(t, len(nod.GetObjectRefs()), 1)
+	nod.SetFullValueObjectRefs([]stixhelpers.IdentifierTypeSTIX{"eee"})
+	nod.SetValueObjectRefs(stixhelpers.IdentifierTypeSTIX("vsdf"))
+	assert.Equal(t, len(nod.GetObjectRefs()), 2)
 }
 
 /*

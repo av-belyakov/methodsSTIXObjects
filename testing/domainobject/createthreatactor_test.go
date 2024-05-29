@@ -18,10 +18,15 @@ func TestThreatActorDomainObjectsSTIX(t *testing.T) {
 	nta.SetAnyName("threat-actor name")
 	_, err = nta.Get()
 	assert.NoError(t, err)
+	nta.SetValueName("ta_name")
+	assert.Equal(t, nta.GetName(), "ta_name")
 
 	nta.SetAnyDescription("example_description")
 	assert.Equal(t, nta.GetDescription(), "example_description")
+	nta.SetValueDescription("exm_description")
+	assert.Equal(t, nta.GetDescription(), "exm_description")
 
+	//--- FirstSeen
 	vf := "2024-02-11T07:01:01+00:00"
 	err = nta.SetAnyFirstSeen(vf)
 	assert.NoError(t, err)
@@ -31,6 +36,7 @@ func TestThreatActorDomainObjectsSTIX(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, nta.GetFirstSeen(), "2024-05-22T11:43:27+03:00")
 
+	//--- LastSeen
 	vu := "2024-02-10T11:21:01+00:00"
 	err = nta.SetAnyLastSeen(vu)
 	assert.NoError(t, err)
@@ -43,11 +49,13 @@ func TestThreatActorDomainObjectsSTIX(t *testing.T) {
 	nta.SetAnyAliases("zxc")
 	nta.SetAnyAliases("asd")
 	nta.SetAnyAliases("qwe")
-	assert.Equal(t, len(nta.GetAliases()), 3)
+	nta.SetValueAliases("ubfu")
+	assert.Equal(t, len(nta.GetAliases()), 4)
 
 	nta.SetAnyGoals("11")
 	nta.SetAnyGoals("22")
-	assert.Equal(t, len(nta.GetGoals()), 2)
+	nta.SetValueGoals("33")
+	assert.Equal(t, len(nta.GetGoals()), 3)
 
 	s := stixhelpers.OpenVocabTypeSTIX("sophistication example")
 	nta.SetValueSophistication(s)
@@ -61,17 +69,21 @@ func TestThreatActorDomainObjectsSTIX(t *testing.T) {
 	nta.SetValuePrimaryMotivation(pm)
 	assert.Equal(t, nta.GetPrimaryMotivation(), pm)
 
-	nta.SetValueSecondaryMotivations([]stixhelpers.OpenVocabTypeSTIX{"a", "b", "c", "d", "e", "f"})
-	assert.Equal(t, len(nta.GetSecondaryMotivations()), 6)
+	nta.SetFullValueSecondaryMotivations([]stixhelpers.OpenVocabTypeSTIX{"a", "b", "c", "d", "e", "f"})
+	nta.SetValueSecondaryMotivations(stixhelpers.OpenVocabTypeSTIX("g"))
+	assert.Equal(t, len(nta.GetSecondaryMotivations()), 7)
 
-	nta.SetValuePersonalMotivations([]stixhelpers.OpenVocabTypeSTIX{"a", "b", "c", "d", "e", "f"})
-	assert.Equal(t, len(nta.GetPersonalMotivations()), 6)
+	nta.SetFullValuePersonalMotivations([]stixhelpers.OpenVocabTypeSTIX{"a", "b", "c", "d", "e", "f"})
+	nta.SetValuePersonalMotivations(stixhelpers.OpenVocabTypeSTIX("g"))
+	assert.Equal(t, len(nta.GetPersonalMotivations()), 7)
 
-	nta.SetValueThreatActorTypes([]stixhelpers.OpenVocabTypeSTIX{"a", "b", "c", "d", "e", "f"})
-	assert.Equal(t, len(nta.GetThreatActorTypes()), 6)
+	nta.SetFullValueThreatActorTypes([]stixhelpers.OpenVocabTypeSTIX{"a", "b", "c", "d", "e", "f"})
+	nta.SetValueThreatActorTypes(stixhelpers.OpenVocabTypeSTIX("g"))
+	assert.Equal(t, len(nta.GetThreatActorTypes()), 7)
 
-	nta.SetValueRoles([]stixhelpers.OpenVocabTypeSTIX{"a", "b", "c", "d", "e", "f"})
-	assert.Equal(t, len(nta.GetRoles()), 6)
+	nta.SetFullValueRoles([]stixhelpers.OpenVocabTypeSTIX{"a", "b", "c", "d", "e", "f"})
+	nta.SetValueRoles(stixhelpers.OpenVocabTypeSTIX("g"))
+	assert.Equal(t, len(nta.GetRoles()), 7)
 }
 
 /*

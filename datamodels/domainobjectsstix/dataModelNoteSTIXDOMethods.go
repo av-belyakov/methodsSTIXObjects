@@ -91,7 +91,11 @@ func (e *NoteDomainObjectsSTIX) GetObjectRefs() []stixhelpers.IdentifierTypeSTIX
 	return e.ObjectRefs
 }
 
-func (e *NoteDomainObjectsSTIX) SetValueObjectRefs(v []stixhelpers.IdentifierTypeSTIX) {
+func (e *NoteDomainObjectsSTIX) SetValueObjectRefs(v stixhelpers.IdentifierTypeSTIX) {
+	e.ObjectRefs = append(e.ObjectRefs, v)
+}
+
+func (e *NoteDomainObjectsSTIX) SetFullValueObjectRefs(v []stixhelpers.IdentifierTypeSTIX) {
 	e.ObjectRefs = v
 }
 

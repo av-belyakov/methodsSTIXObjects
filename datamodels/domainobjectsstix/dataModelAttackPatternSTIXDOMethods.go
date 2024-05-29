@@ -90,7 +90,11 @@ func (e *AttackPatternDomainObjectsSTIX) GetKillChainPhases() []stixhelpers.Kill
 	return e.KillChainPhases
 }
 
-func (e *AttackPatternDomainObjectsSTIX) SetValueKillChainPhases(v []stixhelpers.KillChainPhasesTypeElementSTIX) {
+func (e *AttackPatternDomainObjectsSTIX) SetValueKillChainPhases(v stixhelpers.KillChainPhasesTypeElementSTIX) {
+	e.KillChainPhases = append(e.KillChainPhases, v)
+}
+
+func (e *AttackPatternDomainObjectsSTIX) SetFullValueKillChainPhases(v []stixhelpers.KillChainPhasesTypeElementSTIX) {
 	e.KillChainPhases = v
 }
 

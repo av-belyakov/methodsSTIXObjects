@@ -318,7 +318,11 @@ func (e *NetworkTrafficCyberObservableObjectSTIX) GetEncapsulatesRefs() []stixhe
 	return e.EncapsulatesRefs
 }
 
-func (e *NetworkTrafficCyberObservableObjectSTIX) SetValueEncapsulatesRefs(v []stixhelpers.IdentifierTypeSTIX) {
+func (e *NetworkTrafficCyberObservableObjectSTIX) SetValueEncapsulatesRefs(v stixhelpers.IdentifierTypeSTIX) {
+	e.EncapsulatesRefs = append(e.EncapsulatesRefs, v)
+}
+
+func (e *NetworkTrafficCyberObservableObjectSTIX) SetFullValueEncapsulatesRefs(v []stixhelpers.IdentifierTypeSTIX) {
 	e.EncapsulatesRefs = v
 }
 
@@ -332,6 +336,11 @@ func (e *NetworkTrafficCyberObservableObjectSTIX) SetValueIPFix(k, v string) {
 	e.IPFix[k] = v
 }
 
+// SetValueIPFix добаляет значение в IPFix
+func (e *NetworkTrafficCyberObservableObjectSTIX) SetFullValueIPFix(v map[string]string) {
+	e.IPFix = v
+}
+
 // SetAnyIPFix устанавливает ЛЮБОЕ значение для поля IPFix
 func (e *NetworkTrafficCyberObservableObjectSTIX) SetAnyIPFix(k string, i interface{}) {
 	e.SetValueIPFix(k, fmt.Sprint(i))
@@ -343,8 +352,13 @@ func (e *NetworkTrafficCyberObservableObjectSTIX) GetExtensions() map[string]int
 }
 
 // SetAnyExtensions устанавливает ЛЮБОЕ значение для поля Extensions
-func (e *NetworkTrafficCyberObservableObjectSTIX) SetAnyExtensions(k string, i interface{}) {
+func (e *NetworkTrafficCyberObservableObjectSTIX) SetValueExtensions(k string, i interface{}) {
 	e.Extensions[k] = i
+}
+
+// SetFullValueExtensions устанавливает полное значение для поля Extensions
+func (e *NetworkTrafficCyberObservableObjectSTIX) SetFullValueExtensions(v map[string]interface{}) {
+	e.Extensions = v
 }
 
 // ValidateStruct является валидатором параметров содержащихся в типе NetworkTrafficCyberObservableObjectSTIX

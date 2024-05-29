@@ -18,12 +18,17 @@ func TestGroupingDomainObjectsSTIX(t *testing.T) {
 	ng.SetAnyName("grouping name")
 	_, err = ng.Get()
 	assert.NoError(t, err)
+	ng.SetValueName("cof name")
+	assert.Equal(t, ng.GetName(), "cof name")
 
 	ng.SetAnyDescription("example_description")
 	assert.Equal(t, ng.GetDescription(), "example_description")
+	ng.SetValueDescription("exm_description")
+	assert.Equal(t, ng.GetDescription(), "exm_description")
 
-	ng.SetValueObjectRefs([]stixhelpers.IdentifierTypeSTIX{"111a", "222b", "333c"})
-	assert.Equal(t, len(ng.GetObjectRefs()), 3)
+	ng.SetFullValueObjectRefs([]stixhelpers.IdentifierTypeSTIX{"111a", "222b", "333c"})
+	ng.SetValueObjectRefs(stixhelpers.IdentifierTypeSTIX("cdvv"))
+	assert.Equal(t, len(ng.GetObjectRefs()), 4)
 }
 
 /*

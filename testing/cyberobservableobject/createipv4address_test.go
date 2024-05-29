@@ -20,11 +20,15 @@ func TestIPv4AddressCyberObservableObjectSTIX(t *testing.T) {
 	nipv4.SetValueValue("59.64.174.23")
 	assert.Equal(t, nipv4.GetValue(), "59.64.174.23")
 
-	nipv4.SetValueResolvesToRefs([]stixhelpers.IdentifierTypeSTIX{"res_1", "res_2"})
+	nipv4.SetFullValueResolvesToRefs([]stixhelpers.IdentifierTypeSTIX{"res_1", "res_2"})
 	assert.Equal(t, len(nipv4.GetResolvesToRefs()), 2)
+	nipv4.SetValueResolvesToRefs(stixhelpers.IdentifierTypeSTIX("res_3"))
+	assert.Equal(t, len(nipv4.GetResolvesToRefs()), 3)
 
-	nipv4.SetValueBelongsToRefs([]stixhelpers.IdentifierTypeSTIX{"res_1", "res_2", "res_3"})
+	nipv4.SetFullValueBelongsToRefs([]stixhelpers.IdentifierTypeSTIX{"res_1", "res_2", "res_3"})
 	assert.Equal(t, len(nipv4.GetBelongsToRefs()), 3)
+	nipv4.SetValueBelongsToRefs(stixhelpers.IdentifierTypeSTIX("res_n"))
+	assert.Equal(t, len(nipv4.GetBelongsToRefs()), 4)
 }
 
 /*

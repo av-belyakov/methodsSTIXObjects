@@ -62,7 +62,11 @@ func (e *IPv6AddressCyberObservableObjectSTIX) GetResolvesToRefs() []stixhelpers
 	return e.ResolvesToRefs
 }
 
-func (e *IPv6AddressCyberObservableObjectSTIX) SetValueResolvesToRefs(v []stixhelpers.IdentifierTypeSTIX) {
+func (e *IPv6AddressCyberObservableObjectSTIX) SetValueResolvesToRefs(v stixhelpers.IdentifierTypeSTIX) {
+	e.ResolvesToRefs = append(e.ResolvesToRefs, v)
+}
+
+func (e *IPv6AddressCyberObservableObjectSTIX) SetFullValueResolvesToRefs(v []stixhelpers.IdentifierTypeSTIX) {
 	e.ResolvesToRefs = v
 }
 
@@ -71,7 +75,11 @@ func (e *IPv6AddressCyberObservableObjectSTIX) GetBelongsToRefs() []stixhelpers.
 	return e.BelongsToRefs
 }
 
-func (e *IPv6AddressCyberObservableObjectSTIX) SetValueBelongsToRefs(v []stixhelpers.IdentifierTypeSTIX) {
+func (e *IPv6AddressCyberObservableObjectSTIX) SetValueBelongsToRefs(v stixhelpers.IdentifierTypeSTIX) {
+	e.BelongsToRefs = append(e.BelongsToRefs, v)
+}
+
+func (e *IPv6AddressCyberObservableObjectSTIX) SetFullValueBelongsToRefs(v []stixhelpers.IdentifierTypeSTIX) {
 	e.BelongsToRefs = v
 }
 

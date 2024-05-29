@@ -18,6 +18,8 @@ func TestLocationDomainObjectsSTIX(t *testing.T) {
 	nl.SetAnyName("location name")
 	_, err = nl.Get()
 	assert.NoError(t, err)
+	nl.SetValueName("loc_name")
+	assert.Equal(t, nl.GetName(), "loc_name")
 
 	lat := float32(23.455)
 	nl.SetValueLatitude(lat)
@@ -33,22 +35,34 @@ func TestLocationDomainObjectsSTIX(t *testing.T) {
 
 	nl.SetAnyDescription("example_description")
 	assert.Equal(t, nl.GetDescription(), "example_description")
+	nl.SetValueDescription("exm_description")
+	assert.Equal(t, nl.GetDescription(), "exm_description")
 
 	nl.SetAnyCountry("RU")
 	assert.Equal(t, nl.GetCountry(), "RU")
+	nl.SetValueCountry("BZ")
+	assert.Equal(t, nl.GetCountry(), "BZ")
 
 	nl.SetAnyCity("Moscow")
 	assert.Equal(t, nl.GetCity(), "Moscow")
+	nl.SetValueCity("St. Peterburg")
+	assert.Equal(t, nl.GetCity(), "St. Peterburg")
 
 	nl.SetAnyAdministrativeArea("RU_RU")
 	assert.Equal(t, nl.GetAdministrativeArea(), "RU_RU")
+	nl.SetValueAdministrativeArea("RU_ru")
+	assert.Equal(t, nl.GetAdministrativeArea(), "RU_ru")
 
 	sa := "Jucova street, 45c1"
 	nl.SetAnyStreetAddress(sa)
 	assert.Equal(t, nl.GetStreetAddress(), sa)
+	nl.SetValueStreetAddress("Ds. just")
+	assert.Equal(t, nl.GetStreetAddress(), "Ds. just")
 
 	nl.SetAnyPostalCode("105420")
 	assert.Equal(t, nl.GetPostalCode(), "105420")
+	nl.SetValuePostalCode("105215")
+	assert.Equal(t, nl.GetPostalCode(), "105215")
 
 	req := stixhelpers.OpenVocabTypeSTIX("region name")
 	nl.SetValueRegion(req)

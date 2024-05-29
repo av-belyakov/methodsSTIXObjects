@@ -188,7 +188,11 @@ func (e *EmailMessageCyberObservableObjectSTIX) GetToRefs() []stixhelpers.Identi
 	return e.ToRefs
 }
 
-func (e *EmailMessageCyberObservableObjectSTIX) SetValueToRefs(v []stixhelpers.IdentifierTypeSTIX) {
+func (e *EmailMessageCyberObservableObjectSTIX) SetValueToRefs(v stixhelpers.IdentifierTypeSTIX) {
+	e.ToRefs = append(e.ToRefs, v)
+}
+
+func (e *EmailMessageCyberObservableObjectSTIX) SetFullValueToRefs(v []stixhelpers.IdentifierTypeSTIX) {
 	e.ToRefs = v
 }
 
@@ -197,7 +201,11 @@ func (e *EmailMessageCyberObservableObjectSTIX) GetCcRefs() []stixhelpers.Identi
 	return e.CcRefs
 }
 
-func (e *EmailMessageCyberObservableObjectSTIX) SetValueCcRefs(v []stixhelpers.IdentifierTypeSTIX) {
+func (e *EmailMessageCyberObservableObjectSTIX) SetValueCcRefs(v stixhelpers.IdentifierTypeSTIX) {
+	e.CcRefs = append(e.CcRefs, v)
+}
+
+func (e *EmailMessageCyberObservableObjectSTIX) SetFullValueCcRefs(v []stixhelpers.IdentifierTypeSTIX) {
 	e.CcRefs = v
 }
 
@@ -206,7 +214,11 @@ func (e *EmailMessageCyberObservableObjectSTIX) GetBccRefs() []stixhelpers.Ident
 	return e.BccRefs
 }
 
-func (e *EmailMessageCyberObservableObjectSTIX) SetValueBccRefs(v []stixhelpers.IdentifierTypeSTIX) {
+func (e *EmailMessageCyberObservableObjectSTIX) SetValueBccRefs(v stixhelpers.IdentifierTypeSTIX) {
+	e.BccRefs = append(e.BccRefs, v)
+}
+
+func (e *EmailMessageCyberObservableObjectSTIX) SetFullValueBccRefs(v []stixhelpers.IdentifierTypeSTIX) {
 	e.BccRefs = v
 }
 
@@ -215,7 +227,11 @@ func (e *EmailMessageCyberObservableObjectSTIX) GetBodyMultipart() []somecomplex
 	return e.BodyMultipart
 }
 
-func (e *EmailMessageCyberObservableObjectSTIX) SetValueBodyMultipart(v []somecomplextypesstixco.EmailMIMEPartTypeSTIX) {
+func (e *EmailMessageCyberObservableObjectSTIX) SetValueBodyMultipart(v somecomplextypesstixco.EmailMIMEPartTypeSTIX) {
+	e.BodyMultipart = append(e.BodyMultipart, v)
+}
+
+func (e *EmailMessageCyberObservableObjectSTIX) SetFullValueBodyMultipart(v []somecomplextypesstixco.EmailMIMEPartTypeSTIX) {
 	e.BodyMultipart = v
 }
 
@@ -224,7 +240,11 @@ func (e *EmailMessageCyberObservableObjectSTIX) GetAdditionalHeaderFields() map[
 	return e.AdditionalHeaderFields
 }
 
-func (e *EmailMessageCyberObservableObjectSTIX) SetValueAdditionalHeaderFields(v map[string]stixhelpers.DictionaryTypeSTIX) {
+func (e *EmailMessageCyberObservableObjectSTIX) SetValueAdditionalHeaderFields(k string, v stixhelpers.DictionaryTypeSTIX) {
+	e.AdditionalHeaderFields[k] = v
+}
+
+func (e *EmailMessageCyberObservableObjectSTIX) SetFullValueAdditionalHeaderFields(v map[string]stixhelpers.DictionaryTypeSTIX) {
 	e.AdditionalHeaderFields = v
 }
 

@@ -150,7 +150,11 @@ func (e *InfrastructureDomainObjectsSTIX) GetKillChainPhases() []stixhelpers.Kil
 	return e.KillChainPhases
 }
 
-func (e *InfrastructureDomainObjectsSTIX) SetValueKillChainPhases(v []stixhelpers.KillChainPhasesTypeElementSTIX) {
+func (e *InfrastructureDomainObjectsSTIX) SetValueKillChainPhases(v stixhelpers.KillChainPhasesTypeElementSTIX) {
+	e.KillChainPhases = append(e.KillChainPhases, v)
+}
+
+func (e *InfrastructureDomainObjectsSTIX) SetFullValueKillChainPhases(v []stixhelpers.KillChainPhasesTypeElementSTIX) {
 	e.KillChainPhases = v
 }
 
@@ -159,7 +163,11 @@ func (e *InfrastructureDomainObjectsSTIX) GetIndicatorTypes() []stixhelpers.Open
 	return e.InfrastructureTypes
 }
 
-func (e *InfrastructureDomainObjectsSTIX) SetValueIndicatorTypes(v []stixhelpers.OpenVocabTypeSTIX) {
+func (e *InfrastructureDomainObjectsSTIX) SetValueIndicatorTypes(v stixhelpers.OpenVocabTypeSTIX) {
+	e.InfrastructureTypes = append(e.InfrastructureTypes, v)
+}
+
+func (e *InfrastructureDomainObjectsSTIX) SetFullValueIndicatorTypes(v []stixhelpers.OpenVocabTypeSTIX) {
 	e.InfrastructureTypes = v
 }
 

@@ -20,20 +20,28 @@ func TestAttackPatternDomainObjectsSTIX(t *testing.T) {
 	ap.SetAnyName("attack-pattern name")
 	_, err = ap.Get()
 	assert.NoError(t, err)
+	ap.SetValueName("ap_name")
+	assert.Equal(t, ap.GetName(), "ap_name")
 
 	ap.SetAnyDescription("any description")
 	assert.Equal(t, ap.GetDescription(), "any description")
+	ap.SetValueDescription("description")
+	assert.Equal(t, ap.GetDescription(), "description")
 
 	ap.SetAnyAliases("one")
 	ap.SetAnyAliases("two")
 	ap.SetAnyAliases("three")
-	assert.Equal(t, len(ap.GetAliases()), 3)
+	ap.SetValueAliases("four")
+	assert.Equal(t, len(ap.GetAliases()), 4)
 
-	ap.SetValueKillChainPhases([]stixhelpers.KillChainPhasesTypeElementSTIX{
+	ap.SetFullValueKillChainPhases([]stixhelpers.KillChainPhasesTypeElementSTIX{
 		{KillChainName: "ddd", PhaseName: "name_ee"},
 		{KillChainName: "dfg", PhaseName: "name_zx"},
 	})
-	assert.Equal(t, len(ap.GetKillChainPhases()), 2)
+	ap.SetValueKillChainPhases(stixhelpers.KillChainPhasesTypeElementSTIX{
+		KillChainName: "cxx", PhaseName: "name_cdjj",
+	})
+	assert.Equal(t, len(ap.GetKillChainPhases()), 3)
 }
 
 /*

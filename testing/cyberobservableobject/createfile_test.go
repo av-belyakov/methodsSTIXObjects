@@ -89,16 +89,20 @@ func TestFileCyberObservableObjectSTIX(t *testing.T) {
 	})
 	assert.Equal(t, len(nf.GetHashes()), 2)
 
-	nf.SetValueContainsRefs([]stixhelpers.IdentifierTypeSTIX{
+	nf.SetFullValueContainsRefs([]stixhelpers.IdentifierTypeSTIX{
 		"contains_ref_1",
 		"contains_ref_2",
 		"contains_ref_3",
 	})
 	assert.Equal(t, len(nf.GetContainsRefs()), 3)
+	nf.SetValueContainsRefs(stixhelpers.IdentifierTypeSTIX("contains_ref_4"))
+	assert.Equal(t, len(nf.GetContainsRefs()), 4)
 
-	nf.SetValueExtensions(map[string]interface{}{
+	nf.SetFullValueExtensions(map[string]interface{}{
 		"ext_1": "zxcvbbb",
 		"ext_2": 123,
 	})
 	assert.Equal(t, len(nf.GetExtensions()), 2)
+	nf.SetValueExtensions("ext_3", 34223)
+	assert.Equal(t, len(nf.GetExtensions()), 3)
 }

@@ -95,23 +95,26 @@ func TestNetworkTrafficCyberObservableObjectSTIX(t *testing.T) {
 	nnt.SetValueEncapsulatedByRef(ere)
 	assert.Equal(t, nnt.GetEncapsulatedByRef(), ere)
 
-	nnt.SetValueEncapsulatesRefs([]stixhelpers.IdentifierTypeSTIX{
+	nnt.SetFullValueEncapsulatesRefs([]stixhelpers.IdentifierTypeSTIX{
 		"encapsulate_ref_1",
 		"encapsulate_ref_2",
 		"encapsulate_ref_3",
 	})
 	assert.Equal(t, len(nnt.GetEncapsulatesRefs()), 3)
+	nnt.SetValueEncapsulatesRefs(stixhelpers.IdentifierTypeSTIX("encapsulate_ref_4"))
+	assert.Equal(t, len(nnt.GetEncapsulatesRefs()), 4)
 
 	nnt.SetAnyIPFix("ipfix_1", "addv_vdjjb")
 	nnt.SetAnyIPFix("ipfix_2", "hfhd_dvnie")
 	nnt.SetAnyIPFix("ipfix_3", "nvdv_jief9")
-	nnt.SetAnyIPFix("ipfix_4", "teyu_duueu")
+	nnt.SetValueIPFix("ipfix_4", "teyu_duueu")
 	assert.Equal(t, len(nnt.GetIPFix()), 4)
 
-	nnt.SetAnyExtensions("ext_1", 123)
-	nnt.SetAnyExtensions("ext_2", 234)
-	nnt.SetAnyExtensions("ext_3", 345)
-	assert.Equal(t, len(nnt.GetExtensions()), 3)
+	nnt.SetFullValueExtensions(map[string]interface{}{"ext_0": 6293})
+	nnt.SetValueExtensions("ext_1", 123)
+	nnt.SetValueExtensions("ext_2", 234)
+	nnt.SetValueExtensions("ext_3", 345)
+	assert.Equal(t, len(nnt.GetExtensions()), 4)
 }
 
 /*

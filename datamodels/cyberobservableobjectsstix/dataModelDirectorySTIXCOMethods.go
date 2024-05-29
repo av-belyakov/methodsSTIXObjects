@@ -161,7 +161,11 @@ func (e *DirectoryCyberObservableObjectSTIX) GetContainsRefs() []stixhelpers.Ide
 	return e.ContainsRefs
 }
 
-func (e *DirectoryCyberObservableObjectSTIX) SetValueContainsRefs(v []stixhelpers.IdentifierTypeSTIX) {
+func (e *DirectoryCyberObservableObjectSTIX) SetValueContainsRefs(v stixhelpers.IdentifierTypeSTIX) {
+	e.ContainsRefs = append(e.ContainsRefs, v)
+}
+
+func (e *DirectoryCyberObservableObjectSTIX) SetFullValueContainsRefs(v []stixhelpers.IdentifierTypeSTIX) {
 	e.ContainsRefs = v
 }
 

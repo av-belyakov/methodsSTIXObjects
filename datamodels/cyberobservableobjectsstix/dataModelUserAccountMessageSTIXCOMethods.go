@@ -65,7 +65,7 @@ func (a *UserAccountCyberObservableObjectSTIX) SetValueIsPrivileged(v bool) {
 }
 
 // SetAnyIsPrivileged устанавливает ЛЮБОЕ значение для поля IsPrivileged
-func (a *UserAccountCyberObservableObjectSTIX) SetAny(i interface{}) {
+func (a *UserAccountCyberObservableObjectSTIX) SetAnyIsPrivileged(i interface{}) {
 	if v, ok := i.(bool); ok {
 		a.IsPrivileged = v
 	}
@@ -182,9 +182,15 @@ func (e *UserAccountCyberObservableObjectSTIX) SetValueAccountCreated(v string) 
 }
 
 // SetAnyAccountCreated устанавливает ЛЮБОЕ значение для поля AccountCreated
-func (e *UserAccountCyberObservableObjectSTIX) SetAnyAccountCreated(i interface{}) {
+func (e *UserAccountCyberObservableObjectSTIX) SetAnyAccountCreated(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueAccountCreated(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.AccountCreated = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- AccountExpires property ---------
@@ -204,9 +210,15 @@ func (e *UserAccountCyberObservableObjectSTIX) SetValueAccountExpires(v string) 
 }
 
 // SetAnyAccountExpires устанавливает ЛЮБОЕ значение для поля AccountExpires
-func (e *UserAccountCyberObservableObjectSTIX) SetAnyAccountExpires(i interface{}) {
+func (e *UserAccountCyberObservableObjectSTIX) SetAnyAccountExpires(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueAccountExpires(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.AccountExpires = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- CredentialLastChanged property ---------
@@ -226,9 +238,15 @@ func (e *UserAccountCyberObservableObjectSTIX) SetValueCredentialLastChanged(v s
 }
 
 // SetAnyCredentialLastChanged устанавливает ЛЮБОЕ значение для поля CredentialLastChanged
-func (e *UserAccountCyberObservableObjectSTIX) SetAnyCredentialLastChanged(i interface{}) {
+func (e *UserAccountCyberObservableObjectSTIX) SetAnyCredentialLastChanged(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueCredentialLastChanged(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.CredentialLastChanged = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- AccountFirstLogin property ---------
@@ -248,9 +266,15 @@ func (e *UserAccountCyberObservableObjectSTIX) SetValueAccountFirstLogin(v strin
 }
 
 // SetAnyAccountFirstLogin устанавливает ЛЮБОЕ значение для поля AccountFirstLogin
-func (e *UserAccountCyberObservableObjectSTIX) SetAnyAccountFirstLogin(i interface{}) {
+func (e *UserAccountCyberObservableObjectSTIX) SetAnyAccountFirstLogin(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueAccountFirstLogin(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.AccountFirstLogin = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- AccountLastLogin property ---------
@@ -270,9 +294,15 @@ func (e *UserAccountCyberObservableObjectSTIX) SetValueAccountLastLogin(v string
 }
 
 // SetAnyAccountLastLogin устанавливает ЛЮБОЕ значение для поля AccountLastLogin
-func (e *UserAccountCyberObservableObjectSTIX) SetAnyAccountLastLogin(i interface{}) {
+func (e *UserAccountCyberObservableObjectSTIX) SetAnyAccountLastLogin(i interface{}) error {
+	if str, ok := i.(string); ok {
+		return e.SetValueAccountLastLogin(str)
+	}
+
 	tmp := commonlibs.ConversionAnyToInt(i)
 	e.AccountLastLogin = commonlibs.GetDateTimeFormatRFC3339(int64(tmp))
+
+	return nil
 }
 
 // -------- AccountType property ---------
@@ -292,6 +322,11 @@ func (e *UserAccountCyberObservableObjectSTIX) GetExtensions() map[string]someex
 // SetValueExtensions добаляет значение в Extensions
 func (e *UserAccountCyberObservableObjectSTIX) SetValueExtensions(k string, v someextensionsstixco.UNIXAccountExtensionSTIX) {
 	e.Extensions[k] = v
+}
+
+// SetFullValueExtensions добаляет полное значение в Extensions
+func (e *UserAccountCyberObservableObjectSTIX) SetFullValueExtensions(v map[string]someextensionsstixco.UNIXAccountExtensionSTIX) {
+	e.Extensions = v
 }
 
 // ValidateStruct является валидатором параметров содержащихся в типе UserAccountCyberObservableObjectSTIX

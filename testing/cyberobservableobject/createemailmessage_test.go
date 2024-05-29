@@ -72,26 +72,40 @@ func TestEmailMessageCyberObservableObjectSTIX(t *testing.T) {
 	nem.SetValueRawEmailRef(rere)
 	assert.Equal(t, nem.GetRawEmailRef(), rere)
 
-	nem.SetValueToRefs([]stixhelpers.IdentifierTypeSTIX{"to-ref_1", "to-ref_2", "to-ref_3"})
+	nem.SetValueToRefs(stixhelpers.IdentifierTypeSTIX("to_ref"))
+	assert.Equal(t, len(nem.GetToRefs()), 1)
+	nem.SetFullValueToRefs([]stixhelpers.IdentifierTypeSTIX{"to-ref_1", "to-ref_2", "to-ref_3"})
 	assert.Equal(t, len(nem.GetToRefs()), 3)
 
-	nem.SetValueCcRefs([]stixhelpers.IdentifierTypeSTIX{"cc-ref_1", "cc-ref_2"})
+	nem.SetValueCcRefs("cc_ref")
+	assert.Equal(t, len(nem.GetCcRefs()), 1)
+	nem.SetFullValueCcRefs([]stixhelpers.IdentifierTypeSTIX{"cc-ref_1", "cc-ref_2"})
 	assert.Equal(t, len(nem.GetCcRefs()), 2)
 
-	nem.SetValueBccRefs([]stixhelpers.IdentifierTypeSTIX{"bbc-ref_1"})
+	nem.SetValueBccRefs(stixhelpers.IdentifierTypeSTIX("bbcref_1"))
+	nem.SetValueBccRefs(stixhelpers.IdentifierTypeSTIX("bbcref_2"))
+	assert.Equal(t, len(nem.GetBccRefs()), 2)
+	nem.SetFullValueBccRefs([]stixhelpers.IdentifierTypeSTIX{"bbc-ref_1"})
 	assert.Equal(t, len(nem.GetBccRefs()), 1)
 
-	nem.SetValueBodyMultipart([]somecomplextypesstixco.EmailMIMEPartTypeSTIX{
+	nem.SetValueBodyMultipart(somecomplextypesstixco.EmailMIMEPartTypeSTIX{
+		Body: "any body 1", ContentType: "content type example",
+	})
+	assert.Equal(t, len(nem.GetBodyMultipart()), 1)
+	nem.SetFullValueBodyMultipart([]somecomplextypesstixco.EmailMIMEPartTypeSTIX{
 		{Body: "any body 1", ContentType: "content type example"},
 		{Body: "any body 2", ContentType: "content type example"},
 	})
 	assert.Equal(t, len(nem.GetBodyMultipart()), 2)
 
-	nem.SetValueAdditionalHeaderFields(map[string]stixhelpers.DictionaryTypeSTIX{
+	nem.SetFullValueAdditionalHeaderFields(map[string]stixhelpers.DictionaryTypeSTIX{
 		"book_1": {Dictionary: "dictionary-1"},
 		"book_2": {Dictionary: "dictionary-2"},
 	})
 	assert.Equal(t, nem.GetAdditionalHeaderFields()["book_1"].Dictionary, "dictionary-1")
+	nem.SetValueAdditionalHeaderFields("book_key", stixhelpers.DictionaryTypeSTIX{Dictionary: "--dictionary--"})
+	assert.Equal(t, nem.GetAdditionalHeaderFields()["book_key"].Dictionary, "--dictionary--")
+	assert.Equal(t, len(nem.GetAdditionalHeaderFields()), 3)
 }
 
 /*

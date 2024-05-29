@@ -97,7 +97,11 @@ func (e *OpinionDomainObjectsSTIX) GetObjectRefs() []stixhelpers.IdentifierTypeS
 	return e.ObjectRefs
 }
 
-func (e *OpinionDomainObjectsSTIX) SetValueObjectRefs(v []stixhelpers.IdentifierTypeSTIX) {
+func (e *OpinionDomainObjectsSTIX) SetValueObjectRefs(v stixhelpers.IdentifierTypeSTIX) {
+	e.ObjectRefs = append(e.ObjectRefs, v)
+}
+
+func (e *OpinionDomainObjectsSTIX) SetFullValueObjectRefs(v []stixhelpers.IdentifierTypeSTIX) {
 	e.ObjectRefs = v
 }
 

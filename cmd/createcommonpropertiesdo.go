@@ -7,6 +7,7 @@ import (
 
 func NewCommonPropertiesDomainObjectSTIX() *commonpropertiesstixdo.CommonPropertiesDomainObjectSTIX {
 	return &commonpropertiesstixdo.CommonPropertiesDomainObjectSTIX{
+		SpecVersion:        "2.1",
 		Created:            "1970-01-01T00:00:00+00:00",
 		Modified:           "1970-01-01T00:00:00+00:00",
 		Labels:             make([]string, 0),

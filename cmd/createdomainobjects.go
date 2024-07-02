@@ -1,6 +1,7 @@
 package methodstixobjects
 
 import (
+	"github.com/av-belyakov/methodstixobjects/commonlibs"
 	"github.com/av-belyakov/methodstixobjects/datamodels/domainobjectsstix"
 	"github.com/av-belyakov/methodstixobjects/datamodels/stixhelpers"
 )
@@ -220,7 +221,7 @@ func NewReportDomainObjectsSTIX() *domainobjectsstix.ReportDomainObjectsSTIX {
 	return &domainobjectsstix.ReportDomainObjectsSTIX{
 		CommonPropertiesObjectSTIX:       *cpo.Get(),
 		CommonPropertiesDomainObjectSTIX: *NewCommonPropertiesDomainObjectSTIX(),
-		Published:                        "1970-01-01T00:00:00+00:00",
+		Published:                        commonlibs.TimeNowRFC3339(),
 		ReportTypes:                      []stixhelpers.OpenVocabTypeSTIX(nil),
 		ObjectRefs:                       []stixhelpers.IdentifierTypeSTIX(nil),
 	}

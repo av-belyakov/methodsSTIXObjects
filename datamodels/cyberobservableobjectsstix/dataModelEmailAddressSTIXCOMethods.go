@@ -119,14 +119,15 @@ func (e EmailAddressCyberObservableObjectSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e EmailAddressCyberObservableObjectSTIX) ToStringBeautiful() string {
+func (e EmailAddressCyberObservableObjectSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'value': '%s'\n", e.Value))
-	str.WriteString(fmt.Sprintf("'display_name': '%s'\n", e.DisplayName))
-	str.WriteString(fmt.Sprintf("'belongs_to_ref': '%v'\n", e.BelongsToRef))
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'value': '%s'\n", ws, e.Value))
+	str.WriteString(fmt.Sprintf("%s'display_name': '%s'\n", ws, e.DisplayName))
+	str.WriteString(fmt.Sprintf("%s'belongs_to_ref': '%v'\n", ws, e.BelongsToRef))
 
 	return str.String()
 }

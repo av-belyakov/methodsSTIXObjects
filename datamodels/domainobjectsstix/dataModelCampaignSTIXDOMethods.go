@@ -199,25 +199,27 @@ func (e CampaignDomainObjectsSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e CampaignDomainObjectsSTIX) ToStringBeautiful() string {
+func (e CampaignDomainObjectsSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'name': '%s'\n", e.Name))
-	str.WriteString(fmt.Sprintf("'description': '%s'\n", e.Description))
-	str.WriteString(fmt.Sprintf("'aliases': \n%v", func(l []string) string {
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'name': '%s'\n", ws, e.Name))
+	str.WriteString(fmt.Sprintf("%s'description': '%s'\n", ws, e.Description))
+	str.WriteString(fmt.Sprintf("%s'aliases': \n%v", ws, func(l []string, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'aliase '%d'': '%s'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'aliase '%d'': '%s'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.Aliases)))
-	str.WriteString(fmt.Sprintf("'first_seen': '%s'\n", e.FirstSeen))
-	str.WriteString(fmt.Sprintf("'last_seen': '%s'\n", e.LastSeen))
-	str.WriteString(fmt.Sprintf("'objective': '%s'\n", e.Objective))
+	}(e.Aliases, num+1)))
+	str.WriteString(fmt.Sprintf("%s'first_seen': '%s'\n", ws, e.FirstSeen))
+	str.WriteString(fmt.Sprintf("%s'last_seen': '%s'\n", ws, e.LastSeen))
+	str.WriteString(fmt.Sprintf("%s'objective': '%s'\n", ws, e.Objective))
 
 	return str.String()
 }

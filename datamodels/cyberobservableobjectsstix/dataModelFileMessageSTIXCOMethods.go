@@ -356,30 +356,32 @@ func (fstix FileCyberObservableObjectSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (fstix FileCyberObservableObjectSTIX) ToStringBeautiful() string {
+func (fstix FileCyberObservableObjectSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(fstix.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(fstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'hashes': '%v'\n", fstix.Hashes))
-	str.WriteString(fmt.Sprintf("'size': '%d'\n", fstix.Size))
-	str.WriteString(fmt.Sprintf("'name': '%s'\n", fstix.Name))
-	str.WriteString(fmt.Sprintf("'name_enc': '%s'\n", fstix.NameEnc))
-	str.WriteString(fmt.Sprintf("'magic_number_hex': '%s'\n", fstix.MagicNumberHex))
-	str.WriteString(fmt.Sprintf("'mime_type': '%s'\n", fstix.MimeType))
-	str.WriteString(fmt.Sprintf("'ctime': '%v'\n", fstix.Ctime))
-	str.WriteString(fmt.Sprintf("'mtime': '%v'\n", fstix.Mtime))
-	str.WriteString(fmt.Sprintf("'atime': '%v'\n", fstix.Atime))
-	str.WriteString(fmt.Sprintf("'parent_directory_ref': '%v'\n", fstix.ParentDirectoryRef))
-	str.WriteString(fmt.Sprintf("'contains_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
+	str.WriteString(fstix.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fstix.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'hashes': '%v'\n", ws, fstix.Hashes))
+	str.WriteString(fmt.Sprintf("%s'size': '%d'\n", ws, fstix.Size))
+	str.WriteString(fmt.Sprintf("%s'name': '%s'\n", ws, fstix.Name))
+	str.WriteString(fmt.Sprintf("%s'name_enc': '%s'\n", ws, fstix.NameEnc))
+	str.WriteString(fmt.Sprintf("%s'magic_number_hex': '%s'\n", ws, fstix.MagicNumberHex))
+	str.WriteString(fmt.Sprintf("%s'mime_type': '%s'\n", ws, fstix.MimeType))
+	str.WriteString(fmt.Sprintf("%s'ctime': '%v'\n", ws, fstix.Ctime))
+	str.WriteString(fmt.Sprintf("%s'mtime': '%v'\n", ws, fstix.Mtime))
+	str.WriteString(fmt.Sprintf("%s'atime': '%v'\n", ws, fstix.Atime))
+	str.WriteString(fmt.Sprintf("%s'parent_directory_ref': '%v'\n", ws, fstix.ParentDirectoryRef))
+	str.WriteString(fmt.Sprintf("%s'contains_refs': \n%v", ws, func(l []stixhelpers.IdentifierTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'contains_ref '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'contains_ref '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(fstix.ContainsRefs)))
+	}(fstix.ContainsRefs, num+1)))
 	str.WriteString(fmt.Sprintf("'content_ref': '%v'\n", fstix.ContentRef))
 	str.WriteString(fmt.Sprintln("'extensions':"))
 

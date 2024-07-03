@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/av-belyakov/methodstixobjects/commonlibs"
 	"github.com/av-belyakov/methodstixobjects/datamodels/stixhelpers"
 )
 
@@ -89,40 +90,44 @@ func (ocpcstix *OptionalCommonPropertiesCyberObservableObjectSTIX) ValidateStruc
 	return true
 }
 
-func (ocpcstix OptionalCommonPropertiesCyberObservableObjectSTIX) ToStringBeautiful() string {
+func (ocpcstix OptionalCommonPropertiesCyberObservableObjectSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(fmt.Sprintf("'spec_version': '%s'\n", ocpcstix.SpecVersion))
-	str.WriteString(fmt.Sprintf("'object_marking_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
+	str.WriteString(fmt.Sprintf("%s'spec_version': '%s'\n", ws, ocpcstix.SpecVersion))
+	str.WriteString(fmt.Sprintf("%s'object_marking_refs': \n%v", ws, func(l []stixhelpers.IdentifierTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'object_marking_ref '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'object_marking_ref '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(ocpcstix.ObjectMarkingRefs)))
-	str.WriteString(fmt.Sprintf("'granular_markings': \n%v", func(l []stixhelpers.GranularMarkingsTypeSTIX) string {
+	}(ocpcstix.ObjectMarkingRefs, num+1)))
+	str.WriteString(fmt.Sprintf("%s'granular_markings': \n%v", ws, func(l []stixhelpers.GranularMarkingsTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'granular_markings number %d.'", k))
-			str.WriteString(fmt.Sprintf("\t'lang': '%s'\n", v.Lang))
-			str.WriteString(fmt.Sprintf("\t'marking_ref': '%v'\n", v.MarkingRef))
-			str.WriteString(fmt.Sprintf("\t'selectors': \n%v", func(l []string) string {
+			str.WriteString(fmt.Sprintf("%s'granular_markings number %d.'", ws, k))
+			str.WriteString(fmt.Sprintf("%s'lang': '%s'\n", ws, v.Lang))
+			str.WriteString(fmt.Sprintf("%s'marking_ref': '%v'\n", ws, v.MarkingRef))
+			str.WriteString(fmt.Sprintf("%s'selectors': \n%v", ws, func(l []string, num int) string {
 				str := strings.Builder{}
+				ws := commonlibs.GetWhitespace(num)
 
 				for k, v := range l {
-					str.WriteString(fmt.Sprintf("\t\t'selector '%d'': '%s'\n", k, v))
+					str.WriteString(fmt.Sprintf("%s'selector '%d'': '%s'\n", ws, k, v))
 				}
 
 				return str.String()
-			}(v.Selectors)))
+			}(v.Selectors, num+1)))
 		}
 
 		return str.String()
-	}(ocpcstix.GranularMarkings)))
-	str.WriteString(fmt.Sprintf("'defanged': '%v'\n", ocpcstix.Defanged))
+	}(ocpcstix.GranularMarkings, num+1)))
+	str.WriteString(fmt.Sprintf("%s'defanged': '%v'\n", ws, ocpcstix.Defanged))
 
 	return str.String()
 }

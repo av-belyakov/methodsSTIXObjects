@@ -218,25 +218,27 @@ func (e DirectoryCyberObservableObjectSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e DirectoryCyberObservableObjectSTIX) ToStringBeautiful() string {
+func (e DirectoryCyberObservableObjectSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'path': '%s'\n", e.Path))
-	str.WriteString(fmt.Sprintf("'path_enc': '%s'\n", e.PathEnc))
-	str.WriteString(fmt.Sprintf("'ctime': '%v'\n", e.Ctime))
-	str.WriteString(fmt.Sprintf("'mtime': '%v'\n", e.Mtime))
-	str.WriteString(fmt.Sprintf("'atime': '%s'\n", e.Atime))
-	str.WriteString(fmt.Sprintf("'contains_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'path': '%s'\n", ws, e.Path))
+	str.WriteString(fmt.Sprintf("%s'path_enc': '%s'\n", ws, e.PathEnc))
+	str.WriteString(fmt.Sprintf("%s'ctime': '%v'\n", ws, e.Ctime))
+	str.WriteString(fmt.Sprintf("%s'mtime': '%v'\n", ws, e.Mtime))
+	str.WriteString(fmt.Sprintf("%s'atime': '%s'\n", ws, e.Atime))
+	str.WriteString(fmt.Sprintf("%s'contains_refs': \n%v", ws, func(l []stixhelpers.IdentifierTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'contains_ref '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'contains_ref '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.ContainsRefs)))
+	}(e.ContainsRefs, num+1)))
 
 	return str.String()
 }

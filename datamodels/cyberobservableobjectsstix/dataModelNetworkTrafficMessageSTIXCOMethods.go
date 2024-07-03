@@ -468,57 +468,66 @@ func (e NetworkTrafficCyberObservableObjectSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e NetworkTrafficCyberObservableObjectSTIX) ToStringBeautiful() string {
+func (e NetworkTrafficCyberObservableObjectSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'start': '%v'\n", e.Start))
-	str.WriteString(fmt.Sprintf("'end': '%v'\n", e.End))
-	str.WriteString(fmt.Sprintf("'is_active': '%v'\n", e.IsActive))
-	str.WriteString(fmt.Sprintf("'src_ref': '%v'\n", e.SrcRef))
-	str.WriteString(fmt.Sprintf("'dst_ref': '%v'\n", e.DstRef))
-	str.WriteString(fmt.Sprintf("'src_port': '%d'\n", e.SrcPort))
-	str.WriteString(fmt.Sprintf("'dst_port': '%d'\n", e.DstPort))
-	str.WriteString(fmt.Sprintf("'protocols': \n%v", func(l []string) string {
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'start': '%v'\n", ws, e.Start))
+	str.WriteString(fmt.Sprintf("%s'end': '%v'\n", ws, e.End))
+	str.WriteString(fmt.Sprintf("%s'is_active': '%v'\n", ws, e.IsActive))
+	str.WriteString(fmt.Sprintf("%s'src_ref': '%v'\n", ws, e.SrcRef))
+	str.WriteString(fmt.Sprintf("%s'dst_ref': '%v'\n", ws, e.DstRef))
+	str.WriteString(fmt.Sprintf("%s'src_port': '%d'\n", ws, e.SrcPort))
+	str.WriteString(fmt.Sprintf("%s'dst_port': '%d'\n", ws, e.DstPort))
+	str.WriteString(fmt.Sprintf("%s'protocols': \n%v", ws, func(l []string, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'protocol '%d'': '%s'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'protocol '%d'': '%s'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.Protocols)))
-	str.WriteString(fmt.Sprintf("'src_byte_count': '%d'\n", e.SrcByteCount))
-	str.WriteString(fmt.Sprintf("'dst_byte_count': '%d'\n", e.DstByteCount))
-	str.WriteString(fmt.Sprintf("'src_packets': '%d'\n", e.SrcPackets))
-	str.WriteString(fmt.Sprintf("'dst_packets': '%d'\n", e.DstPackets))
-	str.WriteString(fmt.Sprintf("'ipfix': \n%v", func(l map[string]string) string {
+	}(e.Protocols, num+1)))
+	str.WriteString(fmt.Sprintf("%s'src_byte_count': '%d'\n", ws, e.SrcByteCount))
+	str.WriteString(fmt.Sprintf("%s'dst_byte_count': '%d'\n", ws, e.DstByteCount))
+	str.WriteString(fmt.Sprintf("%s'src_packets': '%d'\n", ws, e.SrcPackets))
+	str.WriteString(fmt.Sprintf("%s'dst_packets': '%d'\n", ws, e.DstPackets))
+	str.WriteString(fmt.Sprintf("%s'ipfix': \n%v", ws, func(l map[string]string, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'%s': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'%s': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.IPFix)))
-	str.WriteString(fmt.Sprintf("'src_payload_ref': '%v'\n", e.SrcPayloadRef))
-	str.WriteString(fmt.Sprintf("'dst_payload_ref': '%v'\n", e.DstPayloadRef))
-	str.WriteString(fmt.Sprintf("'encapsulates_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
+	}(e.IPFix, num+1)))
+	str.WriteString(fmt.Sprintf("%s'src_payload_ref': '%v'\n", ws, e.SrcPayloadRef))
+	str.WriteString(fmt.Sprintf("%s'dst_payload_ref': '%v'\n", ws, e.DstPayloadRef))
+	str.WriteString(fmt.Sprintf("%s'encapsulates_refs': \n%v", ws, func(l []stixhelpers.IdentifierTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'encapsulates_ref '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'encapsulates_ref '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.EncapsulatesRefs)))
-	str.WriteString(fmt.Sprintf("'encapsulated_by_ref': '%v'\n", e.EncapsulatedByRef))
-	str.WriteString(fmt.Sprintln("'extensions':"))
+	}(e.EncapsulatesRefs, num+1)))
+	str.WriteString(fmt.Sprintf("%s'encapsulated_by_ref': '%v'\n", ws, e.EncapsulatedByRef))
+	str.WriteString(fmt.Sprintf("%s'extensions': \n%v", ws, func(l map[string]interface{}, num int) string {
+		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
-	for k, v := range e.Extensions {
-		str.WriteString(fmt.Sprintf("\t'%s':\n%v\n", k, datamodels.ToStringBeautiful(v)))
-	}
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("%s'%s':\n%v\n", ws, k, datamodels.ToStringBeautiful(v)))
+		}
+
+		return str.String()
+	}(e.Extensions, num+1)))
 
 	return str.String()
 }

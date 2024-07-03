@@ -138,23 +138,25 @@ func (e GroupingDomainObjectsSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e GroupingDomainObjectsSTIX) ToStringBeautiful() string {
+func (e GroupingDomainObjectsSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'name': '%s'\n", e.Name))
-	str.WriteString(fmt.Sprintf("'description': '%s'\n", e.Description))
-	str.WriteString(fmt.Sprintf("'context': '%s'\n", e.Context))
-	str.WriteString(fmt.Sprintf("'object_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'name': '%s'\n", ws, e.Name))
+	str.WriteString(fmt.Sprintf("%s'description': '%s'\n", ws, e.Description))
+	str.WriteString(fmt.Sprintf("%s'context': '%s'\n", ws, e.Context))
+	str.WriteString(fmt.Sprintf("%s'object_refs': \n%v", ws, func(l []stixhelpers.IdentifierTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'object_ref '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'object_ref '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.ObjectRefs)))
+	}(e.ObjectRefs, num+1)))
 
 	return str.String()
 }

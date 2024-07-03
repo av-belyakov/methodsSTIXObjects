@@ -105,14 +105,15 @@ func (e CourseOfActionDomainObjectsSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e CourseOfActionDomainObjectsSTIX) ToStringBeautiful() string {
+func (e CourseOfActionDomainObjectsSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'name': '%s'\n", e.Name))
-	str.WriteString(fmt.Sprintf("'description': '%s'\n", e.Description))
-	str.WriteString(fmt.Sprintf("'action': '%v'\n", e.Action))
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'name': '%s'\n", ws, e.Name))
+	str.WriteString(fmt.Sprintf("%s'description': '%s'\n", ws, e.Description))
+	str.WriteString(fmt.Sprintf("%s'action': '%v'\n", ws, e.Action))
 
 	return str.String()
 }

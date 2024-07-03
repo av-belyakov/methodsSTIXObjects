@@ -186,32 +186,35 @@ func (e ReportDomainObjectsSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e ReportDomainObjectsSTIX) ToStringBeautiful() string {
+func (e ReportDomainObjectsSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'name': '%s'\n", e.Name))
-	str.WriteString(fmt.Sprintf("'description': '%s'\n", e.Description))
-	str.WriteString(fmt.Sprintf("'report_types': \n%v", func(l []stixhelpers.OpenVocabTypeSTIX) string {
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'name': '%s'\n", ws, e.Name))
+	str.WriteString(fmt.Sprintf("%s'description': '%s'\n", ws, e.Description))
+	str.WriteString(fmt.Sprintf("%s'report_types': \n%v", ws, func(l []stixhelpers.OpenVocabTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'report_type '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'report_type '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.ReportTypes)))
-	str.WriteString(fmt.Sprintf("'published': '%v'\n", e.Published))
-	str.WriteString(fmt.Sprintf("'object_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
+	}(e.ReportTypes, num+1)))
+	str.WriteString(fmt.Sprintf("%s'published': '%v'\n", ws, e.Published))
+	str.WriteString(fmt.Sprintf("%s'object_refs': \n%v", ws, func(l []stixhelpers.IdentifierTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'object_ref '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'object_ref '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.ObjectRefs)))
+	}(e.ObjectRefs, num+1)))
 
 	return str.String()
 }

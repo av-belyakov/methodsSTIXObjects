@@ -259,36 +259,39 @@ func (e IndicatorDomainObjectsSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e IndicatorDomainObjectsSTIX) ToStringBeautiful() string {
+func (e IndicatorDomainObjectsSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'name': '%s'\n", e.Name))
-	str.WriteString(fmt.Sprintf("'description': '%s'\n", e.Description))
-	str.WriteString(fmt.Sprintf("'indicator_types': \n%v", func(l []stixhelpers.OpenVocabTypeSTIX) string {
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'name': '%s'\n", ws, e.Name))
+	str.WriteString(fmt.Sprintf("%s'description': '%s'\n", ws, e.Description))
+	str.WriteString(fmt.Sprintf("%s'indicator_types': \n%v", ws, func(l []stixhelpers.OpenVocabTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'indicator_type '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'indicator_type '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.IndicatorTypes)))
-	str.WriteString(fmt.Sprintf("'pattern': '%s'\n", e.Pattern))
-	str.WriteString(fmt.Sprintf("'pattern_type': '%s'\n", e.PatternType))
-	str.WriteString(fmt.Sprintf("'pattern_version': '%s'\n", e.PatternVersion))
-	str.WriteString(fmt.Sprintf("'valid_from': '%v'\n", e.ValidFrom))
-	str.WriteString(fmt.Sprintf("'valid_until': '%v'\n", e.ValidUntil))
-	str.WriteString(fmt.Sprintf("'sectors': \n%v", func(l []stixhelpers.KillChainPhasesTypeElementSTIX) string {
+	}(e.IndicatorTypes, num+1)))
+	str.WriteString(fmt.Sprintf("%s'pattern': '%s'\n", ws, e.Pattern))
+	str.WriteString(fmt.Sprintf("%s'pattern_type': '%s'\n", ws, e.PatternType))
+	str.WriteString(fmt.Sprintf("%s'pattern_version': '%s'\n", ws, e.PatternVersion))
+	str.WriteString(fmt.Sprintf("%s'valid_from': '%v'\n", ws, e.ValidFrom))
+	str.WriteString(fmt.Sprintf("%s'valid_until': '%v'\n", ws, e.ValidUntil))
+	str.WriteString(fmt.Sprintf("%s'sectors': \n%v", func(l []stixhelpers.KillChainPhasesTypeElementSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'sector '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'sector '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.KillChainPhases)))
+	}(e.KillChainPhases, num+1)))
 
 	return str.String()
 }

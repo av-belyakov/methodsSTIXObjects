@@ -169,17 +169,18 @@ func (e ArtifactCyberObservableObjectSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e ArtifactCyberObservableObjectSTIX) ToStringBeautiful() string {
+func (e ArtifactCyberObservableObjectSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'mime_type': '%s'\n", e.MimeType))
-	str.WriteString(fmt.Sprintf("'payload_bin': '%s'\n", e.PayloadBin))
-	str.WriteString(fmt.Sprintf("'url': '%s'\n", e.URL))
-	str.WriteString(fmt.Sprintf("'hashes': '%v'\n", e.Hashes))
-	str.WriteString(fmt.Sprintf("'encryption_algorithm': '%v'\n", e.EncryptionAlgorithm))
-	str.WriteString(fmt.Sprintf("'decryption_key': '%s'\n", e.DecryptionKey))
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'mime_type': '%s'\n", ws, e.MimeType))
+	str.WriteString(fmt.Sprintf("%s'payload_bin': '%s'\n", ws, e.PayloadBin))
+	str.WriteString(fmt.Sprintf("%s'url': '%s'\n", ws, e.URL))
+	str.WriteString(fmt.Sprintf("%s'hashes': '%v'\n", ws, e.Hashes))
+	str.WriteString(fmt.Sprintf("%s'encryption_algorithm': '%v'\n", ws, e.EncryptionAlgorithm))
+	str.WriteString(fmt.Sprintf("%s'decryption_key': '%s'\n", ws, e.DecryptionKey))
 
 	return str.String()
 }

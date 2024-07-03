@@ -180,33 +180,36 @@ func (e IdentityDomainObjectsSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e IdentityDomainObjectsSTIX) ToStringBeautiful() string {
+func (e IdentityDomainObjectsSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'name': '%s'\n", e.Name))
-	str.WriteString(fmt.Sprintf("'description': '%s'\n", e.Description))
-	str.WriteString(fmt.Sprintf("'roles': \n%v", func(l []string) string {
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'name': '%s'\n", ws, e.Name))
+	str.WriteString(fmt.Sprintf("%s'description': '%s'\n", ws, e.Description))
+	str.WriteString(fmt.Sprintf("%s'roles': \n%v", ws, func(l []string, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'role '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'role '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.Roles)))
-	str.WriteString(fmt.Sprintf("'identity_class': '%s'\n", e.IdentityClass))
-	str.WriteString(fmt.Sprintf("'sectors': \n%v", func(l []stixhelpers.OpenVocabTypeSTIX) string {
+	}(e.Roles, num+1)))
+	str.WriteString(fmt.Sprintf("%s'identity_class': '%s'\n", ws, e.IdentityClass))
+	str.WriteString(fmt.Sprintf("%s'sectors': \n%v", ws, func(l []stixhelpers.OpenVocabTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'sector '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'sector '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.Sectors)))
-	str.WriteString(fmt.Sprintf("'contact_information': '%s'\n", e.ContactInformation))
+	}(e.Sectors, num+1)))
+	str.WriteString(fmt.Sprintf("%s'contact_information': '%s'\n", ws, e.ContactInformation))
 
 	return str.String()
 }

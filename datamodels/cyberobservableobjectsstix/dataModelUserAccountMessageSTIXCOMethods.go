@@ -374,30 +374,36 @@ func (e UserAccountCyberObservableObjectSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e UserAccountCyberObservableObjectSTIX) ToStringBeautiful() string {
+func (e UserAccountCyberObservableObjectSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'user_id': '%s'\n", e.UserID))
-	str.WriteString(fmt.Sprintf("'credential': '%s'\n", e.Credential))
-	str.WriteString(fmt.Sprintf("'account_login': '%s'\n", e.AccountLogin))
-	str.WriteString(fmt.Sprintf("'account_type': '%v'\n", e.AccountType))
-	str.WriteString(fmt.Sprintf("'display_name': '%s'\n", e.DisplayName))
-	str.WriteString(fmt.Sprintf("'is_service_account': '%v'\n", e.IsServiceAccount))
-	str.WriteString(fmt.Sprintf("'is_privileged': '%v'\n", e.IsPrivileged))
-	str.WriteString(fmt.Sprintf("'can_escalate_privs': '%v'\n", e.CanEscalatePrivs))
-	str.WriteString(fmt.Sprintf("'is_disabled': '%v'\n", e.IsDisabled))
-	str.WriteString(fmt.Sprintf("'account_created': '%v'\n", e.AccountCreated))
-	str.WriteString(fmt.Sprintf("'account_expires': '%v'\n", e.AccountExpires))
-	str.WriteString(fmt.Sprintf("'credential_last_changed': '%v'\n", e.CredentialLastChanged))
-	str.WriteString(fmt.Sprintf("'account_first_login': '%v'\n", e.AccountFirstLogin))
-	str.WriteString(fmt.Sprintf("'account_last_login': '%v'\n", e.AccountLastLogin))
-	str.WriteString(fmt.Sprintln("'extensions':"))
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'user_id': '%s'\n", ws, e.UserID))
+	str.WriteString(fmt.Sprintf("%s'credential': '%s'\n", ws, e.Credential))
+	str.WriteString(fmt.Sprintf("%s'account_login': '%s'\n", ws, e.AccountLogin))
+	str.WriteString(fmt.Sprintf("%s'account_type': '%v'\n", ws, e.AccountType))
+	str.WriteString(fmt.Sprintf("%s'display_name': '%s'\n", ws, e.DisplayName))
+	str.WriteString(fmt.Sprintf("%s'is_service_account': '%v'\n", ws, e.IsServiceAccount))
+	str.WriteString(fmt.Sprintf("%s'is_privileged': '%v'\n", ws, e.IsPrivileged))
+	str.WriteString(fmt.Sprintf("%s'can_escalate_privs': '%v'\n", ws, e.CanEscalatePrivs))
+	str.WriteString(fmt.Sprintf("%s'is_disabled': '%v'\n", ws, e.IsDisabled))
+	str.WriteString(fmt.Sprintf("%s'account_created': '%v'\n", ws, e.AccountCreated))
+	str.WriteString(fmt.Sprintf("%s'account_expires': '%v'\n", ws, e.AccountExpires))
+	str.WriteString(fmt.Sprintf("%s'credential_last_changed': '%v'\n", ws, e.CredentialLastChanged))
+	str.WriteString(fmt.Sprintf("%s'account_first_login': '%v'\n", ws, e.AccountFirstLogin))
+	str.WriteString(fmt.Sprintf("%s'account_last_login': '%v'\n", ws, e.AccountLastLogin))
+	str.WriteString(fmt.Sprintf("%s'extensions': \n%v", ws, func(l map[string]someextensionsstixco.UNIXAccountExtensionSTIX, num int) string {
+		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
-	for k, v := range e.Extensions {
-		str.WriteString(fmt.Sprintf("\t'%s':\n%v\n", k, datamodels.ToStringBeautiful(v)))
-	}
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("%s'%s':\n%v\n", ws, k, datamodels.ToStringBeautiful(v)))
+		}
+
+		return str.String()
+	}(e.Extensions, num+1)))
 
 	return str.String()
 }

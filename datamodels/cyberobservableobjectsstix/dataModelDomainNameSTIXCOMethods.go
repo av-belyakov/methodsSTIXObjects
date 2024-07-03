@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/asaskevich/govalidator"
+	"github.com/av-belyakov/methodstixobjects/commonlibs"
 	"github.com/av-belyakov/methodstixobjects/datamodels/stixhelpers"
 )
 
@@ -109,21 +110,23 @@ func (e DomainNameCyberObservableObjectSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e DomainNameCyberObservableObjectSTIX) ToStringBeautiful() string {
+func (e DomainNameCyberObservableObjectSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'value': '%s'\n", e.Value))
-	str.WriteString(fmt.Sprintf("'resolves_to_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'value': '%s'\n", ws, e.Value))
+	str.WriteString(fmt.Sprintf("%s'resolves_to_refs': \n%v", ws, func(l []stixhelpers.IdentifierTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'resolves_to_ref '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'resolves_to_ref '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.ResolvesToRefs)))
+	}(e.ResolvesToRefs, num+1)))
 
 	return str.String()
 }

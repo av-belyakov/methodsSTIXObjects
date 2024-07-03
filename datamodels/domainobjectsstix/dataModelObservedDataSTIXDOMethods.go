@@ -182,23 +182,25 @@ func (e ObservedDataDomainObjectsSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e ObservedDataDomainObjectsSTIX) ToStringBeautiful() string {
+func (e ObservedDataDomainObjectsSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'first_observed': '%v'\n", e.FirstObserved))
-	str.WriteString(fmt.Sprintf("'last_observed': '%v'\n", e.LastObserved))
-	str.WriteString(fmt.Sprintf("'number_observed': '%d'\n", e.NumberObserved))
-	str.WriteString(fmt.Sprintf("'object_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'first_observed': '%v'\n", ws, e.FirstObserved))
+	str.WriteString(fmt.Sprintf("%s'last_observed': '%v'\n", ws, e.LastObserved))
+	str.WriteString(fmt.Sprintf("%s'number_observed': '%d'\n", ws, e.NumberObserved))
+	str.WriteString(fmt.Sprintf("%s'object_refs': \n%v", ws, func(l []stixhelpers.IdentifierTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'object_ref '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'object_ref '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.ObjectRefs)))
+	}(e.ObjectRefs, num+1)))
 
 	return str.String()
 }

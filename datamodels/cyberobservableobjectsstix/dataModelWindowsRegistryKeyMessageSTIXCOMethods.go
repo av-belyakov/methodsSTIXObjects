@@ -162,27 +162,30 @@ func (e WindowsRegistryKeyCyberObservableObjectSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e WindowsRegistryKeyCyberObservableObjectSTIX) ToStringBeautiful() string {
+func (e WindowsRegistryKeyCyberObservableObjectSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'key': '%s'\n", e.Key))
-	str.WriteString(fmt.Sprintf("'values': \n%v", func(l []somecomplextypesstixco.WindowsRegistryValueTypeSTIX) string {
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'key': '%s'\n", ws, e.Key))
+	str.WriteString(fmt.Sprintf("%s'values': \n%v", ws, func(l []somecomplextypesstixco.WindowsRegistryValueTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
+		dubleWs := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'value '%d'':\n", k))
-			str.WriteString(fmt.Sprintf("\t\t'name': '%s'\n", v.Name))
-			str.WriteString(fmt.Sprintf("\t\t'data': '%s'\n", v.Data))
-			str.WriteString(fmt.Sprintf("\t\t'data_type': '%s'\n", v.DataType))
+			str.WriteString(fmt.Sprintf("%s'value '%d'':\n", ws, k))
+			str.WriteString(fmt.Sprintf("%s'name': '%s'\n", dubleWs, v.Name))
+			str.WriteString(fmt.Sprintf("%s'data': '%s'\n", dubleWs, v.Data))
+			str.WriteString(fmt.Sprintf("%s'data_type': '%s'\n", dubleWs, v.DataType))
 		}
 
 		return str.String()
-	}(e.Values)))
-	str.WriteString(fmt.Sprintf("'modified_time': '%v'\n", e.ModifiedTime))
-	str.WriteString(fmt.Sprintf("'creator_user_ref': '%v'\n", e.CreatorUserRef))
-	str.WriteString(fmt.Sprintf("'number_of_subkeys': '%d'\n", e.NumberOfSubkeys))
+	}(e.Values, num+1)))
+	str.WriteString(fmt.Sprintf("%s'modified_time': '%v'\n", ws, e.ModifiedTime))
+	str.WriteString(fmt.Sprintf("%s'creator_user_ref': '%v'\n", ws, e.CreatorUserRef))
+	str.WriteString(fmt.Sprintf("%s'number_of_subkeys': '%d'\n", ws, e.NumberOfSubkeys))
 
 	return str.String()
 }

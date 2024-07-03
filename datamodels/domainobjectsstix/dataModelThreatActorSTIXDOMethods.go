@@ -339,72 +339,79 @@ func (e ThreatActorDomainObjectsSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e ThreatActorDomainObjectsSTIX) ToStringBeautiful() string {
+func (e ThreatActorDomainObjectsSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'name': '%s'\n", e.Name))
-	str.WriteString(fmt.Sprintf("'description': '%s'\n", e.Description))
-	str.WriteString(fmt.Sprintf("'threat_actor_types': \n%v", func(l []stixhelpers.OpenVocabTypeSTIX) string {
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'name': '%s'\n", ws, e.Name))
+	str.WriteString(fmt.Sprintf("%s'description': '%s'\n", ws, e.Description))
+	str.WriteString(fmt.Sprintf("%s'threat_actor_types': \n%v", ws, func(l []stixhelpers.OpenVocabTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\tt'hreat_actor_type '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'hreat_actor_type '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.ThreatActorTypes)))
-	str.WriteString(fmt.Sprintf("'aliases': \n%v", func(l []string) string {
+	}(e.ThreatActorTypes, num+1)))
+	str.WriteString(fmt.Sprintf("%s'aliases': \n%v", ws, func(l []string, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'aliase '%d'': '%s'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'aliase '%d'': '%s'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.Aliases)))
-	str.WriteString(fmt.Sprintf("'first_seen': '%v'\n", e.FirstSeen))
-	str.WriteString(fmt.Sprintf("'last_seen': '%v'\n", e.LastSeen))
-	str.WriteString(fmt.Sprintf("'roles': \n%v", func(l []stixhelpers.OpenVocabTypeSTIX) string {
+	}(e.Aliases, num+1)))
+	str.WriteString(fmt.Sprintf("%s'first_seen': '%v'\n", ws, e.FirstSeen))
+	str.WriteString(fmt.Sprintf("%s'last_seen': '%v'\n", ws, e.LastSeen))
+	str.WriteString(fmt.Sprintf("%s'roles': \n%v", ws, func(l []stixhelpers.OpenVocabTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'role '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'role '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.Roles)))
-	str.WriteString(fmt.Sprintf("'goals': \n%v", func(l []string) string {
+	}(e.Roles, num+1)))
+	str.WriteString(fmt.Sprintf("%s'goals': \n%v", ws, func(l []string, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'goal '%d'': '%s'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'goal '%d'': '%s'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.Goals)))
-	str.WriteString(fmt.Sprintf("'sophistication': '%v'\n", e.FirstSeen))
-	str.WriteString(fmt.Sprintf("'resource_level': '%v'\n", e.LastSeen))
-	str.WriteString(fmt.Sprintf("'primary_motivation': '%v'\n", e.LastSeen))
-	str.WriteString(fmt.Sprintf("'secondary_motivations': \n%v", func(l []stixhelpers.OpenVocabTypeSTIX) string {
+	}(e.Goals, num+1)))
+	str.WriteString(fmt.Sprintf("%s'sophistication': '%v'\n", ws, e.FirstSeen))
+	str.WriteString(fmt.Sprintf("%s'resource_level': '%v'\n", ws, e.LastSeen))
+	str.WriteString(fmt.Sprintf("%s'primary_motivation': '%v'\n", ws, e.LastSeen))
+	str.WriteString(fmt.Sprintf("%s'secondary_motivations': \n%v", ws, func(l []stixhelpers.OpenVocabTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'secondary_motivation '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'secondary_motivation '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.SecondaryMotivations)))
-	str.WriteString(fmt.Sprintf("'personal_motivations': \n%v", func(l []stixhelpers.OpenVocabTypeSTIX) string {
+	}(e.SecondaryMotivations, num+1)))
+	str.WriteString(fmt.Sprintf("%s'personal_motivations': \n%v", ws, func(l []stixhelpers.OpenVocabTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'personal_motivation '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'personal_motivation '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.PersonalMotivations)))
+	}(e.PersonalMotivations, num+1)))
 
 	return str.String()
 }

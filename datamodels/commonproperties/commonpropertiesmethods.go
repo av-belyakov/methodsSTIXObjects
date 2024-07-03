@@ -1,6 +1,10 @@
 package commonproperties
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/av-belyakov/methodstixobjects/commonlibs"
+)
 
 func (e *CommonPropertiesObjectSTIX) Get() *CommonPropertiesObjectSTIX {
 	return e
@@ -37,6 +41,8 @@ func (e *CommonPropertiesObjectSTIX) SetAnyType(i interface{}) {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e CommonPropertiesObjectSTIX) ToStringBeautiful() string {
-	return fmt.Sprintf("'type': '%s'\n'id': '%s'\n", e.Type, e.ID)
+func (e CommonPropertiesObjectSTIX) ToStringBeautiful(num int) string {
+	ws := commonlibs.GetWhitespace(num)
+
+	return fmt.Sprintf("%s'type': '%s'\n'id': '%s'\n", ws, e.Type, e.ID)
 }

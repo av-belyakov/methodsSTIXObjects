@@ -230,22 +230,23 @@ func (e LocationDomainObjectsSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e LocationDomainObjectsSTIX) ToStringBeautiful() string {
+func (e LocationDomainObjectsSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'name': '%s'\n", e.Name))
-	str.WriteString(fmt.Sprintf("'description': '%s'\n", e.Description))
-	str.WriteString(fmt.Sprintf("'latitude': '%v'\n", e.Latitude))
-	str.WriteString(fmt.Sprintf("'longitude': '%v'\n", e.Longitude))
-	str.WriteString(fmt.Sprintf("'precision': '%v'\n", e.Precision))
-	str.WriteString(fmt.Sprintf("'region': '%s'\n", e.Region))
-	str.WriteString(fmt.Sprintf("'country': '%s'\n", e.Country))
-	str.WriteString(fmt.Sprintf("'administrative_area': '%s'\n", e.AdministrativeArea))
-	str.WriteString(fmt.Sprintf("'city': '%s'\n", e.City))
-	str.WriteString(fmt.Sprintf("'street_address': '%s'\n", e.StreetAddress))
-	str.WriteString(fmt.Sprintf("'postal_code': '%s'\n", e.PostalCode))
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'name': '%s'\n", ws, e.Name))
+	str.WriteString(fmt.Sprintf("%s'description': '%s'\n", ws, e.Description))
+	str.WriteString(fmt.Sprintf("%s'latitude': '%v'\n", ws, e.Latitude))
+	str.WriteString(fmt.Sprintf("%s'longitude': '%v'\n", ws, e.Longitude))
+	str.WriteString(fmt.Sprintf("%s'precision': '%v'\n", ws, e.Precision))
+	str.WriteString(fmt.Sprintf("%s'region': '%s'\n", ws, e.Region))
+	str.WriteString(fmt.Sprintf("%s'country': '%s'\n", ws, e.Country))
+	str.WriteString(fmt.Sprintf("%s'administrative_area': '%s'\n", ws, e.AdministrativeArea))
+	str.WriteString(fmt.Sprintf("%s'city': '%s'\n", ws, e.City))
+	str.WriteString(fmt.Sprintf("%s'street_address': '%s'\n", ws, e.StreetAddress))
+	str.WriteString(fmt.Sprintf("%s'postal_code': '%s'\n", ws, e.PostalCode))
 
 	return str.String()
 }

@@ -95,12 +95,13 @@ func (e *OptionalCommonPropertiesRelationshipObjectSTIX) ValidateStructCommonFie
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e *OptionalCommonPropertiesRelationshipObjectSTIX) ToStringBeautiful() string {
+func (e *OptionalCommonPropertiesRelationshipObjectSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(fmt.Sprintf("'spec_version': '%s'\n", e.SpecVersion))
-	str.WriteString(fmt.Sprintf("'created': '%v'\n", e.Created))
-	str.WriteString(fmt.Sprintf("'modified': '%v'\n", e.Modified))
+	str.WriteString(fmt.Sprintf("%s'spec_version': '%s'\n", ws, e.SpecVersion))
+	str.WriteString(fmt.Sprintf("%s'created': '%v'\n", ws, e.Created))
+	str.WriteString(fmt.Sprintf("%s'modified': '%v'\n", ws, e.Modified))
 
 	return str.String()
 }
@@ -286,17 +287,18 @@ func (e RelationshipObjectSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e RelationshipObjectSTIX) ToStringBeautiful() string {
+func (e RelationshipObjectSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.OptionalCommonPropertiesRelationshipObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'relationship_type': '%s'\n", e.RelationshipType))
-	str.WriteString(fmt.Sprintf("'description': '%s'\n", e.Description))
-	str.WriteString(fmt.Sprintf("'source_ref': '%v'\n", e.SourceRef))
-	str.WriteString(fmt.Sprintf("'target_ref': '%v'\n", e.TargetRef))
-	str.WriteString(fmt.Sprintf("'start_time': '%v'\n", e.StartTime))
-	str.WriteString(fmt.Sprintf("'stop_time': '%v'\n", e.StopTime))
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.OptionalCommonPropertiesRelationshipObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'relationship_type': '%s'\n", ws, e.RelationshipType))
+	str.WriteString(fmt.Sprintf("%s'description': '%s'\n", ws, e.Description))
+	str.WriteString(fmt.Sprintf("%s'source_ref': '%v'\n", ws, e.SourceRef))
+	str.WriteString(fmt.Sprintf("%s'target_ref': '%v'\n", ws, e.TargetRef))
+	str.WriteString(fmt.Sprintf("%s'start_time': '%v'\n", ws, e.StartTime))
+	str.WriteString(fmt.Sprintf("%s'stop_time': '%v'\n", ws, e.StopTime))
 
 	return str.String()
 }
@@ -508,35 +510,38 @@ func (e SightingObjectSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e SightingObjectSTIX) ToStringBeautiful() string {
+func (e SightingObjectSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.OptionalCommonPropertiesRelationshipObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'description': '%s'\n", e.Description))
-	str.WriteString(fmt.Sprintf("'first_seen': '%v'\n", e.FirstSeen))
-	str.WriteString(fmt.Sprintf("'last_seen': '%v'\n", e.LastSeen))
-	str.WriteString(fmt.Sprintf("'count': '%d'\n", e.Count))
-	str.WriteString(fmt.Sprintf("'sighting_of_ref': '%v'\n", e.SightingOfRef))
-	str.WriteString(fmt.Sprintf("'observed_data_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.OptionalCommonPropertiesRelationshipObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'description': '%s'\n", ws, e.Description))
+	str.WriteString(fmt.Sprintf("%s'first_seen': '%v'\n", ws, e.FirstSeen))
+	str.WriteString(fmt.Sprintf("%s'last_seen': '%v'\n", ws, e.LastSeen))
+	str.WriteString(fmt.Sprintf("%s'count': '%d'\n", ws, e.Count))
+	str.WriteString(fmt.Sprintf("%s'sighting_of_ref': '%v'\n", ws, e.SightingOfRef))
+	str.WriteString(fmt.Sprintf("%s'observed_data_refs': \n%v", ws, func(l []stixhelpers.IdentifierTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'observed_data_ref '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'observed_data_ref '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.ObservedDataRefs)))
-	str.WriteString(fmt.Sprintf("'where_sighted_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
+	}(e.ObservedDataRefs, num+1)))
+	str.WriteString(fmt.Sprintf("%s'where_sighted_refs': \n%v", ws, func(l []stixhelpers.IdentifierTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'where_sighted_ref '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'where_sighted_ref '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.WhereSightedRefs)))
-	str.WriteString(fmt.Sprintf("'summary': '%v'\n", e.Summary))
+	}(e.WhereSightedRefs, num+1)))
+	str.WriteString(fmt.Sprintf("%s'summary': '%v'\n", ws, e.Summary))
 
 	return str.String()
 }

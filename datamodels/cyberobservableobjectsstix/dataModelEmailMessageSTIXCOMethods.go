@@ -364,78 +364,86 @@ func (e EmailMessageCyberObservableObjectSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e EmailMessageCyberObservableObjectSTIX) ToStringBeautiful() string {
+func (e EmailMessageCyberObservableObjectSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'is_multipart': '%v'\n", e.IsMultipart))
-	str.WriteString(fmt.Sprintf("'date': '%v'\n", e.Date))
-	str.WriteString(fmt.Sprintf("'content_type': '%s'\n", e.ContentType))
-	str.WriteString(fmt.Sprintf("'from_ref': '%v'\n", e.FromRef))
-	str.WriteString(fmt.Sprintf("'sender_ref': '%v'\n", e.SenderRef))
-	str.WriteString(fmt.Sprintf("'to_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'is_multipart': '%v'\n", ws, e.IsMultipart))
+	str.WriteString(fmt.Sprintf("%s'date': '%v'\n", ws, e.Date))
+	str.WriteString(fmt.Sprintf("%s'content_type': '%s'\n", ws, e.ContentType))
+	str.WriteString(fmt.Sprintf("%s'from_ref': '%v'\n", ws, e.FromRef))
+	str.WriteString(fmt.Sprintf("%s'sender_ref': '%v'\n", ws, e.SenderRef))
+	str.WriteString(fmt.Sprintf("%s'to_refs': \n%v", ws, func(l []stixhelpers.IdentifierTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'to_ref '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'to_ref '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.ToRefs)))
-	str.WriteString(fmt.Sprintf("'cc_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
+	}(e.ToRefs, num+1)))
+	str.WriteString(fmt.Sprintf("%s'cc_refs': \n%v", ws, func(l []stixhelpers.IdentifierTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'cc_ref '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'cc_ref '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.CcRefs)))
-	str.WriteString(fmt.Sprintf("'bcc_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
+	}(e.CcRefs, num+1)))
+	str.WriteString(fmt.Sprintf("%s'bcc_refs': \n%v", ws, func(l []stixhelpers.IdentifierTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'bcc_ref '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'bcc_ref '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.BccRefs)))
-	str.WriteString(fmt.Sprintf("'message_id': '%v'\n", e.MessageID))
-	str.WriteString(fmt.Sprintf("'subject': '%v'\n", e.Subject))
-	str.WriteString(fmt.Sprintf("'received_lines': \n%v", func(l []string) string {
+	}(e.BccRefs, num+1)))
+	str.WriteString(fmt.Sprintf("%s'message_id': '%v'\n", ws, e.MessageID))
+	str.WriteString(fmt.Sprintf("%s'subject': '%v'\n", ws, e.Subject))
+	str.WriteString(fmt.Sprintf("%s'received_lines': \n%v", ws, func(l []string, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'received_line '%d'': '%s'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'received_line '%d'': '%s'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.ReceivedLines)))
-	str.WriteString(fmt.Sprintf("'additional_header_fields': \n%v", func(l map[string]stixhelpers.DictionaryTypeSTIX) string {
+	}(e.ReceivedLines, num+1)))
+	str.WriteString(fmt.Sprintf("%s'additional_header_fields': \n%v", ws, func(l map[string]stixhelpers.DictionaryTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'%s': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'%s': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.AdditionalHeaderFields)))
-	str.WriteString(fmt.Sprintf("'body': '%v'\n", e.Body))
-	str.WriteString(fmt.Sprintf("'body_multipart': \n%v", func(l []somecomplextypesstixco.EmailMIMEPartTypeSTIX) string {
+	}(e.AdditionalHeaderFields, num+1)))
+	str.WriteString(fmt.Sprintf("%s'body': '%v'\n", ws, e.Body))
+	str.WriteString(fmt.Sprintf("%s'body_multipart': \n%v", ws, func(l []somecomplextypesstixco.EmailMIMEPartTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
+		dubleWs := commonlibs.GetWhitespace(num + 1)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'body_multipart '%d'':\n", k))
-			str.WriteString(fmt.Sprintf("\t\t'body': '%s'\n", v.Body))
-			str.WriteString(fmt.Sprintf("\t\t'body_raw_ref': '%s'\n", v.BodyRawRef))
-			str.WriteString(fmt.Sprintf("\t\t'content_type': '%s'\n", v.ContentType))
-			str.WriteString(fmt.Sprintf("\t\t'content_disposition': '%s'\n", v.ContentDisposition))
+			str.WriteString(fmt.Sprintf("%s'body_multipart '%d'':\n", ws, k))
+			str.WriteString(fmt.Sprintf("%s'body': '%s'\n", dubleWs, v.Body))
+			str.WriteString(fmt.Sprintf("%s'body_raw_ref': '%s'\n", dubleWs, v.BodyRawRef))
+			str.WriteString(fmt.Sprintf("%s'content_type': '%s'\n", dubleWs, v.ContentType))
+			str.WriteString(fmt.Sprintf("%s'content_disposition': '%s'\n", dubleWs, v.ContentDisposition))
 		}
 
 		return str.String()
-	}(e.BodyMultipart)))
-	str.WriteString(fmt.Sprintf("'raw_email_ref': '%v'\n", e.RawEmailRef))
+	}(e.BodyMultipart, num+1)))
+	str.WriteString(fmt.Sprintf("%s'raw_email_ref': '%v'\n", ws, e.RawEmailRef))
 
 	return str.String()
 }

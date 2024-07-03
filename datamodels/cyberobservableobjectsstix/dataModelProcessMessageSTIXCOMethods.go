@@ -330,48 +330,60 @@ func (e ProcessCyberObservableObjectSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e ProcessCyberObservableObjectSTIX) ToStringBeautiful() string {
+func (e ProcessCyberObservableObjectSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'is_hidden': '%v'\n", e.IsHidden))
-	str.WriteString(fmt.Sprintf("'pid': '%d'\n", e.PID))
-	str.WriteString(fmt.Sprintf("'created_time': '%v'\n", e.CreatedTime))
-	str.WriteString(fmt.Sprintf("'cwd': '%s'\n", e.Cwd))
-	str.WriteString(fmt.Sprintf("'command_line': '%s'\n", e.CommandLine))
-	str.WriteString(fmt.Sprintln("'environment_variables':"))
-
-	for k, v := range e.EnvironmentVariables {
-		str.WriteString(fmt.Sprintf("\t'%s': '%v'\n", k, datamodels.ToStringBeautiful(v)))
-	}
-
-	str.WriteString(fmt.Sprintf("'opened_connection_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'is_hidden': '%v'\n", ws, e.IsHidden))
+	str.WriteString(fmt.Sprintf("%s'pid': '%d'\n", e.PID))
+	str.WriteString(fmt.Sprintf("%s'created_time': '%v'\n", e.CreatedTime))
+	str.WriteString(fmt.Sprintf("%s'cwd': '%s'\n", e.Cwd))
+	str.WriteString(fmt.Sprintf("%s'command_line': '%s'\n", e.CommandLine))
+	str.WriteString(fmt.Sprintf("%s'environment_variables': \n%v", ws, func(l map[string]interface{}, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'opened_connection_ref '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'%s':\n%v\n", ws, k, datamodels.ToStringBeautiful(v)))
 		}
 
 		return str.String()
-	}(e.OpenedConnectionRefs)))
-	str.WriteString(fmt.Sprintf("'creator_user_ref': '%v'\n", e.CreatorUserRef))
-	str.WriteString(fmt.Sprintf("'image_ref': '%v'\n", e.ImageRef))
-	str.WriteString(fmt.Sprintf("'parent_ref': '%v'\n", e.ParentRef))
-	str.WriteString(fmt.Sprintf("'child_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
+	}(e.Extensions, num+1)))
+	str.WriteString(fmt.Sprintf("%s'opened_connection_refs': \n%v", ws, func(l []stixhelpers.IdentifierTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'child_ref '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'opened_connection_ref '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.ChildRefs)))
-	str.WriteString(fmt.Sprintln("'extensions':"))
+	}(e.OpenedConnectionRefs, num+1)))
+	str.WriteString(fmt.Sprintf("%s'creator_user_ref': '%v'\n", ws, e.CreatorUserRef))
+	str.WriteString(fmt.Sprintf("%s'image_ref': '%v'\n", ws, e.ImageRef))
+	str.WriteString(fmt.Sprintf("%s'parent_ref': '%v'\n", ws, e.ParentRef))
+	str.WriteString(fmt.Sprintf("%s'child_refs': \n%v", ws, func(l []stixhelpers.IdentifierTypeSTIX, num int) string {
+		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
-	for k, v := range e.Extensions {
-		str.WriteString(fmt.Sprintf("\t'%s':\n%v\n", k, datamodels.ToStringBeautiful(v)))
-	}
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("%s'child_ref '%d'': '%v'\n", ws, k, v))
+		}
+
+		return str.String()
+	}(e.ChildRefs, num+1)))
+	str.WriteString(fmt.Sprintf("%s'extensions': \n%v", ws, func(l map[string]interface{}, num int) string {
+		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
+
+		for k, v := range l {
+			str.WriteString(fmt.Sprintf("%s'%s':\n%v\n", ws, k, datamodels.ToStringBeautiful(v)))
+		}
+
+		return str.String()
+	}(e.Extensions, num+1)))
 
 	return str.String()
 }

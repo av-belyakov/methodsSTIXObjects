@@ -154,32 +154,33 @@ func (e AttackPatternDomainObjectsSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e AttackPatternDomainObjectsSTIX) ToStringBeautiful() string {
+func (e AttackPatternDomainObjectsSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'name': '%s'\n", e.Name))
-	str.WriteString(fmt.Sprintf("'description': '%s'\n", e.Description))
-	str.WriteString(fmt.Sprintf("'aliases': \n%v", func(l []string) string {
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'name': '%s'\n", ws, e.Name))
+	str.WriteString(fmt.Sprintf("%s'description': '%s'\n", ws, e.Description))
+	str.WriteString(fmt.Sprintf("%s'aliases': \n%v", ws, func(l []string, num int) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'aliase '%d'': '%s'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'aliase '%d'': '%s'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.Aliases)))
-	str.WriteString(fmt.Sprintf("'kill_chain_phases': \n%v", func(l []stixhelpers.KillChainPhasesTypeElementSTIX) string {
+	}(e.Aliases, num+1)))
+	str.WriteString(fmt.Sprintf("%s'kill_chain_phases': \n%v", ws, func(l []stixhelpers.KillChainPhasesTypeElementSTIX, num int) string {
 		str := strings.Builder{}
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'key': '%v' 'kill_chain_name': '%s'\n", k, v.KillChainName))
-			str.WriteString(fmt.Sprintf("\t'key': '%v' 'phase_name': '%s'\n", k, v.PhaseName))
+			str.WriteString(fmt.Sprintf("%s'key': '%v' 'kill_chain_name': '%s'\n", ws, k, v.KillChainName))
+			str.WriteString(fmt.Sprintf("%s'key': '%v' 'phase_name': '%s'\n", ws, k, v.PhaseName))
 		}
 
 		return str.String()
-	}(e.KillChainPhases)))
+	}(e.KillChainPhases, num+1)))
 
 	return str.String()
 }

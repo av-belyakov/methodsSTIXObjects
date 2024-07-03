@@ -173,25 +173,27 @@ func (e SoftwareCyberObservableObjectSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e SoftwareCyberObservableObjectSTIX) ToStringBeautiful() string {
+func (e SoftwareCyberObservableObjectSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'name': '%s'\n", e.Name))
-	str.WriteString(fmt.Sprintf("'cpe': '%s'\n", e.CPE))
-	str.WriteString(fmt.Sprintf("'swid': '%s'\n", e.SwID))
-	str.WriteString(fmt.Sprintf("'languages': \n%v", func(l []string) string {
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'name': '%s'\n", ws, e.Name))
+	str.WriteString(fmt.Sprintf("%s'cpe': '%s'\n", ws, e.CPE))
+	str.WriteString(fmt.Sprintf("%s'swid': '%s'\n", ws, e.SwID))
+	str.WriteString(fmt.Sprintf("%s'languages': \n%v", ws, func(l []string, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'language '%d'': '%s'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'language '%d'': '%s'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.Languages)))
-	str.WriteString(fmt.Sprintf("'vendor': '%s'\n", e.Vendor))
-	str.WriteString(fmt.Sprintf("'version': '%s'\n", e.Version))
+	}(e.Languages, num+1)))
+	str.WriteString(fmt.Sprintf("%s'vendor': '%s'\n", ws, e.Vendor))
+	str.WriteString(fmt.Sprintf("%s'version': '%s'\n", ws, e.Version))
 
 	return str.String()
 }

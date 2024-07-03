@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/asaskevich/govalidator"
+	"github.com/av-belyakov/methodstixobjects/commonlibs"
 )
 
 /* --- URLCyberObservableObjectSTIX --- */
@@ -80,12 +81,13 @@ func (e URLCyberObservableObjectSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e URLCyberObservableObjectSTIX) ToStringBeautiful() string {
+func (e URLCyberObservableObjectSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'value': '%s'\n", e.Value))
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'value': '%s'\n", ws, e.Value))
 
 	return str.String()
 }

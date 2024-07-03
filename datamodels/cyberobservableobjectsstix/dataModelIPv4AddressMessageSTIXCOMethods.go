@@ -137,30 +137,33 @@ func (e IPv4AddressCyberObservableObjectSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e IPv4AddressCyberObservableObjectSTIX) ToStringBeautiful() string {
+func (e IPv4AddressCyberObservableObjectSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'value': '%s'\n", e.Value))
-	str.WriteString(fmt.Sprintf("'resolves_to_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'value': '%s'\n", ws, e.Value))
+	str.WriteString(fmt.Sprintf("%s'resolves_to_refs': \n%v", ws, func(l []stixhelpers.IdentifierTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'resolves_to_ref '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'resolves_to_ref '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.ResolvesToRefs)))
-	str.WriteString(fmt.Sprintf("'belongs_to_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
+	}(e.ResolvesToRefs, num+1)))
+	str.WriteString(fmt.Sprintf("%s'belongs_to_refs': \n%v", ws, func(l []stixhelpers.IdentifierTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'belongs_to_ref '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'belongs_to_ref '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.BelongsToRefs)))
+	}(e.BelongsToRefs, num+1)))
 
 	return str.String()
 }

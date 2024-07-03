@@ -283,76 +283,85 @@ func (e CommonPropertiesDomainObjectSTIX) SanitizeStruct() CommonPropertiesDomai
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e CommonPropertiesDomainObjectSTIX) ToStringBeautiful() string {
+func (e CommonPropertiesDomainObjectSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
 
-	str.WriteString(fmt.Sprintf("'spec_version': '%s'\n", e.SpecVersion))
-	str.WriteString(fmt.Sprintf("'created': '%v'\n", e.Created))
-	str.WriteString(fmt.Sprintf("'modified': '%v'\n", e.Modified))
-	str.WriteString(fmt.Sprintf("'created_by_ref': '%s'\n", e.CreatedByRef))
-	str.WriteString(fmt.Sprintf("'revoked': '%v'\n", e.Revoked))
-	str.WriteString(fmt.Sprintf("'labels': \n%v", func(l []string) string {
+	ws := commonlibs.GetWhitespace(num)
+
+	str.WriteString(fmt.Sprintf("%s'spec_version': '%s'\n", ws, e.SpecVersion))
+	str.WriteString(fmt.Sprintf("%s'created': '%v'\n", ws, e.Created))
+	str.WriteString(fmt.Sprintf("%s'modified': '%v'\n", ws, e.Modified))
+	str.WriteString(fmt.Sprintf("%s'created_by_ref': '%s'\n", ws, e.CreatedByRef))
+	str.WriteString(fmt.Sprintf("%s'revoked': '%v'\n", ws, e.Revoked))
+	str.WriteString(fmt.Sprintf("%s'labels': \n%v", ws, func(l []string, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'label '%d'': '%s'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'label '%d'': '%s'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.Labels)))
-	str.WriteString(fmt.Sprintf("'external_references': \n%v", func(l []stixhelpers.ExternalReferenceTypeElementSTIX) string {
+	}(e.Labels, num+1)))
+	str.WriteString(fmt.Sprintf("%s'external_references': \n%v", ws, func(l []stixhelpers.ExternalReferenceTypeElementSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
+		dubleWs := commonlibs.GetWhitespace(num + 1)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'external_references element '%d'':\n", k))
-			str.WriteString(fmt.Sprintf("\t\t'source_name': '%s'\n", v.SourceName))
-			str.WriteString(fmt.Sprintf("\t\t'description': '%s'\n", v.Description))
-			str.WriteString(fmt.Sprintf("\t\t'url': '%s'\n", v.URL))
-			str.WriteString(fmt.Sprintf("\t\t'hashes': '%s'\n", v.Hashes))
-			str.WriteString(fmt.Sprintf("\t\t'external_id': '%s'\n", v.ExternalID))
+			str.WriteString(fmt.Sprintf("%s'external_references element '%d'':\n", ws, k))
+			str.WriteString(fmt.Sprintf("%s'source_name': '%s'\n", dubleWs, v.SourceName))
+			str.WriteString(fmt.Sprintf("%s'description': '%s'\n", dubleWs, v.Description))
+			str.WriteString(fmt.Sprintf("%s'url': '%s'\n", dubleWs, v.URL))
+			str.WriteString(fmt.Sprintf("%s'hashes': '%s'\n", dubleWs, v.Hashes))
+			str.WriteString(fmt.Sprintf("%s'external_id': '%s'\n", dubleWs, v.ExternalID))
 		}
 
 		return str.String()
-	}(e.ExternalReferences)))
-	str.WriteString(fmt.Sprintf("'object_marking_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
+	}(e.ExternalReferences, num+1)))
+	str.WriteString(fmt.Sprintf("%s'object_marking_refs': \n%v", ws, func(l []stixhelpers.IdentifierTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'ref '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'ref '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.ObjectMarkingRefs)))
-	str.WriteString(fmt.Sprintf("'granular_markings': \n%v", func(l []stixhelpers.GranularMarkingsTypeSTIX) string {
+	}(e.ObjectMarkingRefs, num+1)))
+	str.WriteString(fmt.Sprintf("%s'granular_markings': \n%v", ws, func(l []stixhelpers.GranularMarkingsTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'granular_markings number %d.'", k))
-			str.WriteString(fmt.Sprintf("\t'lang': '%s'\n", v.Lang))
-			str.WriteString(fmt.Sprintf("\t'marking_ref': '%v'\n", v.MarkingRef))
-			str.WriteString(fmt.Sprintf("\t'selectors': \n%v", func(l []string) string {
+			str.WriteString(fmt.Sprintf("%s'granular_markings number %d.'", ws, k))
+			str.WriteString(fmt.Sprintf("%s'lang': '%s'\n", ws, v.Lang))
+			str.WriteString(fmt.Sprintf("%s'marking_ref': '%v'\n", ws, v.MarkingRef))
+			str.WriteString(fmt.Sprintf("%s'selectors': \n%v", ws, func(l []string, num int) string {
 				str := strings.Builder{}
+				ws := commonlibs.GetWhitespace(num)
 
 				for k, v := range l {
-					str.WriteString(fmt.Sprintf("\t\t'selector '%d'': '%s'\n", k, v))
+					str.WriteString(fmt.Sprintf("%s'selector '%d'': '%s'\n", ws, k, v))
 				}
 
 				return str.String()
-			}(v.Selectors)))
+			}(v.Selectors, num+1)))
 		}
 
 		return str.String()
-	}(e.GranularMarkings)))
-	str.WriteString(fmt.Sprintf("'defanged': '%v'\n", e.Defanged))
-	str.WriteString(fmt.Sprintf("'extensions': \n%v", func(l map[string]string) string {
+	}(e.GranularMarkings, num+1)))
+	str.WriteString(fmt.Sprintf("%s'defanged': '%v'\n", ws, e.Defanged))
+	str.WriteString(fmt.Sprintf("%s'extensions': \n%v", ws, func(l map[string]string, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'%s': '%s'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'%s': '%s'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.Extensions)))
+	}(e.Extensions, num+1)))
 
 	return str.String()
 }

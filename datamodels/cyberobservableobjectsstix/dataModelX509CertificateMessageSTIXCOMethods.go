@@ -279,48 +279,51 @@ func (e X509CertificateCyberObservableObjectSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e X509CertificateCyberObservableObjectSTIX) ToStringBeautiful() string {
+func (e X509CertificateCyberObservableObjectSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
+	dubleWs := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'is_self_signed': '%v'\n", e.IsSelfSigned))
-	str.WriteString(fmt.Sprintf("'hashes': \n%v", func(l map[string]string) string {
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'is_self_signed': '%v'\n", ws, e.IsSelfSigned))
+	str.WriteString(fmt.Sprintf("%s'hashes': \n%v", ws, func(l map[string]string, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'%s': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'%s': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.Hashes)))
-	str.WriteString(fmt.Sprintf("'version': '%s'\n", e.Version))
-	str.WriteString(fmt.Sprintf("'serial_number': '%s'\n", e.SerialNumber))
-	str.WriteString(fmt.Sprintf("'signature_algorithm': '%s'\n", e.SignatureAlgorithm))
-	str.WriteString(fmt.Sprintf("'issuer': '%s'\n", e.Issuer))
-	str.WriteString(fmt.Sprintf("'validity_not_before': '%v'\n", e.ValidityNotBefore))
-	str.WriteString(fmt.Sprintf("'validity_not_after': '%v'\n", e.ValidityNotAfter))
-	str.WriteString(fmt.Sprintf("'subject': '%s'\n", e.Subject))
-	str.WriteString(fmt.Sprintf("'subject_public_key_algorithm': '%s'\n", e.SubjectPublicKeyAlgorithm))
-	str.WriteString(fmt.Sprintf("'subject_public_key_modulus': '%s'\n", e.SubjectPublicKeyModulus))
-	str.WriteString(fmt.Sprintf("'subject_public_key_exponent': '%v'\n", e.SubjectPublicKeyExponent))
-	str.WriteString(fmt.Sprintln("'x509_v3_extensions':"))
-	str.WriteString(fmt.Sprintf("\t'basic_constraints': '%s'\n", e.X509V3Extensions.BasicConstraints))
-	str.WriteString(fmt.Sprintf("\t'name_constraints': '%s'\n", e.X509V3Extensions.NameConstraints))
-	str.WriteString(fmt.Sprintf("\t'policy_contraints': '%s'\n", e.X509V3Extensions.PolicyContraints))
-	str.WriteString(fmt.Sprintf("\t'key_usage': '%s'\n", e.X509V3Extensions.KeyUsage))
-	str.WriteString(fmt.Sprintf("\t'extended_key_usage': '%s'\n", e.X509V3Extensions.ExtendedKeyUsage))
-	str.WriteString(fmt.Sprintf("\t'subject_key_identifier': '%s'\n", e.X509V3Extensions.SubjectKeyIdentifier))
-	str.WriteString(fmt.Sprintf("\t'authority_key_identifier': '%s'\n", e.X509V3Extensions.AuthorityKeyIdentifier))
-	str.WriteString(fmt.Sprintf("\t'subject_alternative_name': '%s'\n", e.X509V3Extensions.SubjectAlternativeName))
-	str.WriteString(fmt.Sprintf("\t'issuer_alternative_name': '%s'\n", e.X509V3Extensions.IssuerAlternativeName))
-	str.WriteString(fmt.Sprintf("\t'subject_directory_attributes': '%s'\n", e.X509V3Extensions.SubjectDirectoryAttributes))
-	str.WriteString(fmt.Sprintf("\t'crl_distribution_points': '%s'\n", e.X509V3Extensions.CrlDistributionPoints))
-	str.WriteString(fmt.Sprintf("\t'inhibit_any_policy': '%s'\n", e.X509V3Extensions.InhibitAnyPolicy))
-	str.WriteString(fmt.Sprintf("\t'private_key_usage_period_not_before': '%v'\n", e.X509V3Extensions.PrivateKeyUsagePeriodNotBefore))
-	str.WriteString(fmt.Sprintf("\t'private_key_usage_period_not_after': '%v'\n", e.X509V3Extensions.PrivateKeyUsagePeriodNotAfter))
-	str.WriteString(fmt.Sprintf("\t'certificate_policies': '%s'\n", e.X509V3Extensions.CertificatePolicies))
-	str.WriteString(fmt.Sprintf("\t'policy_mappings': '%s'\n", e.X509V3Extensions.PolicyMappings))
+	}(e.Hashes, num+1)))
+	str.WriteString(fmt.Sprintf("%s'version': '%s'\n", ws, e.Version))
+	str.WriteString(fmt.Sprintf("%s'serial_number': '%s'\n", ws, e.SerialNumber))
+	str.WriteString(fmt.Sprintf("%s'signature_algorithm': '%s'\n", ws, e.SignatureAlgorithm))
+	str.WriteString(fmt.Sprintf("%s'issuer': '%s'\n", ws, e.Issuer))
+	str.WriteString(fmt.Sprintf("%s'validity_not_before': '%v'\n", ws, e.ValidityNotBefore))
+	str.WriteString(fmt.Sprintf("%s'validity_not_after': '%v'\n", ws, e.ValidityNotAfter))
+	str.WriteString(fmt.Sprintf("%s'subject': '%s'\n", ws, e.Subject))
+	str.WriteString(fmt.Sprintf("%s'subject_public_key_algorithm': '%s'\n", ws, e.SubjectPublicKeyAlgorithm))
+	str.WriteString(fmt.Sprintf("%s'subject_public_key_modulus': '%s'\n", ws, e.SubjectPublicKeyModulus))
+	str.WriteString(fmt.Sprintf("%s'subject_public_key_exponent': '%v'\n", ws, e.SubjectPublicKeyExponent))
+	str.WriteString(fmt.Sprintf("%s'x509_v3_extensions':", ws))
+	str.WriteString(fmt.Sprintf("%s'basic_constraints': '%s'\n", dubleWs, e.X509V3Extensions.BasicConstraints))
+	str.WriteString(fmt.Sprintf("%s'name_constraints': '%s'\n", dubleWs, e.X509V3Extensions.NameConstraints))
+	str.WriteString(fmt.Sprintf("%s'policy_contraints': '%s'\n", dubleWs, e.X509V3Extensions.PolicyContraints))
+	str.WriteString(fmt.Sprintf("%s'key_usage': '%s'\n", dubleWs, e.X509V3Extensions.KeyUsage))
+	str.WriteString(fmt.Sprintf("%s'extended_key_usage': '%s'\n", dubleWs, e.X509V3Extensions.ExtendedKeyUsage))
+	str.WriteString(fmt.Sprintf("%s'subject_key_identifier': '%s'\n", dubleWs, e.X509V3Extensions.SubjectKeyIdentifier))
+	str.WriteString(fmt.Sprintf("%s'authority_key_identifier': '%s'\n", dubleWs, e.X509V3Extensions.AuthorityKeyIdentifier))
+	str.WriteString(fmt.Sprintf("%s'subject_alternative_name': '%s'\n", dubleWs, e.X509V3Extensions.SubjectAlternativeName))
+	str.WriteString(fmt.Sprintf("%s'issuer_alternative_name': '%s'\n", dubleWs, e.X509V3Extensions.IssuerAlternativeName))
+	str.WriteString(fmt.Sprintf("%s'subject_directory_attributes': '%s'\n", dubleWs, e.X509V3Extensions.SubjectDirectoryAttributes))
+	str.WriteString(fmt.Sprintf("%s'crl_distribution_points': '%s'\n", dubleWs, e.X509V3Extensions.CrlDistributionPoints))
+	str.WriteString(fmt.Sprintf("%s'inhibit_any_policy': '%s'\n", dubleWs, e.X509V3Extensions.InhibitAnyPolicy))
+	str.WriteString(fmt.Sprintf("%s'private_key_usage_period_not_before': '%v'\n", dubleWs, e.X509V3Extensions.PrivateKeyUsagePeriodNotBefore))
+	str.WriteString(fmt.Sprintf("%s'private_key_usage_period_not_after': '%v'\n", dubleWs, e.X509V3Extensions.PrivateKeyUsagePeriodNotAfter))
+	str.WriteString(fmt.Sprintf("%s'certificate_policies': '%s'\n", dubleWs, e.X509V3Extensions.CertificatePolicies))
+	str.WriteString(fmt.Sprintf("%s'policy_mappings': '%s'\n", dubleWs, e.X509V3Extensions.PolicyMappings))
 
 	return str.String()
 }

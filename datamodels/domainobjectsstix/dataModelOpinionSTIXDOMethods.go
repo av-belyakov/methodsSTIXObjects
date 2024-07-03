@@ -159,31 +159,34 @@ func (e OpinionDomainObjectsSTIX) GetType() string {
 }
 
 // ToStringBeautiful выполняет красивое представление информации содержащейся в типе
-func (e OpinionDomainObjectsSTIX) ToStringBeautiful() string {
+func (e OpinionDomainObjectsSTIX) ToStringBeautiful(num int) string {
 	str := strings.Builder{}
+	ws := commonlibs.GetWhitespace(num)
 
-	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful())
-	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful())
-	str.WriteString(fmt.Sprintf("'explanation': '%v'\n", e.Explanation))
-	str.WriteString(fmt.Sprintf("'authors': \n%v", func(l []string) string {
+	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(e.CommonPropertiesDomainObjectSTIX.ToStringBeautiful(num))
+	str.WriteString(fmt.Sprintf("%s'explanation': '%v'\n", ws, e.Explanation))
+	str.WriteString(fmt.Sprintf("%s'authors': \n%v", ws, func(l []string, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'author '%d'': '%s'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'author '%d'': '%s'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.Authors)))
-	str.WriteString(fmt.Sprintf("'opinion': '%v'\n", e.Opinion))
-	str.WriteString(fmt.Sprintf("'object_refs': \n%v", func(l []stixhelpers.IdentifierTypeSTIX) string {
+	}(e.Authors, num+1)))
+	str.WriteString(fmt.Sprintf("%s'opinion': '%v'\n", ws, e.Opinion))
+	str.WriteString(fmt.Sprintf("%s'object_refs': \n%v", ws, func(l []stixhelpers.IdentifierTypeSTIX, num int) string {
 		str := strings.Builder{}
+		ws := commonlibs.GetWhitespace(num)
 
 		for k, v := range l {
-			str.WriteString(fmt.Sprintf("\t'object_ref '%d'': '%v'\n", k, v))
+			str.WriteString(fmt.Sprintf("%s'object_ref '%d'': '%v'\n", ws, k, v))
 		}
 
 		return str.String()
-	}(e.ObjectRefs)))
+	}(e.ObjectRefs, num+1)))
 
 	return str.String()
 }

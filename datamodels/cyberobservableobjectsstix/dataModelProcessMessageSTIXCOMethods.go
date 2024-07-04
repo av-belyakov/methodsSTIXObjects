@@ -337,10 +337,10 @@ func (e ProcessCyberObservableObjectSTIX) ToStringBeautiful(num int) string {
 	str.WriteString(e.CommonPropertiesObjectSTIX.ToStringBeautiful(num))
 	str.WriteString(e.OptionalCommonPropertiesCyberObservableObjectSTIX.ToStringBeautiful(num))
 	str.WriteString(fmt.Sprintf("%s'is_hidden': '%v'\n", ws, e.IsHidden))
-	str.WriteString(fmt.Sprintf("%s'pid': '%d'\n", e.PID))
-	str.WriteString(fmt.Sprintf("%s'created_time': '%v'\n", e.CreatedTime))
-	str.WriteString(fmt.Sprintf("%s'cwd': '%s'\n", e.Cwd))
-	str.WriteString(fmt.Sprintf("%s'command_line': '%s'\n", e.CommandLine))
+	str.WriteString(fmt.Sprintf("%s'pid': '%d'\n", ws, e.PID))
+	str.WriteString(fmt.Sprintf("%s'created_time': '%v'\n", ws, e.CreatedTime))
+	str.WriteString(fmt.Sprintf("%s'cwd': '%s'\n", ws, e.Cwd))
+	str.WriteString(fmt.Sprintf("%s'command_line': '%s'\n", ws, e.CommandLine))
 	str.WriteString(fmt.Sprintf("%s'environment_variables': \n%v", ws, func(l map[string]interface{}, num int) string {
 		str := strings.Builder{}
 		ws := commonlibs.GetWhitespace(num)

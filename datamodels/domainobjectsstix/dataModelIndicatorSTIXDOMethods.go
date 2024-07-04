@@ -282,7 +282,7 @@ func (e IndicatorDomainObjectsSTIX) ToStringBeautiful(num int) string {
 	str.WriteString(fmt.Sprintf("%s'pattern_version': '%s'\n", ws, e.PatternVersion))
 	str.WriteString(fmt.Sprintf("%s'valid_from': '%v'\n", ws, e.ValidFrom))
 	str.WriteString(fmt.Sprintf("%s'valid_until': '%v'\n", ws, e.ValidUntil))
-	str.WriteString(fmt.Sprintf("%s'sectors': \n%v", func(l []stixhelpers.KillChainPhasesTypeElementSTIX, num int) string {
+	str.WriteString(fmt.Sprintf("%s'sectors': \n%v", ws, func(l []stixhelpers.KillChainPhasesTypeElementSTIX, num int) string {
 		str := strings.Builder{}
 		ws := commonlibs.GetWhitespace(num)
 

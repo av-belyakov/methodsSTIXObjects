@@ -44,5 +44,5 @@ func (e *CommonPropertiesObjectSTIX) SetAnyType(i interface{}) {
 func (e CommonPropertiesObjectSTIX) ToStringBeautiful(num int) string {
 	ws := commonlibs.GetWhitespace(num)
 
-	return fmt.Sprintf("%s'type': '%s'\n'id': '%s'\n", ws, e.Type, e.ID)
+	return fmt.Sprintf("%s'type': '%s'\n%s'id': '%s'\n", ws, e.Type, ws, e.ID)
 }

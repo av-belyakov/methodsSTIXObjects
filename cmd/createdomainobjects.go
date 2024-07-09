@@ -79,6 +79,7 @@ func NewIndicatorDomainObjectsSTIX() *domainobjectsstix.IndicatorDomainObjectsST
 		CommonPropertiesObjectSTIX:       *cpo.Get(),
 		CommonPropertiesDomainObjectSTIX: *NewCommonPropertiesDomainObjectSTIX(),
 		ValidFrom:                        "1970-01-01T00:00:00+00:00",
+		ValidUntil:                       "1970-01-01T00:00:00+00:00",
 		IndicatorTypes:                   []stixhelpers.OpenVocabTypeSTIX(nil),
 	}
 }
